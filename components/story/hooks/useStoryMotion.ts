@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
 import { createBakeryTimeline } from "../animation/bakeryTimeline";
-import { createCoffeeTimeline } from "../animation/coffeeTimeline";
+import { createCoffeeTimeline, createCompactCoffeeTimeline } from "../animation/coffeeTimeline";
 import { createCommunityTimeline } from "../animation/communityTimeline";
 import { createCultureTimeline } from "../animation/cultureTimeline";
 import { createPantryTimeline } from "../animation/pantryTimeline";
@@ -50,6 +50,9 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
         });
 
         media.add(COMPACT_STORY_QUERY, () => {
+          const coffee = scene(storyRoot, "coffee");
+          if (coffee) createCompactCoffeeTimeline(gsap, coffee);
+
           storyRoot.querySelectorAll<HTMLElement>(".mobile-reveal").forEach((element) => {
             gsap.from(element, {
               opacity: 0,

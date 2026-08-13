@@ -19,14 +19,23 @@
 .scene-copy { position: absolute; z-index: 5; left: clamp(1.25rem, 7vw, 8rem); top: 50%; transform: translateY(-50%); max-width: 480px; }
 .scene-copy h2, .product-copy h2, .community-copy h2, .culture-caption h2 { font-size: clamp(4rem, 7.5vw, 8rem); margin-bottom: 1.5rem; }
 .scene-copy > p:last-child, .product-copy > p { line-height: 1.7; max-width: 400px; }
-.coffee-scene { background: var(--navy-dark); }
-.coffee-stage { position: absolute; inset: 0 0 0 42%; display: grid; place-items: center; background: radial-gradient(circle at 55% 47%, rgba(131,200,196,.2), transparent 32%); }
-.coffee-stage::after { content: ""; position: absolute; width: min(58vw, 760px); height: min(15vw, 170px); border-radius: 50%; border: 1px solid rgba(131,200,196,.6); bottom: 17%; }
-.coffee-orbit { position: relative; z-index: 2; width: min(54vw, 750px); aspect-ratio: 1.77; overflow: hidden; clip-path: circle(37% at 28% 54%); filter: drop-shadow(0 30px 22px rgba(0,0,0,.25)); }
-.coffee-orbit img { object-fit: cover; }
-.coffee-shadow { position: absolute; z-index: 1; left: 13%; bottom: 21%; width: 34%; height: 7%; border-radius: 50%; background: black; filter: blur(15px); }
-.steam { position: absolute; z-index: 3; width: 14px; height: 90px; border-left: 2px solid rgba(255,255,255,.5); border-radius: 50%; filter: blur(2px); top: 21%; }
-.steam-one { left: 31%; transform: rotate(8deg); }.steam-two { left: 35%; height: 65px; }.steam-three { left: 39%; transform: rotate(-8deg); }
+.coffee-scene { color: var(--navy-dark); background: var(--ivory); isolation: isolate; }
+.coffee-scene::before { content: ""; position: absolute; z-index: 0; top: 0; bottom: 0; left: 42%; width: 1px; background: var(--rule); }
+.coffee-copy { color: var(--navy-dark); }
+.coffee-copy h2 { color: var(--navy); }
+.coffee-copy > p:last-child { max-width: 340px; }
+.coffee-stage { position: absolute; z-index: 1; inset: 0 0 0 42%; overflow: hidden; background: var(--paper); }
+.coffee-surface { position: absolute; z-index: 0; left: 7%; right: 7%; bottom: 7%; height: 31%; background: #ebe7df; border-top: 1px solid rgba(7,83,106,.24); clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%); }
+.coffee-surface i { position: absolute; left: 12%; right: 12%; top: 0; height: 1px; background: var(--aqua); opacity: .72; transform-origin: center; }
+.coffee-surface::after { content: ""; position: absolute; left: 50%; top: 21%; width: min(39vw, 560px); height: min(10vw, 124px); border: 1px solid rgba(7,83,106,.18); border-radius: 50%; transform: translateX(-50%); }
+.coffee-object { position: absolute; z-index: 3; right: clamp(8%, 10vw, 15%); bottom: 9%; width: clamp(300px, 27vw, 460px); aspect-ratio: 2 / 3; will-change: transform; }
+.coffee-cup-image { position: relative; z-index: 2; display: block; width: 100%; height: auto; }
+.coffee-shadow { position: absolute; z-index: 2; right: clamp(10%, 11.8vw, 17%); bottom: 8.1%; width: clamp(230px, 21vw, 360px); height: clamp(18px, 2.25vw, 34px); border-radius: 50%; background: rgba(4,56,68,.72); filter: blur(15px); opacity: .28; transform-origin: center; will-change: transform, opacity; }
+.coffee-shadow i { position: absolute; inset: 25% 17%; border-radius: inherit; background: rgba(4,56,68,.82); }
+.coffee-steam { position: absolute; z-index: 1; top: -7%; left: 50%; width: 35%; height: 18%; overflow: visible; transform: translateX(-50%); }
+.coffee-steam-line { fill: none; stroke: var(--navy); stroke-width: 2.2; stroke-linecap: round; opacity: .42; filter: blur(.35px); }
+.coffee-stage-note { position: absolute; z-index: 4; top: 15%; right: 5%; display: flex; align-items: center; gap: .65rem; color: var(--navy); font-size: .58rem; font-weight: 700; letter-spacing: .17em; opacity: .62; }
+.coffee-stage-note i { width: 46px; height: 1px; background: var(--aqua); }
 
 .quiet-grid { min-height: 80svh; padding: clamp(6rem, 12vw, 11rem) clamp(1.25rem, 8vw, 9rem); display: grid; grid-template-columns: 1.25fr .75fr; gap: 12vw; align-items: center; }
 .quiet-grid h2 { font-size: clamp(4rem, 7vw, 8rem); }
@@ -109,7 +118,17 @@
   .story-scene { min-height: 90svh; }
   .scene-copy { left: 1.25rem; right: 1.25rem; top: auto; bottom: 7%; transform: none; }
   .scene-copy h2, .product-copy h2, .community-copy h2, .culture-caption h2 { font-size: clamp(3.7rem, 14vw, 6rem); }
-  .coffee-stage { inset: 0 0 28%; overflow: hidden; }.coffee-orbit { width: 108vw; max-width: 108vw; clip-path: circle(38% at 28% 54%); }.coffee-stage::after { bottom: 10%; width: 80vw; height: 18vw; }.coffee-shadow { bottom: 15%; }.steam { top: 23%; }
+  .coffee-scene { min-height: max(100svh, 790px); }
+  .coffee-scene::before { display: none; }
+  .coffee-copy { left: clamp(1.25rem, 7vw, 4rem); right: clamp(1.25rem, 7vw, 4rem); bottom: 5%; max-width: 560px; }
+  .coffee-copy h2 { margin-bottom: 1.15rem; }
+  .coffee-copy > p:last-child { max-width: 330px; }
+  .coffee-stage { inset: 0 0 43%; background: var(--paper); }
+  .coffee-surface { left: 5%; right: 5%; bottom: 4%; height: 29%; }
+  .coffee-surface::after { width: min(72vw, 500px); height: min(16vw, 105px); }
+  .coffee-object { right: clamp(11%, 17vw, 25%); bottom: 5%; width: clamp(230px, 38vw, 330px); }
+  .coffee-shadow { right: clamp(13%, 19vw, 27%); bottom: 4.3%; width: clamp(176px, 30vw, 260px); height: clamp(15px, 3vw, 24px); }
+  .coffee-stage-note { top: 16%; right: 5%; }
   .quiet-grid { grid-template-columns: 1fr; gap: 4rem; }.quiet-grid h2 { font-size: clamp(4rem, 15vw, 6.5rem); }
   .bakery-photo img { object-position: 52% center; }.bakery-caption { left: 1.25rem; right: 1.25rem; bottom: 7%; }.bakery-notes { top: 16%; right: 1.25rem; }
   .pantry-scene { grid-template-columns: 1fr; min-height: 115svh; }.pantry-head { position: relative; z-index: 5; color: white; padding: 6rem 1.25rem 1rem; justify-content: start; }.shelf-stage { position: absolute; inset: 0; }.shelf-stage::after { content: ""; position: absolute; z-index: 4; inset: 0; background: linear-gradient(180deg,rgba(4,56,68,.9),transparent 60%); }.pantry-photo { opacity: 1; }.shelf-object,.shelf-line { display:none; }
@@ -121,11 +140,23 @@
 }
 
 @media (max-width: 560px) {
+  .coffee-scene { min-height: max(100svh, 760px); }
+  .coffee-stage { bottom: 47%; }
+  .coffee-object { right: 7%; bottom: 5%; width: min(58vw, 230px); }
+  .coffee-shadow { right: 10%; bottom: 4.2%; width: min(45vw, 180px); }
+  .coffee-steam { top: -6%; width: 34%; }
+  .coffee-stage-note { top: 13%; font-size: .52rem; }
+  .coffee-stage-note i { width: 28px; }
+  .coffee-copy h2 { font-size: clamp(3.45rem, 14vw, 4.7rem); }
   .final-collage { min-height: 430px; }.tile-cup { width: 78%; }.tile-bake { width: 43%; }.tile-honey { width: 42%; }.tile-candle { width: 40%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .coffee-object,.coffee-shadow,.coffee-surface i,.coffee-copy,.coffee-stage-note,.coffee-steam-line { transform: none !important; opacity: 1 !important; }
+  .coffee-shadow { opacity: .28 !important; }
+  .coffee-surface i { opacity: .72 !important; }
+  .coffee-stage-note { opacity: .62 !important; }
+  .coffee-steam-line { opacity: .42 !important; }
   .pantry-photo { opacity: 1; }.shelf-object { opacity: 0; }.steam,.particles,.chess-overlay,.chandelier-overlay { display: none; }
   .bakery-photo,.community-photo,.culture-photo { clip-path: none !important; transform: none !important; }
 }
-
