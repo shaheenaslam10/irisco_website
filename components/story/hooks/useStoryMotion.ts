@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
+import { createOpeningTimeline } from "../animation/openingTimeline";
 import { createBakeryTimeline } from "../animation/bakeryTimeline";
-import { createCoffeeTimeline, createCompactCoffeeTimeline } from "../animation/coffeeTimeline";
 import { createCommunityTimeline } from "../animation/communityTimeline";
 import { createCultureTimeline } from "../animation/cultureTimeline";
 import { createPantryTimeline } from "../animation/pantryTimeline";
@@ -29,30 +29,25 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
 
     void setupStoryMotion().then(({ gsap, ScrollTrigger }) => {
       if (cancelled) return;
-
       context = gsap.context(() => {
         media = gsap.matchMedia();
-
         media.add(DESKTOP_STORY_QUERY, () => {
-          const coffee = scene(storyRoot, "coffee");
+          const opening = scene(storyRoot, "opening");
           const bakery = scene(storyRoot, "bakery");
           const pantry = scene(storyRoot, "pantry");
           const product = scene(storyRoot, "product");
           const culture = scene(storyRoot, "culture");
           const community = scene(storyRoot, "community");
-
-          if (coffee) createCoffeeTimeline(gsap, coffee);
+          if (opening) createOpeningTimeline(gsap, opening, "desktop");
           if (bakery) createBakeryTimeline(gsap, bakery);
           if (pantry) createPantryTimeline(gsap, pantry);
           if (product) createProductTimeline(gsap, product);
           if (culture) createCultureTimeline(gsap, culture);
           if (community) createCommunityTimeline(gsap, community);
         });
-
         media.add(COMPACT_STORY_QUERY, () => {
-          const coffee = scene(storyRoot, "coffee");
-          if (coffee) createCompactCoffeeTimeline(gsap, coffee);
-
+          const opening = scene(storyRoot, "opening");
+          if (opening) createOpeningTimeline(gsap, opening, "compact");
           storyRoot.querySelectorAll<HTMLElement>(".mobile-reveal").forEach((element) => {
             gsap.from(element, {
               opacity: 0,
@@ -63,7 +58,6 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
           });
         });
       }, storyRoot);
-
       void refreshStoryMotion(storyRoot, ScrollTrigger, () => cancelled);
     });
 

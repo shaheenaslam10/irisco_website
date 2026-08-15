@@ -160,3 +160,82 @@
   .pantry-photo { opacity: 1; }.shelf-object { opacity: 0; }.steam,.particles,.chess-overlay,.chandelier-overlay { display: none; }
   .bakery-photo,.community-photo,.culture-photo { clip-path: none !important; transform: none !important; }
 }
+
+/* Phase 4B: one continuous Arrival → Coffee stage. */
+.opening-scene { position: relative; min-height: 100svh; background: var(--paper); overflow: hidden; isolation: isolate; }
+.opening-stage { position: relative; min-height: 100svh; height: 100svh; overflow: hidden; color: var(--navy-dark); }
+.opening-stage::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(90deg, rgba(250,249,245,.95), rgba(250,249,245,0) 44%), linear-gradient(0deg, rgba(250,249,245,.58), transparent 40%); }
+.opening-stone { position: absolute; z-index: 0; inset: 48% -8% -12%; opacity: 0; overflow: hidden; transform: translateY(12%); }
+.opening-stone img { object-fit: cover; object-position: center 62%; }
+.opening-grain { position: absolute; z-index: 1; inset: 0; opacity: .22; pointer-events: none; background-image: radial-gradient(rgba(7,83,106,.13) .6px, transparent .7px); background-size: 7px 7px; mix-blend-mode: multiply; }
+.opening-state { position: absolute; z-index: 5; pointer-events: none; }
+.opening-state h1, .opening-state h2 { margin: 0; color: var(--navy); letter-spacing: -.045em; line-height: .9; }
+.opening-state h1 { font-size: clamp(4rem, 8.8vw, 9.5rem); }
+.opening-state h2 { font-size: clamp(4.5rem, 8vw, 8.5rem); }
+.opening-state .eyebrow { margin-bottom: 1.5rem; }
+.opening-state-copy { max-width: 380px; line-height: 1.6; font-size: .94rem; }
+.opening-state-hero { left: clamp(1.25rem, 6vw, 7rem); bottom: clamp(3rem, 8vh, 6rem); max-width: 760px; pointer-events: auto; }
+.opening-state-hero h1 { margin-bottom: 1.7rem; }
+.opening-state-hero .hero-actions { margin-top: 1.8rem; }
+.opening-state-ritual { left: clamp(1.25rem, 10vw, 12rem); top: 22%; opacity: 0; }
+.opening-state-ritual h2 { font-size: clamp(4.2rem, 7.5vw, 8rem); }
+.opening-state-lid { right: clamp(1.25rem, 11vw, 13rem); top: 18%; opacity: 0; text-align: right; }
+.opening-state-liquid { left: clamp(1.25rem, 8vw, 9rem); top: 25%; opacity: 0; }
+.opening-state-final { left: clamp(1.25rem, 7vw, 8rem); top: 31%; opacity: 0; }
+.opening-state-final .opening-state-copy { margin-top: 1.4rem; }
+.opening-cup-wrap { position: absolute; z-index: 4; left: 50%; top: 50%; width: clamp(320px, 38vw, 620px); aspect-ratio: 1; transform: translate(-31%, -43%); will-change: transform; }
+.opening-cup { position: absolute; inset: 0; }
+.opening-cup img, .opening-lid img, .opening-coffee-surface img, .opening-liquid img, .opening-bean img, .opening-steam img { object-fit: contain; }
+.opening-cup-open { opacity: 0; }
+.opening-coffee-surface { position: absolute; z-index: 2; left: 18%; top: 6%; width: 64%; height: 28%; opacity: 0; overflow: hidden; pointer-events: none; }
+.opening-coffee-surface img { object-position: center; }
+.opening-lid { position: absolute; z-index: 4; left: 14%; top: 1%; width: 72%; height: 44%; will-change: transform; }
+.opening-cup-shadow { position: absolute; z-index: -1; left: 15%; bottom: 8%; width: 70%; height: 8%; border-radius: 50%; background: rgba(4,56,68,.6); filter: blur(18px); opacity: 0; transform-origin: center; }
+.opening-cup-shadow i { position: absolute; inset: 25% 12%; border-radius: inherit; background: rgba(4,56,68,.7); }
+.opening-liquid { position: absolute; z-index: 6; left: 51%; top: 35%; width: clamp(170px, 22vw, 360px); aspect-ratio: 1.5; overflow: hidden; opacity: 0; clip-path: inset(0 0 38% 0); will-change: transform, opacity; }
+.opening-liquid img { width: 380%; max-width: none; height: 380%; left: -10%; top: -6%; object-fit: fill; }
+.opening-bean { position: absolute; z-index: 7; width: clamp(42px, 5vw, 86px); height: clamp(42px, 5vw, 86px); overflow: hidden; opacity: 0; border-radius: 50%; will-change: transform, opacity; }
+.opening-bean img { width: 360%; max-width: none; height: 360%; object-fit: fill; }
+.opening-bean-one { left: 18%; top: 25%; }
+.opening-bean-one img { left: -2%; top: -2%; }
+.opening-bean-two { right: 17%; top: 24%; width: clamp(34px, 3.8vw, 64px); height: clamp(34px, 3.8vw, 64px); }
+.opening-bean-two img { left: -74%; top: -2%; }
+.opening-bean-three { right: 26%; bottom: 21%; }
+.opening-bean-three img { left: -33%; top: -50%; }
+.opening-steam { position: absolute; z-index: 8; left: 50%; top: 19%; width: clamp(140px, 19vw, 300px); aspect-ratio: 1; transform: translateX(-50%); opacity: 0; pointer-events: none; }
+.opening-steam img { width: 250%; max-width: none; height: 250%; left: -72%; top: -5%; }
+.opening-hook { position: absolute; z-index: 9; right: 5vw; bottom: 12%; display: flex; align-items: center; gap: .65rem; color: var(--navy); font-size: .58rem; font-weight: 700; letter-spacing: .17em; opacity: 0; }
+.opening-hook i { width: 46px; height: 1px; background: var(--aqua); }
+
+@media (max-width: 900px) {
+  .opening-stage { min-height: 100svh; height: 100svh; }
+  .opening-stage::after { background: linear-gradient(0deg, rgba(250,249,245,.96) 2%, rgba(250,249,245,0) 58%), linear-gradient(90deg, rgba(250,249,245,.38), transparent 70%); }
+  .opening-stone { inset: 58% -32% -10%; }
+  .opening-state-hero { left: 1.25rem; right: 1.25rem; bottom: 7%; }
+  .opening-state-hero h1 { font-size: clamp(3.45rem, 14vw, 6rem); }
+  .opening-state-copy { font-size: .86rem; max-width: 310px; }
+  .opening-state-ritual { left: 1.25rem; top: 12%; }
+  .opening-state-ritual h2, .opening-state-lid h2, .opening-state-liquid h2, .opening-state-final h2 { font-size: clamp(3.8rem, 15vw, 6rem); }
+  .opening-state-lid { right: 1.25rem; top: 12%; }
+  .opening-state-liquid { left: 1.25rem; top: 18%; }
+  .opening-state-final { left: 1.25rem; right: 1.25rem; top: 25%; }
+  .opening-cup-wrap { width: min(84vw, 430px); transform: translate(-50%, -38%); }
+  .opening-liquid { left: 47%; top: 34%; width: min(47vw, 220px); }
+  .opening-bean-one { left: 8%; top: 24%; }
+  .opening-bean-two { right: 8%; top: 22%; }
+  .opening-bean-three { right: 13%; bottom: 25%; }
+  .opening-steam { top: 18%; width: min(34vw, 150px); }
+  .opening-hook { right: 1.25rem; bottom: 4%; }
+  .opening-hook i { width: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-stage { min-height: max(100svh, 760px); height: auto; }
+  .opening-stone { opacity: .72; transform: none; }
+  .opening-state-hero { opacity: 0; pointer-events: none; }
+  .opening-state-final { opacity: 1; }
+  .opening-cup-wrap { transform: translate(-50%, -38%) scale(.92); }
+  .opening-cup-closed { opacity: 0; }
+  .opening-cup-open, .opening-coffee-surface, .opening-cup-shadow, .opening-steam, .opening-hook { opacity: 1; }
+  .opening-lid, .opening-liquid, .opening-bean { display: none; }
+}
