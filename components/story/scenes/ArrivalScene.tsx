@@ -1,73 +1,65 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowDown, ArrowRight } from "lucide-react";
+const prototypeBase = "/assets/irisco/generated/prototype/coffee-v2";
+const asset = (name: string) => `${prototypeBase}/${name}`;
 
-const coffeeV2 = "/assets/irisco/generated/coffee-v2";
-const asset = (name: string) => `${coffeeV2}/${name}`;
+const shots = [
+  { name: "shot-01", src: asset("shot-01-cafe-approach.mp4"), poster: asset("shot-01-poster.jpg") },
+  { name: "shot-02", src: asset("shot-02-cafe-to-white.mp4"), poster: asset("shot-02-poster.jpg") },
+  { name: "shot-03", src: asset("shot-03-white-to-cafe.mp4"), poster: asset("shot-03-poster.jpg") },
+] as const;
+
+function PrototypeVideo({ name, src, poster }: (typeof shots)[number]) {
+  return (
+    <div className={`opening-video-layer opening-video-${name}`} data-opening-video={name}>
+      <video
+        className="opening-video"
+        src={src}
+        poster={poster}
+        preload="auto"
+        muted
+        playsInline
+        aria-hidden="true"
+      />
+    </div>
+  );
+}
 
 export function ArrivalScene() {
   return (
     <section className="opening-scene" id="main" data-story-scene="opening">
       <div className="opening-stage" aria-label="IRISCO coffee ritual">
-        <div className="opening-stone" aria-hidden="true">
-          <Image src={asset("coffee-stone-surface-1600.webp")} fill sizes="100vw" alt="" priority />
+        <div className="opening-video-world" aria-hidden="true">
+          {shots.map((shot) => <PrototypeVideo key={shot.name} {...shot} />)}
         </div>
-        <div className="opening-grain" aria-hidden="true" />
+        <div className="opening-luminance" aria-hidden="true" />
 
-        <div className="opening-state opening-state-hero">
-          <p className="eyebrow">Coffee · Craft · Culture · Conversation</p>
-          <h1>Everything finds<br />its place at IRISCO.</h1>
-          <p className="opening-state-copy">Coffee, culture, and carefully chosen things—inside a café, bakery, pantry, and place for conversation.</p>
-          <div className="hero-actions">
-            <a href="#main" className="button primary">Explore IRISCO <ArrowDown size={17} /></a>
-            <Link href="/menu" className="text-link">Menu & products <ArrowRight size={16} /></Link>
+        <div className="opening-copy" aria-live="polite">
+          <div className="opening-text-state opening-text-arrival">
+            <p className="eyebrow">Coffee · Craft · Culture · Conversation</p>
+            <h1>Everything finds<br />its place at IRISCO.</h1>
+            <p className="opening-copy-body">A familiar ritual begins at the counter.</p>
+          </div>
+          <div className="opening-text-state opening-text-ritual" aria-hidden="true">
+            <p className="eyebrow">The ritual begins</p>
+            <h2>Made to<br />pause time.</h2>
+          </div>
+          <div className="opening-text-state opening-text-reveal" aria-hidden="true">
+            <p className="eyebrow">A familiar ritual</p>
+            <h2>The moment<br />opens.</h2>
+          </div>
+          <div className="opening-text-state opening-text-coffee" aria-hidden="true">
+            <p className="eyebrow">In the making</p>
+            <h2>Coffee,<br />in motion.</h2>
+          </div>
+          <div className="opening-text-state opening-text-resolution" aria-hidden="true">
+            <p className="eyebrow">At IRISCO</p>
+            <h2>The cup<br />finds its place.</h2>
           </div>
         </div>
 
-        <div className="opening-state opening-state-ritual" aria-hidden="true">
-          <p className="chapter-index">01 / The ritual</p>
-          <p className="eyebrow">Made to pause time</p>
-          <h2>Begin<br />with a pause.</h2>
+        <div className="opening-chapter-marker" aria-hidden="true">
+          <span>IRISCO</span><i /><span>01 / The ritual</span>
         </div>
-        <div className="opening-state opening-state-lid" aria-hidden="true">
-          <p className="eyebrow">A familiar ritual</p>
-          <h2>The moment<br />opens.</h2>
-        </div>
-        <div className="opening-state opening-state-liquid" aria-hidden="true">
-          <p className="eyebrow">In the making</p>
-          <h2>Coffee,<br />in motion.</h2>
-        </div>
-        <div className="opening-state opening-state-final" aria-hidden="true">
-          <p className="chapter-index">01 / The ritual</p>
-          <p className="eyebrow">Made to pause time</p>
-          <h2>The cup<br />finds its place.</h2>
-          <p className="opening-state-copy">A familiar ritual, framed in IRISCO navy and soft aqua.</p>
-        </div>
-
-        <div className="opening-cup-wrap" aria-hidden="true">
-          <div className="opening-cup opening-cup-closed">
-            <Image src={asset("irisco-cup-ivory-closed.png")} fill sizes="(max-width: 900px) 78vw, 48vw" alt="" priority />
-          </div>
-          <div className="opening-cup opening-cup-open">
-            <Image src={asset("irisco-cup-ivory-open.png")} fill sizes="(max-width: 900px) 78vw, 48vw" alt="" />
-            <div className="opening-coffee-surface">
-              <Image src={asset("coffee-surface.png")} fill sizes="28vw" alt="" />
-            </div>
-          </div>
-          <div className="opening-lid">
-            <Image src={asset("irisco-lid-navy.png")} fill sizes="25vw" alt="" />
-          </div>
-          <div className="opening-cup-shadow"><i /></div>
-        </div>
-
-        <div className="opening-liquid" aria-hidden="true">
-          <Image src={asset("coffee-liquid-assets.png")} fill sizes="28vw" alt="" />
-        </div>
-        <div className="opening-bean opening-bean-one" aria-hidden="true"><Image src={asset("coffee-bean-assets.png")} fill sizes="8vw" alt="" /></div>
-        <div className="opening-bean opening-bean-two" aria-hidden="true"><Image src={asset("coffee-bean-assets.png")} fill sizes="6vw" alt="" /></div>
-        <div className="opening-bean opening-bean-three" aria-hidden="true"><Image src={asset("coffee-bean-assets.png")} fill sizes="9vw" alt="" /></div>
-        <div className="opening-steam" aria-hidden="true"><Image src={asset("coffee-steam-assets.png")} fill sizes="24vw" alt="" /></div>
-        <div className="opening-hook" aria-hidden="true"><span>IRISCO</span><i /><span>02</span></div>
+        <p className="opening-scroll-cue" aria-hidden="true">Scroll to enter</p>
       </div>
     </section>
   );
