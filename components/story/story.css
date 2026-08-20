@@ -282,3 +282,28 @@
   .opening-text-resolution { display: block; opacity: 1 !important; }
   .opening-luminance, .opening-scroll-cue { display: none; }
 }
+
+/* Phase 4E: a replaceable single-master Hero → Coffee film. */
+.opening-master-video { position: absolute; z-index: 0; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; background: #171a19; }
+.opening-copy { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.opening-text-state { left: clamp(1.25rem, 6vw, 7rem); right: auto; bottom: clamp(2.5rem, 8vh, 6rem); max-width: min(28rem, 68vw); margin: 0; color: var(--ivory); font-size: clamp(.95rem, 1.45vw, 1.35rem); line-height: 1.25; letter-spacing: .01em; text-shadow: 0 2px 24px rgba(0,0,0,.28); will-change: transform, opacity; }
+.opening-text-arrival { max-width: min(30rem, 72vw); }
+.opening-text-ritual { top: 21%; bottom: auto; }
+.opening-text-resolution { top: auto; bottom: clamp(2.5rem, 8vh, 6rem); }
+.opening-scroll-cue { right: clamp(1.25rem, 5vw, 5rem); top: 18%; color: var(--ivory); }
+
+@media (max-width: 900px) {
+  .opening-master-video { object-position: center; }
+  .opening-text-state { left: 1.25rem; right: 1.25rem; bottom: 7%; max-width: 20rem; font-size: .95rem; }
+  .opening-text-ritual { top: 15%; bottom: auto; }
+  .opening-text-resolution { top: auto; bottom: 7%; }
+  .opening-scroll-cue { right: 1.25rem; top: 14%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-stage { height: 100svh; min-height: 100svh; }
+  .opening-master-video { display: block; }
+  .opening-text-state { display: none; }
+  .opening-text-arrival { display: block; opacity: 1 !important; transform: none !important; }
+  .opening-scroll-cue { display: none; }
+}
