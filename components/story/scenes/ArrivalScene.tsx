@@ -1,5 +1,5 @@
 const prototypeBase = "/assets/irisco/generated/prototype/coffee-v2";
-const masterVideo = `${prototypeBase}/coffee-master-prototype-v2.mp4`;
+const masterVideo = `${prototypeBase}/coffee-master-prototype-v2-scrub.mp4`;
 const masterPoster = `${prototypeBase}/coffee-master-prototype-v2-poster.jpg`;
 
 export function ArrivalScene() {
