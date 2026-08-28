@@ -1,20 +1,23 @@
 "use client";
 
-import { Backdrop } from "../chrome/Backdrop";
+import { CinemaVideo } from "../motion/CinemaVideo";
 import { idea } from "../content";
 
 /**
  * 01 · The idea.
  *
  * The manifesto reads itself — words brighten as the scroll head passes them.
- * A soft CSS bloom sits behind at low opacity, so the chapter is not just type
- * on black — without spending a clip on a background.
+ *
+ * This is where the macro clip lives. It is the softest clip in the set
+ * (sharpness 106 against 600+ for the photography), so it is never asked to
+ * carry detail: at 18% behind a heavy vignette it is a drifting warmth, which
+ * is the one thing it is genuinely good at.
  */
 export function Idea() {
   return (
     <section className="h-section h-idea" data-scene="idea" id="chapter-idea">
       <div className="h-idea-bed" aria-hidden="true">
-        <Backdrop variant="cool" />
+        <CinemaVideo slug="macro" className="h-fill" alt="" />
       </div>
 
       <div className="h-idea-inner">

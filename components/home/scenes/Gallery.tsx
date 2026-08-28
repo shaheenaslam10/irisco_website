@@ -47,8 +47,27 @@ export function Gallery() {
           </figcaption>
         </figure>
 
-        {gallery.frames.map((frame) => (
-          <figure className={`h-gallery-cell is-${frame.span}`} key={frame.image}>
+        <figure className="h-gallery-cell is-wide-film" key="reel-wide">
+          <div className="h-gallery-frame">
+            <CinemaVideo
+              slug="reelWide"
+              mode="scrub"
+              className="h-fill"
+              data-scrub-video
+              alt={gallery.reelAlt}
+            />
+          </div>
+          <figcaption>
+            <b>{gallery.reelCaption}</b>
+            <span>{gallery.reelNote}</span>
+          </figcaption>
+        </figure>
+
+        {gallery.frames.map((frame, i) => (
+          <figure
+            className={`h-gallery-cell is-${i === gallery.frames.length - 1 ? "panorama" : frame.span}`}
+            key={frame.image}
+          >
             <div className="h-gallery-frame">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

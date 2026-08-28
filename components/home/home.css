@@ -474,6 +474,14 @@
 .h-gallery-cell.is-square { grid-column: span 5; }
 .h-gallery-cell.is-square .h-gallery-frame { aspect-ratio: 1; }
 .h-gallery-cell.is-square .h-fill { position: absolute; inset: 0; }
+/* The 16:9 crop of the 4K clip — displayed well under its native 1536px, so
+   it downsamples rather than upscaling. */
+.h-gallery-cell.is-wide-film { grid-column: span 5; }
+.h-gallery-cell.is-wide-film .h-gallery-frame { aspect-ratio: 16 / 9; }
+.h-gallery-cell.is-wide-film .h-fill { position: absolute; inset: 0; }
+/* Closing panorama, so the wall ends on a wide note. */
+.h-gallery-cell.is-panorama { grid-column: span 12; }
+.h-gallery-cell.is-panorama .h-gallery-frame { aspect-ratio: 21 / 9; }
 .h-gallery-cell:nth-child(2) { margin-top: clamp(0px, 5vw, 5rem); }
 .h-gallery-cell:nth-child(4) { margin-top: clamp(0px, 4vw, 4rem); }
 .h-gallery-frame { position: relative; overflow: hidden; border-radius: 3px; }
@@ -548,9 +556,8 @@
  * as a bright rectangle pasted on top of it.
  */
 .h-study-bg { position: absolute; inset: 0; z-index: 0; }
-/* Full strength: the crop is sharp, so it does not need dimming into mush. */
-.h-study-bg .cv-poster,
-.h-study-bg .cv-video { opacity: 0.9; }
+/* A photograph, not footage — see the note in scenes/Study.tsx for why. */
+.h-study-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
 
 .h-study-wash {
   position: absolute;
@@ -560,13 +567,13 @@
   background:
     linear-gradient(
       100deg,
-      rgba(13, 9, 6, 0.9) 0%,
-      rgba(13, 9, 6, 0.66) 38%,
-      rgba(13, 9, 6, 0.1) 72%,
-      rgba(19, 13, 9, 0.22) 100%
+      rgba(13, 9, 6, 0.95) 0%,
+      rgba(13, 9, 6, 0.8) 36%,
+      rgba(13, 9, 6, 0.2) 74%,
+      rgba(19, 13, 9, 0.34) 100%
     ),
-    linear-gradient(0deg, rgba(13, 9, 6, 0.72) 0%, rgba(13, 9, 6, 0) 42%),
-    radial-gradient(58% 50% at 24% 50%, rgba(13, 9, 6, 0.6), rgba(13, 9, 6, 0) 74%);
+    linear-gradient(0deg, rgba(13, 9, 6, 0.82) 0%, rgba(13, 9, 6, 0) 44%),
+    radial-gradient(56% 48% at 24% 50%, rgba(13, 9, 6, 0.66), rgba(13, 9, 6, 0) 76%);
 }
 
 .h-study-pin {
@@ -869,7 +876,8 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-gallery-cell.is-wide,
   .h-gallery-cell.is-tall { grid-column: span 6; }
   .h-gallery-cell.is-reel,
-  .h-gallery-cell.is-square { grid-column: span 6; }
+  .h-gallery-cell.is-square,
+  .h-gallery-cell.is-wide-film { grid-column: span 6; }
   .h-gallery-cell.is-reel .h-gallery-frame { aspect-ratio: 4 / 5; }
   .h-gallery-cell:nth-child(2) { margin-top: clamp(0px, 8vw, 4rem); }
   .h-counter-stats { grid-template-columns: repeat(2, 1fr); }
@@ -890,7 +898,9 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-gallery-cell.is-wide,
   .h-gallery-cell.is-tall,
   .h-gallery-cell.is-reel,
-  .h-gallery-cell.is-square { grid-column: span 12; }
+  .h-gallery-cell.is-square,
+  .h-gallery-cell.is-wide-film,
+  .h-gallery-cell.is-panorama { grid-column: span 12; }
   .h-gallery-cell.is-reel .h-gallery-frame { aspect-ratio: 9 / 16; max-height: 78svh; }
   .h-gallery-cell:nth-child(n) { margin-top: 0; }
   .h-hero-foot { flex-direction: column; align-items: flex-start; gap: 1.2rem; }

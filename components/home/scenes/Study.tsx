@@ -1,29 +1,29 @@
 "use client";
 
-import { CinemaVideo } from "../motion/CinemaVideo";
-import { study } from "../content";
+import { photo, study } from "../content";
 
 /**
  * 06 · The study.
  *
- * Was running the macro clip full-bleed, which read as blurry — macro footage
- * is soft by nature, and at full width it fell apart. Now runs a landscape
- * crop of the 4K clip: 2160x1215 taken from a genuinely 4K frame, delivered at
- * 1536x864, so it holds up at full width instead of being upscaled mush.
+ * Now built on photography, and that is a deliberate reversal.
  *
- * The wash is much lighter too — the blur was half the scrim's fault.
+ * Measured sharpness (variance of Laplacian) across the assets:
+ *   macro clip 106 · reel-wide 139 · product 161   — every clip
+ *   interior-gallery-1 608 · room-hero 617         — every photograph
+ * The footage is 4-6x softer than the photography. At full bleed it is also
+ * upscaled, so it reads as blur no matter how the scrim is tuned. Full-bleed
+ * backgrounds on this page are therefore photographs; video is used only where
+ * it is shown at or below its native size.
+ *
+ * The chapter is still scroll-driven: the wheel steps the three notes and
+ * drives the progress rule.
  */
 export function Study() {
   return (
     <section className="h-study" data-scene="study" id="chapter-study">
       <div className="h-study-bg" aria-hidden="true">
-        <CinemaVideo
-          slug={study.film}
-          mode="scrub"
-          className="h-fill"
-          data-scrub-video
-          alt=""
-        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={photo("interior-gallery-1")} alt="" loading="lazy" decoding="async" />
       </div>
       <div className="h-study-wash" aria-hidden="true" />
 

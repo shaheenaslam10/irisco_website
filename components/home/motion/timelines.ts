@@ -243,13 +243,11 @@ export const setupPantry: Setup = ({ motion, scene, mode }) => {
 export const setupStudy: Setup = ({ motion, scene, mode }) => {
   const { gsap, ScrollTrigger } = motion;
   const pin = scene.querySelector<HTMLElement>("[data-study-pin]");
-  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
   const notes = Array.from(scene.querySelectorAll<HTMLElement>("[data-study-note]"));
   const bar = scene.querySelector<HTMLElement>("[data-study-progress]");
   if (!pin) return;
 
   const isCompact = mode === "compact";
-  const scrub = createVideoScrub(gsap, video);
   let active = -1;
 
   const st = ScrollTrigger.create({
@@ -262,7 +260,6 @@ export const setupStudy: Setup = ({ motion, scene, mode }) => {
     scrub: true,
     invalidateOnRefresh: true,
     onUpdate: (self) => {
-      scrub.setProgress(self.progress);
       if (bar) gsap.set(bar, { scaleX: self.progress });
 
       const index = Math.min(notes.length - 1, Math.floor(self.progress * notes.length));
@@ -279,10 +276,7 @@ export const setupStudy: Setup = ({ motion, scene, mode }) => {
     },
   });
 
-  return () => {
-    st.kill();
-    scrub.destroy();
-  };
+  return () => st.kill();
 };
 
 /* ---------------------------------------------------------------- 08 invite */
