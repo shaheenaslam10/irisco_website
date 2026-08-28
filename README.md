@@ -18,15 +18,15 @@ Open `http://localhost:3000`.
 npm run lint
 npm run typecheck
 npm run build
-npm run optimize:images            # reference photos → public/assets/irisco/optimized
-FFMPEG=/path/to/ffmpeg ./scripts/build-cinema-media.sh   # homepage film derivatives
+npm run optimize:images                                   # reference photos → optimized/
+FFMPEG=/path/to/ffmpeg ./scripts/build-sequences.sh       # homepage frame sequences
 ```
 
 ## What is where
 
 | Route | What it is |
 |---|---|
-| `/` | **The cinema** — a nine-chapter, scroll-driven film built from the generated clips. See [`docs/CINEMA_MAIN_PAGE.md`](docs/CINEMA_MAIN_PAGE.md). |
+| `/` | **The main page** — a nine-chapter, scroll-driven story with a WebGL cup, frame-sequence playback and layered object parallax. See [`docs/MAIN_PAGE.md`](docs/MAIN_PAGE.md). |
 | `/menu` | Menu groups |
 | `/shop`, `/shop/[slug]` | Curated pantry catalogue + product pages |
 | `/space` | IRISCO Space |
@@ -39,26 +39,35 @@ direction details intentionally remain centralized placeholders.
 
 ## Design system
 
-- **Palette** — warm-black *espresso* (`#0b0806`) for the outer chapters, deep
-  IRISCO *teal* (`#062b34`) for the middle ones, with amber (`#e7a64d`) as the
-  chandelier accent and aqua (`#8fd3ce`) as the luminous highlight.
-- **Type** — Fraunces (display, self-hosted variable) + Hanken Grotesk (body,
-  self-hosted variable). Two families only.
+- **Canvas** — warm-black *espresso* (`#0b0806`), so the café photography sits
+  at its true warmth instead of being graded onto a colder surface.
+- **Product** — IRISCO navy/teal (`#183c55`, `#2d4b67`) on anything the brand
+  makes, since the real cups are navy.
+- **Light** — amber (`#e7a64d`) for the chandelier, reserved for signature
+  moments. Aqua (`#8fd3ce`) as the luminous highlight.
+- **Type** — Fraunces (display) + Hanken Grotesk (body), both self-hosted
+  variable woff2 in `app/fonts/`. Two families only.
 - **Signature** — the IRISCO ring: a thin amber circle that draws itself and
   opens as a lens. It echoes the chandelier, a cup rim, and people gathering
   round a table.
+- **Brand tokens** — every mark and colour lives in `lib/brand.ts`, so the logo
+  and palette can be swapped in one file.
 
 ## Motion
 
-Desktop scenes use GSAP ScrollTrigger with reversible, scrubbed, pinned chapters
-plus Lenis smooth-scroll driven through the GSAP ticker. Mobile keeps shorter
-reveal choreography, native swiping for the horizontal shelf, and complete
-photographic end states. `prefers-reduced-motion` — and any failure to load the
-motion layer — presents all core content without dependent animation.
+GSAP 3.15 — whose premium plugins are all free — drives everything:
+**ScrollSmoother** for smooth scroll and `data-speed` depth, **ScrollTrigger**
+for pins and scrubs, **SplitText** for masked line reveals, **DrawSVG** for the
+ring, **MotionPath** for objects on curves, **CustomEase** for a signature
+curve, and **Flip / Observer / ScrollTo** for the rest. The hero cup is real
+WebGL (`three` + `@react-three/fiber`), lathed from a profile, with a layered
+2.5D fallback for machines without it.
 
-The homepage clips in `public/assets/irisco/videos_v1/` are the source for
-`public/assets/irisco/cinema/`; the pipeline (ambient loops, half-width mobile
-encodes, all-intra scrub tracks, posters) is documented in
-[`docs/CINEMA_MAIN_PAGE.md`](docs/CINEMA_MAIN_PAGE.md).
+There is **no background video anywhere**. The generated clips are used as
+scroll-scrubbed frame sequences: scroll down pours the coffee, scroll up pours
+it backwards.
+
+`prefers-reduced-motion` — and any failure of the motion layer — presents all
+core content as a finished, static page.
 
 Routes: `/`, `/menu`, `/shop`, `/shop/[slug]`, `/space`, and `/visit`.

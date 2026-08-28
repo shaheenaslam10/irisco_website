@@ -29,18 +29,19 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock scroll (and pause Lenis) while the full-screen menu is open.
+  // Freeze the page behind the full-screen menu: pause ScrollSmoother when it
+  // owns the scroll, fall back to overflow for native/reduced-motion visitors.
   useEffect(() => {
-    const lenis = window.__lenis;
+    const smoother = window.__smoother;
     if (open) {
-      lenis?.stop();
+      smoother?.paused(true);
       document.body.style.overflow = "hidden";
     } else {
-      lenis?.start();
+      smoother?.paused(false);
       document.body.style.overflow = "";
     }
     return () => {
-      lenis?.start();
+      smoother?.paused(false);
       document.body.style.overflow = "";
     };
   }, [open]);

@@ -1,9 +1,9 @@
-import { CinemaExperience } from "@/components/cinema/CinemaExperience";
+import { HomeExperience } from "@/components/home/HomeExperience";
 
 export default function HomePage() {
   return (
     <main id="main" data-home>
-      <CinemaExperience />
+      <HomeExperience />
     </main>
   );
 }

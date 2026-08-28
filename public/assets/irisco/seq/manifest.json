@@ -1,0 +1,6 @@
+{
+  "pour": { "frames": 40, "width": 1152, "path": "/assets/irisco/seq/pour", "pattern": "pour/%04d.webp", "poster": "/assets/irisco/seq/pour-poster.webp" },
+  "product": { "frames": 44, "width": 1152, "path": "/assets/irisco/seq/product", "pattern": "product/%04d.webp", "poster": "/assets/irisco/seq/product-poster.webp" },
+  "macro": { "frames": 44, "width": 1152, "path": "/assets/irisco/seq/macro", "pattern": "macro/%04d.webp", "poster": "/assets/irisco/seq/macro-poster.webp" },
+  "bakery": { "frames": 40, "width": 1152, "path": "/assets/irisco/seq/bakery", "pattern": "bakery/%04d.webp", "poster": "/assets/irisco/seq/bakery-poster.webp" }
+}

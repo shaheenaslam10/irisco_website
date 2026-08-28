@@ -110,12 +110,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
+        {/* Everything fixed stays OUTSIDE the smooth wrapper: ScrollSmoother
+            translates #smooth-content, which would otherwise become the
+            containing block for position: fixed. */}
         <a className="skip-link" href="#main">Skip to content</a>
         <SmoothScroll />
         <ScrollProgress />
         <SiteHeader />
-        {children}
-        <SiteFooter />
+
+        <div id="smooth-wrapper">
+          <div id="smooth-content">
+            {children}
+            <SiteFooter />
+          </div>
+        </div>
       </body>
     </html>
   );

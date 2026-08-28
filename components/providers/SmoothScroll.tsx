@@ -1,70 +1,90 @@
 "use client";
 
 /**
- * Lenis smooth scroll, driven by the GSAP ticker so it stays perfectly in sync
- * with every ScrollTrigger (pin, scrub, snap) on the site. This is the standard
- * integration pattern for premium GSAP-driven sites.
+ * GSAP ScrollSmoother.
  *
- * - Disabled entirely under `prefers-reduced-motion` (native scroll takes over).
- * - Exposes the instance on `window.__lenis` for anchor scrolling helpers.
- * - Fully torn down on unmount / route change guard.
+ * Replaces Lenis. Two reasons it is the better tool for this page:
+ *
+ *  1. It is GSAP's own scroller, so it shares the ticker with ScrollTrigger —
+ *     there is no separate RAF loop to keep in sync and no scrub lag.
+ *  2. `effects: true` turns on `data-speed` / `data-lag`, which gives any
+ *     element genuine scroll-linked depth from a single attribute. That is what
+ *     makes "objects move on scroll" cheap enough to use everywhere.
+ *
+ * Structural requirement: ScrollSmoother translates `#smooth-content`, and a
+ * translated ancestor breaks `position: fixed` descendants. So the wrapper only
+ * ever contains page content — the header, skip link, progress bar and all
+ * fixed chrome are portalled or kept outside it.
+ *
+ * If anything at all goes wrong we fall back to native scrolling rather than
+ * leaving the page unscrollable.
  */
 
 import { useEffect } from "react";
 
 declare global {
   interface Window {
-    __lenis?: import("lenis").default;
+    __smoother?: {
+      kill: () => void;
+      paused: (value?: boolean) => boolean | void;
+      scrollTo: (target: unknown, smooth?: boolean, position?: string) => void;
+    };
   }
 }
 
 export function SmoothScroll() {
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
-
+    type Smoother = NonNullable<Window["__smoother"]>;
     let cancelled = false;
-    let cleanup: (() => void) | undefined;
+    let smoother: Smoother | undefined;
 
     void (async () => {
-      const [{ default: Lenis }, { gsap }, { ScrollTrigger }] = await Promise.all([
-        import("lenis"),
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
-      if (cancelled) return;
+      const wrapper = document.getElementById("smooth-wrapper");
+      const content = document.getElementById("smooth-content");
+      if (!wrapper || !content) return;
 
-      gsap.registerPlugin(ScrollTrigger);
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.dataset.smooth = "reduced";
+        return;
+      }
 
-      const lenis = new Lenis({
-        duration: 1.15,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo-out
-        smoothWheel: true,
-        touchMultiplier: 1.6,
-        wheelMultiplier: 1,
-      });
-      window.__lenis = lenis;
+      try {
+        const [{ gsap }, { ScrollTrigger }, { ScrollSmoother }] = await Promise.all([
+          import("gsap"),
+          import("gsap/ScrollTrigger"),
+          import("gsap/ScrollSmoother"),
+        ]);
+        if (cancelled) return;
 
-      lenis.on("scroll", ScrollTrigger.update);
+        gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-      const raf = (time: number) => lenis.raf(time * 1000);
-      gsap.ticker.add(raf);
-      gsap.ticker.lagSmoothing(0);
+        smoother = ScrollSmoother.create({
+          wrapper,
+          content,
+          smooth: 1.25,
+          effects: true,
+          smoothTouch: 0.1,
+          normalizeScroll: false,
+          ignoreMobileResize: true,
+        }) as unknown as Smoother;
 
-      // Let ScrollTrigger recompute once Lenis owns the scroll.
-      ScrollTrigger.refresh();
+        window.__smoother = smoother;
+        document.documentElement.dataset.smooth = "on";
 
-      cleanup = () => {
-        gsap.ticker.remove(raf);
-        lenis.off("scroll", ScrollTrigger.update);
-        lenis.destroy();
-        if (window.__lenis === lenis) delete window.__lenis;
-      };
+        // Fonts change every measurement on this page.
+        void document.fonts?.ready.then(() => {
+          if (!cancelled) ScrollTrigger.refresh();
+        });
+      } catch (error) {
+        console.error("[smooth] ScrollSmoother failed — using native scroll", error);
+        document.documentElement.dataset.smooth = "native";
+      }
     })();
 
     return () => {
       cancelled = true;
-      cleanup?.();
+      smoother?.kill();
+      delete window.__smoother;
     };
   }, []);
 

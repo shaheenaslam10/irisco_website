@@ -81,10 +81,8 @@ body {
   letter-spacing: -.006em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* `clip` rather than `hidden`: it still stops sideways bleed but does not
-     turn <body> into a scroll container, which would break position: sticky
-     and every GSAP pin on the homepage. */
-  overflow-x: clip;
+  /* ScrollSmoother owns scrolling on this site; #smooth-wrapper clips itself.
+     Declaring overflow here would fight it. */
 }
 
 a { color: inherit; text-decoration: none; }
@@ -93,12 +91,9 @@ img, video { display: block; max-width: 100%; }
 img { object-fit: cover; }
 ::selection { color: var(--ink); background: var(--aqua); }
 
-/* Lenis smooth scroll */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-.lenis.lenis-smooth iframe { pointer-events: none; }
+/* GSAP ScrollSmoother */
+#smooth-wrapper { overflow: hidden; }
+html[data-smooth="on"] { scroll-behavior: auto; }
 
 /* Accessibility */
 .skip-link {
