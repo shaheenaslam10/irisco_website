@@ -94,10 +94,23 @@ export const setupPour: Setup = ({ motion, scene, mode }) => {
 /* ----------------------------------------------------------------- 03 room */
 
 export const setupRoom: Setup = ({ motion, scene }) => {
-  const { gsap } = motion;
+  const { gsap, ScrollTrigger } = motion;
   const media = scene.querySelector<HTMLElement>("[data-room-media]");
   const band = scene.querySelector<HTMLElement>(".h-room-band");
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
   if (!media || !band) return;
+
+  // The footage is played by the scroll: it advances as you travel through the
+  // band and rewinds if you come back up.
+  const scrub = createVideoScrub(gsap, video);
+  ScrollTrigger.create({
+    trigger: band,
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => scrub.setProgress(self.progress),
+  });
 
   gsap.fromTo(
     media,
@@ -115,6 +128,8 @@ export const setupRoom: Setup = ({ motion, scene }) => {
       },
     },
   );
+
+  return () => scrub.destroy();
 };
 
 /* -------------------------------------------------------------- 04 counter */
@@ -201,26 +216,41 @@ export const setupPantry: Setup = ({ motion, scene, mode }) => {
 /* --------------------------------------------------------------- 06 invite */
 
 export const setupInvite: Setup = ({ motion, scene }) => {
-  const { gsap } = motion;
+  const { gsap, ScrollTrigger } = motion;
   const bg = scene.querySelector<HTMLElement>(".h-invite-bg");
-  if (!bg) return;
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
 
-  gsap.fromTo(
-    bg,
-    { scale: 1.16, yPercent: -3 },
-    {
-      scale: 1,
-      yPercent: 3,
-      ease: "none",
-      scrollTrigger: {
-        trigger: scene,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-        invalidateOnRefresh: true,
+  // One last scroll-played pass as the page closes.
+  const scrub = createVideoScrub(gsap, video);
+  ScrollTrigger.create({
+    trigger: scene,
+    start: "top bottom",
+    end: "bottom bottom",
+    scrub: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => scrub.setProgress(self.progress),
+  });
+
+  if (bg) {
+    gsap.fromTo(
+      bg,
+      { scale: 1.16, yPercent: -3 },
+      {
+        scale: 1,
+        yPercent: 3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: scene,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
       },
-    },
-  );
+    );
+  }
+
+  return () => scrub.destroy();
 };
 
 /* ---------------------------------------------------------------- registry */

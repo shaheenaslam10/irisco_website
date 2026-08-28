@@ -326,7 +326,28 @@
 
 /* ============================================================ 01 · IDEA */
 
-.h-idea-inner { max-width: 56rem; }
+.h-idea { overflow: hidden; }
+.h-idea-bed {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  filter: saturate(0.5) contrast(1.06);
+}
+.h-idea-bed::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--espresso) 0%,
+    rgba(13, 9, 6, 0.72) 30%,
+    rgba(13, 9, 6, 0.72) 70%,
+    var(--espresso) 100%
+  );
+}
+.h-idea-inner { position: relative; z-index: 1; max-width: 56rem; }
 .h-idea-inner .h-kicker { margin: 1.4rem 0 clamp(2.5rem, 6vw, 5rem); }
 .h-statement {
   font-family: var(--font-display);
@@ -348,20 +369,29 @@
 .h-pour { background: var(--espresso); }
 .h-pour-pin {
   position: relative;
-  min-height: 100svh;
+  /*
+   * A FIXED height, not min-height. This block is pinned: a pinned element
+   * taller than the viewport has its bottom cut off, and because
+   * ScrollSmoother makes ScrollTrigger pin by transform, the overflow then
+   * visually overlaps the chapter below. The rows below guarantee the content
+   * always fits — the stage row absorbs the remainder via minmax(0, 1fr).
+   */
+  height: 100svh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  align-content: center;
-  gap: clamp(1.2rem, 2.6vw, 2.2rem);
-  padding: clamp(4rem, 8vw, 7rem) var(--gutter);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: clamp(1rem, 2.2vw, 1.8rem);
+  padding: clamp(2.5rem, 5vw, 5rem) var(--gutter);
+  overflow: hidden;
 }
-.h-pour-head { display: grid; gap: 1.1rem; max-width: 44rem; }
+.h-pour-head { display: grid; gap: 0.9rem; max-width: 44rem; }
 
-.h-pour-stage { display: grid; place-items: center; }
+.h-pour-stage { display: grid; place-items: center; min-height: 0; }
 .h-film {
   position: relative;
-  width: min(100%, 1120px, 150svh);
+  width: min(100%, 1120px);
   aspect-ratio: 2.2857;
+  /* Clamp to whatever height the stage row can spare. */
+  max-height: 100%;
   overflow: hidden;
   border-radius: 3px;
   background: var(--espresso-2);
@@ -564,6 +594,27 @@
 .h-pantry-progress { position: relative; flex: 1 1 140px; max-width: 380px; height: 1px; background: rgba(245, 241, 232, 0.18); }
 .h-pantry-progress i { position: absolute; inset: 0; background: var(--amber); transform: scaleX(0); transform-origin: left; }
 
+/* ============================================================== QUOTE */
+
+.h-quote-band {
+  background: var(--espresso);
+  padding: clamp(4rem, 9vw, 8rem) var(--gutter);
+  border-block: 1px solid var(--line);
+}
+.h-quote-line {
+  margin: 0 auto;
+  max-width: 30ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 380;
+  font-size: clamp(1.5rem, 3.2vw, 3rem);
+  line-height: 1.22;
+  letter-spacing: -0.026em;
+  color: var(--amber-soft);
+  text-wrap: balance;
+}
+
 /* ========================================================== 07 · INVITE */
 
 .h-invite {
@@ -726,6 +777,12 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-pour-pin,
   .h-pour-closing,
   .h-room-band { padding-right: calc(var(--gutter) + var(--rail)); }
+}
+
+@media (max-height: 720px) {
+  .h-pour-pin { gap: 0.8rem; padding-block: 2rem; }
+  .h-pour-beat .h-pour-note { display: none; }
+  .h-room-band, .h-invite-inner { min-height: 88svh; }
 }
 
 @media (max-width: 1023px) {

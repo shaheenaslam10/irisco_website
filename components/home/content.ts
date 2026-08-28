@@ -206,6 +206,12 @@ export const invite = {
   closing: "IRISCO · Pakistan",
 } as const;
 
+/* ------------------------------------------------------------------- quote */
+
+export const quote = {
+  text: "A café is one of the last rooms in a city where doing nothing is still allowed.",
+} as const;
+
 /* ------------------------------------------------------------------ marquee */
 
 export const marquee = [

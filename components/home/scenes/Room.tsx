@@ -6,15 +6,16 @@ import { room } from "../content";
 /**
  * 03 · The room.
  *
- * A full-bleed plate that drifts against the scroll, with the statement rising
- * over it. Footage doing the work, not decoration layered on top of footage.
+ * A full-bleed plate that is *played* by the scroll — the footage advances as
+ * you travel down the band and rewinds if you go back up — while the plate
+ * itself drifts for depth and the statement rises over it.
  */
 export function Room() {
   return (
     <section className="h-room" data-scene="room" id="chapter-room">
       <div className="h-room-band">
         <div className="h-room-media" data-room-media aria-hidden="true">
-          <CinemaVideo slug="bakery" className="h-fill" alt="" />
+          <CinemaVideo slug="bakery" mode="scrub" className="h-fill" data-scrub-video alt="" />
         </div>
 
         <div className="h-room-copy" data-reveal-group>

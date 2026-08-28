@@ -8,14 +8,14 @@ import { invite } from "../content";
 /**
  * 07 · Your move.
  *
- * The ring that opened the counter closes the page, footage settles behind it,
- * and the only thing left is a door.
+ * The ring that opened the counter closes the page, footage plays itself out
+ * behind it one last time, and the only thing left is a door.
  */
 export function Invite() {
   return (
     <section className="h-invite" data-scene="invite" id="chapter-invite">
       <div className="h-invite-bg" aria-hidden="true">
-        <CinemaVideo slug="macro" className="h-fill" alt="" />
+        <CinemaVideo slug="product" mode="scrub" className="h-fill" data-scrub-video alt="" />
       </div>
 
       <svg className="h-invite-ring" viewBox="0 0 100 100" aria-hidden="true" data-draw-scope>
