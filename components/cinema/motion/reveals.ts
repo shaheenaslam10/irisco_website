@@ -41,10 +41,13 @@ export function buildReveals(gsap: Gsap, root: HTMLElement, mode: "desktop" | "c
 
     if (kind === "mask") {
       const inner = el.querySelector("span") ?? el;
+      // `y: 0` matters: the CSS start state is `translateY(106%)`, which GSAP
+      // reads off the computed matrix as a pixel `y`. Animating `yPercent` alone
+      // would leave that pixel offset behind and the line would stay clipped.
       gsap.fromTo(
         inner,
-        { yPercent: 105 },
-        { yPercent: 0, duration: 1.05, ease: EASE, delay, scrollTrigger, immediateRender: false },
+        { y: 0, yPercent: 106 },
+        { y: 0, yPercent: 0, duration: 1.05, ease: EASE, delay, scrollTrigger, immediateRender: false },
       );
       return;
     }
