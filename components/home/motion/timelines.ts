@@ -217,6 +217,60 @@ export const setupRoom: Setup = ({ motion, scene }) => {
   return () => scrub.destroy();
 };
 
+/**
+ * 04 · The gallery — a horizontal shelf, the same mechanic as The pantry so the
+ * two read as one gesture rather than two unrelated effects.
+ */
+export const setupGallery: Setup = ({ motion, scene, mode }) => {
+  const { gsap, ScrollTrigger } = motion;
+  const pin = scene.querySelector<HTMLElement>("[data-gallery-pin]");
+  const viewport = scene.querySelector<HTMLElement>("[data-gallery-viewport]");
+  const track = scene.querySelector<HTMLElement>("[data-gallery-track]");
+  const progress = scene.querySelector<HTMLElement>("[data-gallery-progress]");
+  if (!viewport || !track) return;
+
+  const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+  if (mode === "compact") {
+    const sync = () => {
+      const max = distance();
+      if (progress && max > 0) {
+        gsap.set(progress, { scaleX: gsap.utils.clamp(0, 1, viewport.scrollLeft / max) });
+      }
+    };
+    viewport.addEventListener("scroll", sync, { passive: true });
+    sync();
+    return () => viewport.removeEventListener("scroll", sync);
+  }
+
+  if (!pin) return;
+
+  const drift = gsap.to(track, {
+    x: () => -distance(),
+    ease: "none",
+    scrollTrigger: {
+      trigger: scene,
+      start: "top top",
+      end: () => `+=${distance() + window.innerHeight * 0.6}`,
+      pin,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: 0.5,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        if (progress) gsap.set(progress, { scaleX: self.progress });
+      },
+    },
+  });
+
+  void ScrollTrigger;
+
+  return () => {
+    drift.scrollTrigger?.kill();
+    drift.kill();
+  };
+};
+
 /* -------------------------------------------------------------- 04 counter */
 
 export const setupCounter: Setup = ({ motion, scene }) => {
@@ -377,6 +431,7 @@ export const setupInvite: Setup = ({ motion, scene }) => {
 export const sceneSetups: Record<string, Setup> = {
   arrival: setupArrival,
   idea: setupIdea,
+  gallery: setupGallery,
   pour: setupPour,
   room: setupRoom,
   counter: setupCounter,

@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { CinemaVideo } from "../motion/CinemaVideo";
 import { counter, photo } from "../content";
 
 /**
  * 05 · The counter.
  *
- * The IRISCO ring: an amber circle draws itself, then opens as a circular lens
- * onto the bakery case. It echoes the chandelier, a cup rim, and people
- * gathering round a table.
+ * The ring draws, then opens as a lens onto the bakery case. Beside it, the
+ * square product clip sits as a lit panel — "video.mp4" is a bright, 1:1 clip of
+ * the to-go cup, and a square frame is the shape it was made for. Shown at 480px
+ * from a 720px source, so it downsamples rather than upscaling.
  */
 export function Counter() {
   return (
@@ -27,20 +29,30 @@ export function Counter() {
           </p>
         </header>
 
-        <div className="h-counter-stage">
-          <svg className="h-counter-ring" viewBox="0 0 100 100" aria-hidden="true">
-            <circle className="is-track" cx="50" cy="50" r="49.4" />
-            <circle className="is-sweep" cx="50" cy="50" r="49.4" data-draw />
-          </svg>
-          <figure className="h-counter-figure" data-counter-figure>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photo("counter-case")}
-              alt="The IRISCO bakery counter case"
-              data-counter-img
-              loading="lazy"
-              decoding="async"
-            />
+        <div className="h-counter-split">
+          <div className="h-counter-stage">
+            <svg className="h-counter-ring" viewBox="0 0 100 100" aria-hidden="true">
+              <circle className="is-track" cx="50" cy="50" r="49.4" />
+              <circle className="is-sweep" cx="50" cy="50" r="49.4" data-draw />
+            </svg>
+            <figure className="h-counter-figure" data-counter-figure>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={photo("counter-case")}
+                alt="The IRISCO bakery counter case"
+                data-counter-img
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          </div>
+
+          <figure className="h-counter-panel" data-reveal="scale">
+            <span className="h-counter-panel-glow" aria-hidden="true" />
+            <div className="h-counter-frame">
+              <CinemaVideo slug="feature" className="h-fill" alt="An IRISCO to-go cup" />
+            </div>
+            <figcaption>IRISCO · to-go cup</figcaption>
           </figure>
         </div>
 

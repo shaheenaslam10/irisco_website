@@ -1,89 +1,69 @@
 "use client";
 
-import { CinemaVideo } from "../motion/CinemaVideo";
 import { gallery, photo } from "../content";
 
 /**
  * 04 · The gallery.
  *
- * Four photographs at their own depths, plus the portrait 3D-parallax clip as a
- * moving frame in the wall — shown at its native 9:16, because dropping a
- * portrait source into a landscape slot throws away most of the frame. It is
- * scrubbed by the scroll like the rest of the footage, not looping.
+ * Rebuilt as a horizontal shelf, deliberately matching The pantry: pinned,
+ * scroll-driven, edge to edge. Two shelves on one page is a rhythm rather than
+ * a repetition, and they are separated by The counter and The study.
+ *
+ * The videos are gone. At card size the AI clips read as a wall of baked-in
+ * brand text rather than footage — the recording shows `irisco.` nine times
+ * stacked inside one card. Photography carries this section instead, which is
+ * also the sharpest material on the site.
+ *
+ * Differentiated from the pantry by ground and by crop: espresso rather than
+ * teal, and landscape frames with the caption underneath rather than product
+ * tiles with a note beside them.
  */
 export function Gallery() {
   return (
-    <section className="h-section h-gallery" data-scene="gallery" id="chapter-gallery">
-      <header className="h-gallery-head" data-reveal-group>
-        <div className="h-index" data-reveal>
-          <b>{gallery.index}</b> {gallery.label}
+    <section className="h-gallery" data-scene="gallery" id="chapter-gallery">
+      <div className="h-gallery-pin" data-gallery-pin>
+        <header className="h-gallery-head" data-reveal-group>
+          <div className="h-index" data-reveal>
+            <b>{gallery.index}</b> {gallery.label}
+          </div>
+          <h2 className="h-h2" data-split>
+            {gallery.heading}
+          </h2>
+          <p className="h-lede-sm" data-reveal>
+            {gallery.lede}
+          </p>
+        </header>
+
+        <div className="h-gallery-viewport" data-gallery-viewport>
+          <div className="h-gallery-track" data-gallery-track>
+            {gallery.frames.map((frame, i) => (
+              <figure className="h-gallery-card" key={frame.image}>
+                <div className="h-gallery-frame">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo(frame.image)}
+                    alt={frame.caption}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="h-gallery-no">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <figcaption>
+                  <b>{frame.caption}</b>
+                  <span>{frame.note}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
-        <h2 className="h-h2" data-split>
-          {gallery.heading}
-        </h2>
-        <p className="h-lede-sm" data-reveal>
-          {gallery.lede}
-        </p>
-      </header>
 
-      <div className="h-gallery-grid">
-        <figure className="h-gallery-cell is-reel" key="reel">
-          <div className="h-gallery-frame">
-            <CinemaVideo slug="reel" mode="scrub" className="h-fill" data-scrub-video alt={gallery.reelAlt} />
-          </div>
-          <figcaption>
-            <b>{gallery.reelCaption}</b>
-            <span>{gallery.reelNote}</span>
-          </figcaption>
-        </figure>
-
-        <figure className="h-gallery-cell is-square" key="feature">
-          <div className="h-gallery-frame">
-            <CinemaVideo slug="feature" priority className="h-fill" alt={gallery.squareAlt} />
-          </div>
-          <figcaption>
-            <b>{gallery.squareCaption}</b>
-            <span>{gallery.squareNote}</span>
-          </figcaption>
-        </figure>
-
-        <figure className="h-gallery-cell is-wide-film" key="reel-wide">
-          <div className="h-gallery-frame">
-            <CinemaVideo
-              slug="reelWide"
-              mode="scrub"
-              className="h-fill"
-              data-scrub-video
-              alt={gallery.reelAlt}
-            />
-          </div>
-          <figcaption>
-            <b>{gallery.reelCaption}</b>
-            <span>{gallery.reelNote}</span>
-          </figcaption>
-        </figure>
-
-        {gallery.frames.map((frame, i) => (
-          <figure
-            className={`h-gallery-cell is-${i === gallery.frames.length - 1 ? "panorama" : frame.span}`}
-            key={frame.image}
-          >
-            <div className="h-gallery-frame">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={photo(frame.image)}
-                alt={frame.caption}
-                data-speed={frame.depth}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <figcaption>
-              <b>{frame.caption}</b>
-              <span>{frame.note}</span>
-            </figcaption>
-          </figure>
-        ))}
+        <div className="h-gallery-foot">
+          <span>Scroll to move the wall</span>
+          <span className="h-gallery-progress" aria-hidden="true">
+            <i data-gallery-progress />
+          </span>
+          <span>{String(gallery.frames.length).padStart(2, "0")} frames from the room</span>
+        </div>
       </div>
     </section>
   );
