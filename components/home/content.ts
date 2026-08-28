@@ -98,6 +98,9 @@ export const gallery = {
   index: "04",
   label: "The gallery",
   heading: "Culture, present tense.",
+  reelCaption: "The room, moving",
+  reelNote: "A slow three-dimensional pass, played by your scroll.",
+  reelAlt: "A smooth 3D parallax study of the room",
   lede:
     "Pakistani memory and contemporary café life share the same wall, in the same light, at the same time. Nothing here is behind glass.",
   frames: [
@@ -252,7 +255,7 @@ export const photo = (name: string, size: 900 | 1600 = 1600) => `${opt}/${name}-
  * streaming file instead of forty image requests: far lighter on the network
  * and on the main thread.
  */
-export type FilmSlug = "pour" | "product" | "macro" | "bakery" | "feature";
+export type FilmSlug = "pour" | "product" | "macro" | "bakery" | "feature" | "reel";
 
 export const film = {
   pour: {
@@ -292,6 +295,22 @@ export const film = {
     scrub: `${cinema}/feature-loop.mp4`,
     poster: `${cinema}/feature-poster.jpg`,
     alt: "An IRISCO cup, lit and turning",
+  },
+  /**
+   * The 4K portrait "smooth 3D parallax" clip. Native 9:16, so it is shown in
+   * a portrait frame rather than stretched across a landscape band — a 9:16
+   * source in a 16:9 slot would throw away two thirds of the frame.
+   *
+   * Also the reason it is re-encoded: the original is 24.6MB with an audio
+   * track. The web version is 720x1280, all-intra, silent, ~1.5MB.
+   */
+  reel: {
+    loopMp4: `${cinema}/reel-scrub.mp4`,
+    loopWebm: `${cinema}/reel-scrub.mp4`,
+    mob: `${cinema}/reel-scrub-mob.mp4`,
+    scrub: `${cinema}/reel-scrub.mp4`,
+    poster: `${cinema}/reel-poster.jpg`,
+    alt: "A smooth 3D parallax study of the room",
   },
   bakery: {
     loopMp4: `${cinema}/bakery-loop.mp4`,

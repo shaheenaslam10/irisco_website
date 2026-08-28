@@ -9,6 +9,10 @@
 #   <name>-loop.webm   vp9  (preferred by Chrome/Firefox)
 #   <name>-mob.mp4     h264, half-width (small screens)
 #   <name>-scrub.mp4   h264 ALL-INTRA, 12fps — frame-accurate scroll scrubbing
+#
+# Note: `reel` (the 4K portrait 3D-parallax clip) ships pre-encoded at
+# 720x1280 / 480x854, silent, because the source is 24.6MB with an audio
+# track. Re-encode it here only if you want a different size.
 #   <name>-scrub.webm  vp9  ALL-INTRA, 12fps
 #   <name>-poster.jpg  hero poster frame
 #   <name>-poster.webp

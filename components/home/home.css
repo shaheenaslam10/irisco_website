@@ -225,6 +225,14 @@
 .h-hero-media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
 .h-hero-media > * { will-change: transform; }
 
+/*
+ * The "main" clip: ultra-wide 2.29:1, dark and warm, so it works full-bleed
+ * under the headline without washing out the page. Sits over the CSS bloom,
+ * which stays as the base layer so the hero still has colour if footage is
+ * slow to arrive.
+ */
+.h-hero-ground { opacity: 0.9; }
+
 .h-hero-scrim {
   position: absolute;
   inset: 0;
@@ -268,6 +276,7 @@
 .h-hero-frame {
   position: relative;
   z-index: 1;
+  isolation: isolate;
   width: 100%;
   max-width: 520px;
   aspect-ratio: 1;
@@ -567,6 +576,10 @@
 .h-gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(1.2rem, 3vw, 3.2rem); }
 .h-gallery-cell.is-wide { grid-column: span 7; }
 .h-gallery-cell.is-tall { grid-column: span 5; }
+/* Native 9:16 — a portrait source is shown as a portrait frame. */
+.h-gallery-cell.is-reel { grid-column: span 5; }
+.h-gallery-cell.is-reel .h-gallery-frame { aspect-ratio: 9 / 16; }
+.h-gallery-cell.is-reel .h-fill { position: absolute; inset: 0; }
 .h-gallery-cell:nth-child(2) { margin-top: clamp(0px, 5vw, 5rem); }
 .h-gallery-cell:nth-child(4) { margin-top: clamp(0px, 4vw, 4rem); }
 .h-gallery-frame { position: relative; overflow: hidden; border-radius: 3px; }
@@ -956,6 +969,8 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
 @media (max-width: 1023px) {
   .h-gallery-cell.is-wide,
   .h-gallery-cell.is-tall { grid-column: span 6; }
+  .h-gallery-cell.is-reel { grid-column: span 6; }
+  .h-gallery-cell.is-reel .h-gallery-frame { aspect-ratio: 4 / 5; }
   .h-gallery-cell:nth-child(2) { margin-top: clamp(0px, 8vw, 4rem); }
   .h-counter-stats { grid-template-columns: repeat(2, 1fr); }
   .h-pantry-viewport { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
@@ -976,7 +991,9 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
 
 @media (max-width: 700px) {
   .h-gallery-cell.is-wide,
-  .h-gallery-cell.is-tall { grid-column: span 12; }
+  .h-gallery-cell.is-tall,
+  .h-gallery-cell.is-reel { grid-column: span 12; }
+  .h-gallery-cell.is-reel .h-gallery-frame { aspect-ratio: 9 / 16; max-height: 78svh; }
   .h-gallery-cell:nth-child(n) { margin-top: 0; }
   .h-hero-foot { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
   .h-preloader { display: none !important; }

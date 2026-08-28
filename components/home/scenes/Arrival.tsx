@@ -9,17 +9,25 @@ import { arrival } from "../content";
 /**
  * 00 · Arrival.
  *
- * Copy on the left, and the square product clip on the right as a *lit panel*
- * rather than a backdrop — it is a bright, light-ground clip, so at full bleed
- * it would blow out the dark page. Framed, it becomes the thing your eye lands
- * on, with an amber bloom behind it so it sits in the room instead of on top
- * of it.
+ * Two clips, each used in the shape it was made for:
+ *
+ *  • the studio product clip (ultra-wide 2.29:1, dark, warm) is the full-bleed
+ *    cinematic ground — the "main" video, because it is the right shape for a
+ *    hero band and dark enough to keep the headline legible;
+ *  • the square product clip (960x960, bright, light ground) is a *lit panel*
+ *    beside the copy. At full bleed its near-white ground would blow out the
+ *    page, so it is framed instead, with an amber bloom so it belongs to the
+ *    room rather than sitting on top of it.
+ *
+ * The CSS bloom stays underneath as the base layer, so if the footage is slow
+ * the hero still has colour and depth.
  */
 export function Arrival() {
   return (
     <section className="h-hero" data-scene="arrival" id="chapter-arrival">
       <div className="h-hero-media" data-hero-zoom>
         <Backdrop />
+        <CinemaVideo slug="product" priority className="h-fill h-hero-ground" />
       </div>
       <div className="h-hero-scrim" aria-hidden="true" />
 
