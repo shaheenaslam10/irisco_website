@@ -46,7 +46,7 @@ export const hero = {
   eyebrow: "IRISCO · Pakistan",
   lines: ["Part café.", "Part living room.", "Entirely IRISCO."],
   lede:
-    "Coffee pulled to the gram. Bread out of the oven by noon. A pantry wall worth reading twice, and a chessboard that has quietly ruined more than one plan for the evening.",
+    "Coffee pulled to the gram. Bread out of the oven by noon. A pantry wall worth reading twice — and a chessboard that has ruined more than one plan for the evening.",
   actions: [
     { label: "Plan your visit", href: "/visit", variant: "solid" },
     { label: "See the menu", href: "/menu", variant: "ghost" },

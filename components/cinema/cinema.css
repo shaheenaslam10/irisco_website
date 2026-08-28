@@ -1168,3 +1168,17 @@ body:has([data-home]) ::-webkit-scrollbar-thumb:hover { background: rgba(231, 16
 
 /* Selection reads amber-on-teal against the dark canvas. */
 .cinema ::selection { background: var(--amber); color: #10201f; }
+
+/* ------------------------------------------------------- short viewports */
+
+/* Laptops and landscape phones: the pinned and full-height chapters still have
+   to fit, so trim the air before trimming the words. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .c-hero { padding-top: calc(var(--header-h, 84px) + 1.5rem); }
+  .c-hero-inner { gap: clamp(0.7rem, 1.4vw, 1.2rem); }
+  .c-scrollcue { display: none; }
+  .c-ritual-word { font-size: clamp(1.9rem, 3.4vw, 3.2rem); }
+  .c-ritual-note { font-size: 0.95rem; }
+  .c-counter-stage { max-height: 46svh; }
+  .c-finale-title { font-size: clamp(3rem, 8vw, 7rem); }
+}
