@@ -1,7 +1,5 @@
 import type { Motion } from "./gsapSetup";
-import { createSequenceScrub } from "./sequence";
-import { setScroll } from "./scrollState";
-import type { SequenceSlug } from "../content";
+import { createVideoScrub } from "./videoScrub";
 
 export type SceneCtx = {
   motion: Motion;
@@ -14,12 +12,12 @@ type Setup = (ctx: SceneCtx) => void | (() => void);
 /* -------------------------------------------------------------- 00 arrival */
 
 export const setupArrival: Setup = ({ motion, scene, mode }) => {
-  const { gsap, ScrollTrigger } = motion;
+  const { gsap } = motion;
   const fades = scene.querySelectorAll<HTMLElement>("[data-hero-fade]");
-  const copy = scene.querySelector<HTMLElement>(".h-hero-copy");
-  const stage = scene.querySelector<HTMLElement>(".h-hero-cup");
+  const inner = scene.querySelector<HTMLElement>(".h-hero-inner");
+  const media = scene.querySelector<HTMLElement>("[data-hero-zoom]");
 
-  const intro = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.45 });
+  const intro = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.4 });
   if (fades.length) {
     intro.fromTo(
       fades,
@@ -29,60 +27,48 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
     );
   }
 
-  // Feed the WebGL cup its scroll progress.
-  ScrollTrigger.create({
-    trigger: scene,
-    start: "top top",
-    end: "bottom top",
-    scrub: true,
-    invalidateOnRefresh: true,
-    onUpdate: (self) => setScroll("hero", self.progress),
-  });
-
   const exit = gsap.timeline({
     scrollTrigger: { trigger: scene, start: "top top", end: "bottom top", scrub: true },
   });
-  if (copy) exit.to(copy, { yPercent: -12, opacity: 0, ease: "none" }, 0);
-  if (stage) {
-    exit.to(stage, { yPercent: mode === "compact" ? 5 : 9, scale: 0.9, ease: "none" }, 0);
-  }
+  if (media) exit.to(media, { scale: 1.14, yPercent: 5, ease: "none" }, 0);
+  if (inner) exit.to(inner, { yPercent: mode === "compact" ? -8 : -16, opacity: 0, ease: "none" }, 0);
 };
 
 /* ----------------------------------------------------------------- 02 pour */
 
 /**
- * The wheel is the playhead. Pin the stage, scrubbing a 40-frame sequence and
- * handing the caption over to each beat as it arrives.
+ * The wheel is the playhead.
+ *
+ * Pins the stage and steps the all-intra clip frame by frame, handing the
+ * caption over to each beat as it arrives. Because every frame is a keyframe,
+ * seeking costs nothing — and it scrubs backwards perfectly, which is the part
+ * that actually sells the idea.
  */
 export const setupPour: Setup = ({ motion, scene, mode }) => {
   const { gsap, ScrollTrigger } = motion;
   const pin = scene.querySelector<HTMLElement>("[data-pour-pin]");
-  const img = scene.querySelector<HTMLImageElement>("[data-seq]");
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
   const beats = Array.from(scene.querySelectorAll<HTMLElement>("[data-pour-beat]"));
   if (!pin) return;
 
-  // Compact: no pin. Let the sequence play through on its own scrub instead.
   const isCompact = mode === "compact";
+  const scrub = createVideoScrub(gsap, video);
 
-  const slug = (img?.dataset.seq ?? "pour") as SequenceSlug;
-  const scrub = img ? createSequenceScrub(gsap, img, slug) : null;
-
-  gsap.set(beats.slice(1), { opacity: 0, y: 18 });
+  gsap.set(beats.slice(1), { opacity: 0, y: 16 });
   gsap.set(beats[0], { opacity: 1, y: 0 });
   let active = 0;
 
   const st = ScrollTrigger.create({
     trigger: pin,
     start: "top top",
-    end: () => `+=${window.innerHeight * (isCompact ? 1.6 : 2.6)}`,
+    end: () => `+=${window.innerHeight * (isCompact ? 1.5 : 2.4)}`,
     pin: isCompact ? false : pin,
     pinSpacing: !isCompact,
     anticipatePin: isCompact ? 0 : 1,
     scrub: true,
     invalidateOnRefresh: true,
     onUpdate: (self) => {
-      scrub?.setProgress(self.progress);
-      setScroll("pour", self.progress);
+      scrub.setProgress(self.progress);
 
       const index = Math.min(beats.length - 1, Math.floor(self.progress * beats.length));
       if (index === active) return;
@@ -90,8 +76,8 @@ export const setupPour: Setup = ({ motion, scene, mode }) => {
       beats.forEach((beat, i) => {
         gsap.to(beat, {
           opacity: i === index ? 1 : 0,
-          y: i === index ? 0 : i < index ? -16 : 16,
-          duration: 0.45,
+          y: i === index ? 0 : i < index ? -14 : 14,
+          duration: 0.42,
           overwrite: true,
         });
         beat.dataset.on = i === index ? "true" : "false";
@@ -101,46 +87,30 @@ export const setupPour: Setup = ({ motion, scene, mode }) => {
 
   return () => {
     st.kill();
-    scrub?.destroy();
+    scrub.destroy();
   };
 };
 
-/* ---------------------------------------------------------------- 03 craft */
+/* ----------------------------------------------------------------- 03 room */
 
-/**
- * Objects on paths. The bean layer arcs across the chapter on a real
- * MotionPath curve while the photographs drift at their own ScrollSmoother
- * speeds — the composition reorganises rather than merely scrolling.
- */
-export const setupCraft: Setup = ({ motion, scene }) => {
-  const { gsap, MotionPathPlugin } = motion;
-  void MotionPathPlugin;
-
-  const bean = scene.querySelector<HTMLElement>("[data-craft-path]");
-  if (!bean) return;
+export const setupRoom: Setup = ({ motion, scene }) => {
+  const { gsap } = motion;
+  const media = scene.querySelector<HTMLElement>("[data-room-media]");
+  const band = scene.querySelector<HTMLElement>(".h-room-band");
+  if (!media || !band) return;
 
   gsap.fromTo(
-    bean,
-    { xPercent: -50, yPercent: -50, rotate: -40, opacity: 0.5 },
+    media,
+    { yPercent: -6, scale: 1.1 },
     {
-      motionPath: {
-        path: [
-          { x: 0, y: 0 },
-          { x: 180, y: -220 },
-          { x: -90, y: -420 },
-          { x: 120, y: -640 },
-          { x: -40, y: -860 },
-        ],
-        curviness: 1.5,
-      },
-      rotate: 220,
-      opacity: 0.95,
+      yPercent: 6,
+      scale: 1.02,
       ease: "none",
       scrollTrigger: {
-        trigger: scene,
+        trigger: band,
         start: "top bottom",
         end: "bottom top",
-        scrub: 1,
+        scrub: true,
         invalidateOnRefresh: true,
       },
     },
@@ -155,8 +125,8 @@ export const setupCounter: Setup = ({ motion, scene }) => {
   const image = scene.querySelector<HTMLElement>("[data-counter-img]");
   if (!figure) return;
 
-  // The ring itself is drawn by `data-draw` (DrawSVGPlugin). Here we open the
-  // lens behind it as the ring completes.
+  // The ring is drawn by `data-draw` (DrawSVGPlugin); here the lens opens
+  // behind it as the ring completes.
   const tl = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: {
@@ -173,7 +143,7 @@ export const setupCounter: Setup = ({ motion, scene }) => {
     { clipPath: "circle(80% at 50% 50%)", duration: 1.3 },
     0.4,
   );
-  if (image) tl.fromTo(image, { scale: 1.34 }, { scale: 1, duration: 1.9 }, 0.4);
+  if (image) tl.fromTo(image, { scale: 1.32 }, { scale: 1, duration: 1.9 }, 0.4);
 };
 
 /* --------------------------------------------------------------- 05 pantry */
@@ -228,27 +198,25 @@ export const setupPantry: Setup = ({ motion, scene, mode }) => {
   };
 };
 
-/* --------------------------------------------------------------- 08 invite */
+/* --------------------------------------------------------------- 06 invite */
 
 export const setupInvite: Setup = ({ motion, scene }) => {
   const { gsap } = motion;
-  const cup = scene.querySelector<HTMLElement>(".h-invite-cup");
-  if (!cup) return;
+  const bg = scene.querySelector<HTMLElement>(".h-invite-bg");
+  if (!bg) return;
 
-  // The last echo of the hero: the cup rises one final time.
   gsap.fromTo(
-    cup,
-    { yPercent: 22, opacity: 0.15, scale: 0.9 },
+    bg,
+    { scale: 1.16, yPercent: -3 },
     {
-      yPercent: -6,
-      opacity: 0.45,
       scale: 1,
+      yPercent: 3,
       ease: "none",
       scrollTrigger: {
         trigger: scene,
         start: "top bottom",
-        end: "bottom bottom",
-        scrub: 0.8,
+        end: "bottom top",
+        scrub: true,
         invalidateOnRefresh: true,
       },
     },
@@ -260,7 +228,7 @@ export const setupInvite: Setup = ({ motion, scene }) => {
 export const sceneSetups: Record<string, Setup> = {
   arrival: setupArrival,
   pour: setupPour,
-  craft: setupCraft,
+  room: setupRoom,
   counter: setupCounter,
   pantry: setupPantry,
   invite: setupInvite,

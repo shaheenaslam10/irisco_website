@@ -5,11 +5,11 @@ import { ArrowUpRight } from "lucide-react";
 import { counter, photo } from "../content";
 
 /**
- * 04 · The counter.
+ * 05 · The counter.
  *
- * The IRISCO ring: an amber circle draws itself (DrawSVG), then opens as a
- * circular lens onto the bakery case. It echoes the chandelier, a cup rim, and
- * people gathering round a table.
+ * The IRISCO ring: an amber circle draws itself, then opens as a circular lens
+ * onto the bakery case. It echoes the chandelier, a cup rim, and people
+ * gathering round a table.
  */
 export function Counter() {
   return (

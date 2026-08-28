@@ -2,35 +2,25 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { invite, layer, photo } from "../content";
+import { CinemaVideo } from "../motion/CinemaVideo";
+import { invite } from "../content";
 
 /**
- * 08 · Your move.
+ * 07 · Your move.
  *
- * Everything converges back on the cup. The ring that opened the counter closes
- * the page, the navy cup rises one last time, and the only thing left is a door.
+ * The ring that opened the counter closes the page, footage settles behind it,
+ * and the only thing left is a door.
  */
 export function Invite() {
   return (
     <section className="h-invite" data-scene="invite" id="chapter-invite">
       <div className="h-invite-bg" aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photo("interior-gallery")} alt="" data-speed="0.85" loading="lazy" />
+        <CinemaVideo slug="macro" className="h-fill" alt="" />
       </div>
 
       <svg className="h-invite-ring" viewBox="0 0 100 100" aria-hidden="true" data-draw-scope>
         <circle cx="50" cy="50" r="49.4" data-draw />
       </svg>
-
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="h-invite-cup"
-        src={layer.cupNavy}
-        alt=""
-        aria-hidden="true"
-        data-speed="1.18"
-        loading="lazy"
-      />
 
       <div className="h-invite-inner" data-reveal-group>
         <div className="h-index" data-reveal>

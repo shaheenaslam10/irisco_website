@@ -1,18 +1,19 @@
 "use client";
 
-import { useRef } from "react";
-import { pour, sequence } from "../content";
+import { CinemaVideo } from "../motion/CinemaVideo";
+import { pour } from "../content";
 
 /**
  * 02 · The pour.
  *
- * The clip is a 40-frame image sequence, and the wheel is the playhead: scroll
- * down and it pours, scroll up and it pours backwards. No autoplay, no codec,
- * no loop — the sequence only ever exists in the direction you move.
+ * The signature moment: the wheel is the playhead. Scroll down and the coffee
+ * pours, scroll up and it pours backwards.
+ *
+ * It is one streaming all-intra file rather than forty image requests — a
+ * fraction of the network cost, and seeking costs nothing because every frame
+ * is a keyframe.
  */
 export function Pour() {
-  const imgRef = useRef<HTMLImageElement>(null);
-
   return (
     <section className="h-pour" data-scene="pour" id="chapter-pour">
       <div className="h-pour-pin" data-pour-pin>
@@ -29,17 +30,14 @@ export function Pour() {
         </header>
 
         <div className="h-pour-stage">
-          <div className="h-seq">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={imgRef}
-              className="h-seq-img"
-              data-seq="pour"
-              src={sequence.pour.poster}
-              alt="Espresso pouring into an IRISCO cup, played by your scroll"
-              decoding="async"
+          <div className="h-film" data-pour-film>
+            <CinemaVideo
+              slug="pour"
+              mode="scrub"
+              className="h-fill"
+              data-scrub-video
+              alt={pour.heading}
             />
-            <span className="h-seq-frame" data-seq-progress aria-hidden="true" />
           </div>
         </div>
 

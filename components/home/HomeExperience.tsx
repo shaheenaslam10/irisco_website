@@ -20,20 +20,18 @@ import {
   buildWordHighlight,
 } from "./motion/reveals";
 import { sceneSetups } from "./motion/timelines";
-import { setScroll } from "./motion/scrollState";
 import { chapters } from "./content";
 
-import { Atmosphere, ChapterRail, Cursor, Preloader, ScrollReadout } from "./chrome/Chrome";
+import { Atmosphere, ChapterRail, Cursor, Preloader } from "./chrome/Chrome";
 import { Marquee } from "./chrome/Marquee";
 import { Arrival } from "./scenes/Arrival";
 import { Counter } from "./scenes/Counter";
-import { Craft } from "./scenes/Craft";
+import { Gallery } from "./scenes/Gallery";
 import { Idea } from "./scenes/Idea";
 import { Invite } from "./scenes/Invite";
 import { Pantry } from "./scenes/Pantry";
 import { Pour } from "./scenes/Pour";
 import { Room } from "./scenes/Room";
-import { Table } from "./scenes/Table";
 
 type Mode = "desktop" | "compact";
 
@@ -41,25 +39,17 @@ type Mode = "desktop" | "compact";
 
 function buildRail(motion: Motion, root: HTMLElement) {
   const { gsap, ScrollTrigger } = motion;
-  const items = Array.from(root.querySelectorAll<HTMLElement>("[data-rail-item]"));
-  const bar = root.querySelector<HTMLElement>("[data-rail-progress]");
 
-  // `data-rail-*` lives in a portal outside #smooth-content, so query the
-  // document rather than the page root.
+  // `data-rail-*` lives in a portal outside #smooth-content.
   const railItems = Array.from(document.querySelectorAll<HTMLElement>("[data-rail-item]"));
   const railBar = document.querySelector<HTMLElement>("[data-rail-progress]");
-  void items;
-  void bar;
 
   if (railBar) {
     ScrollTrigger.create({
       trigger: root,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: (self) => {
-        setScroll("page", self.progress);
-        gsap.set(railBar, { scaleY: self.progress });
-      },
+      onUpdate: (self) => gsap.set(railBar, { scaleY: self.progress }),
     });
   }
 
@@ -118,16 +108,13 @@ function buildLayer(motion: Motion, root: HTMLElement, mode: Mode) {
 /**
  * The main page.
  *
- * One GSAP context owns every timeline so teardown is atomic, and one
- * `matchMedia` per breakpoint so resizing across 1024px never leaves an
- * orphaned pin behind.
+ * One GSAP context owns every timeline so teardown is atomic; one `matchMedia`
+ * per breakpoint so resizing across 1024px never leaves an orphaned pin.
  *
- * Failure paths, in order of likelihood, all land on the same outcome — a
- * finished, legible, static page:
- *   1. reduced motion → never build motion at all
- *   2. GSAP fails to load → drop the motion flag
- *   3. a chapter throws → caught, the rest still build
- *   4. nothing reports ready in 4s → watchdog drops the flag
+ * Every failure path lands on the same outcome — a finished, legible, static
+ * page: reduced motion builds nothing; a failed load drops the motion flag; a
+ * chapter that throws is caught; and a watchdog drops the flag if nothing
+ * reports ready.
  */
 export function HomeExperience() {
   const root = useRef<HTMLDivElement>(null);
@@ -190,19 +177,17 @@ export function HomeExperience() {
       <Atmosphere />
       <Cursor />
       <ChapterRail />
-      <ScrollReadout />
 
       <div className="home" ref={root} data-home-root>
         <Arrival />
         <Marquee />
         <Idea />
         <Pour />
-        <Craft />
+        <Room />
+        <Gallery />
         <Counter />
         <Pantry />
-        <Room />
         <Marquee tone="teal" />
-        <Table />
         <Invite />
       </div>
     </>

@@ -21,12 +21,11 @@ export const chapters = [
   { id: "arrival" as const, index: "00", label: "Arrival" },
   { id: "idea" as const, index: "01", label: "The idea" },
   { id: "pour" as const, index: "02", label: "The pour" },
-  { id: "craft" as const, index: "03", label: "The craft" },
-  { id: "counter" as const, index: "04", label: "The counter" },
-  { id: "pantry" as const, index: "05", label: "The pantry" },
-  { id: "room" as const, index: "06", label: "The room" },
-  { id: "table" as const, index: "07", label: "The table" },
-  { id: "invite" as const, index: "08", label: "Your move" },
+  { id: "room" as const, index: "03", label: "The room" },
+  { id: "gallery" as const, index: "04", label: "The gallery" },
+  { id: "counter" as const, index: "05", label: "The counter" },
+  { id: "pantry" as const, index: "06", label: "The pantry" },
+  { id: "invite" as const, index: "07", label: "Your move" },
 ];
 
 /* -------------------------------------------------------------- 00 arrival */
@@ -75,47 +74,10 @@ export const pour = {
   closing: "It takes ninety seconds. In all this time, we have never once rushed it.",
 } as const;
 
-/* ---------------------------------------------------------------- 03 craft */
-
-export const craft = {
-  index: "03",
-  label: "The craft",
-  heading: "Four hands, one cup.",
-  lede:
-    "Nothing here is automated for speed. It is automated for consistency — and then finished by somebody paying attention.",
-  steps: [
-    {
-      n: "01",
-      title: "The bean",
-      copy: "Selected, roasted, and rested. Ground only when there is a cup waiting for it.",
-      image: "coffee-bean-assets-1600",
-      layer: true,
-    },
-    {
-      n: "02",
-      title: "The dose",
-      copy: "Weighed, distributed, tamped level. The single most boring step, and the one that matters.",
-      image: "tamp",
-    },
-    {
-      n: "03",
-      title: "The shot",
-      copy: "Pressed water, twenty-eight seconds, watched the whole way down.",
-      image: "extraction",
-    },
-    {
-      n: "04",
-      title: "The finish",
-      copy: "Steamed, poured, and carried across before the crema has time to think about it.",
-      image: "milk-pour",
-    },
-  ],
-} as const;
-
 /* -------------------------------------------------------------- 04 counter */
 
 export const counter = {
-  index: "04",
+  index: "05",
   label: "The counter",
   heading: "Out of the oven by noon.",
   lede:
@@ -129,10 +91,50 @@ export const counter = {
   action: { label: "Read the full menu", href: "/menu" },
 } as const;
 
-/* --------------------------------------------------------------- 05 pantry */
+/* -------------------------------------------------------------- 04 gallery */
+
+export const gallery = {
+  index: "04",
+  label: "The gallery",
+  heading: "Culture, present tense.",
+  lede:
+    "Pakistani memory and contemporary café life share the same wall, in the same light, at the same time. Nothing here is behind glass.",
+  frames: [
+    {
+      image: "interior-gallery",
+      caption: "The long room",
+      note: "Teal, brass, and a chandelier doing far more work than it needs to.",
+      span: "tall",
+      depth: 0.9,
+    },
+    {
+      image: "room-hero",
+      caption: "The seating",
+      note: "Cobalt, low light, chairs built for sitting far longer than planned.",
+      span: "wide",
+      depth: 1.12,
+    },
+    {
+      image: "boxes",
+      caption: "The details",
+      note: "Packaging, prints, and small objects that leave with people.",
+      span: "wide",
+      depth: 0.84,
+    },
+    {
+      image: "main-counter",
+      caption: "The counter",
+      note: "Where the first order of the day is usually also the fastest.",
+      span: "tall",
+      depth: 1.2,
+    },
+  ],
+} as const;
+
+/* --------------------------------------------------------------- 06 pantry */
 
 export const pantry = {
-  index: "05",
+  index: "06",
   label: "The pantry",
   heading: "Coffee will lead you to the shelf.",
   lede:
@@ -175,7 +177,7 @@ export const pantry = {
 /* ----------------------------------------------------------------- 06 room */
 
 export const room = {
-  index: "06",
+  index: "03",
   label: "The room",
   lines: ["Deep teal walls.", "A chandelier that does not", "know it is in a café."],
   note:
@@ -188,26 +190,10 @@ export const room = {
   ],
 } as const;
 
-/* ---------------------------------------------------------------- 07 table */
-
-export const table = {
-  index: "07",
-  label: "The table",
-  heading: "Time is welcome here.",
-  lede:
-    "Most places are designed to move you along. This one is designed to lose track of you for a while — in the best way.",
-  principles: [
-    { n: "01", title: "A quick cup is welcome.", copy: "Ten minutes at the counter, one hand on the door. A real way to use this room." },
-    { n: "02", title: "So is a chess game.", copy: "The board is out, the pieces are not precious, and nobody is keeping score but you." },
-    { n: "03", title: "So is a long conversation.", copy: "The kind that starts about coffee and ends somewhere else entirely." },
-  ],
-  quote: "A café is one of the last rooms in a city where doing nothing is still allowed.",
-} as const;
-
 /* ---------------------------------------------------------------- 08 invite */
 
 export const invite = {
-  index: "08",
+  index: "07",
   label: "Your move",
   kicker: "The door is open.",
   heading: "Find us.",
@@ -229,42 +215,52 @@ export const marquee = [
 /* -------------------------------------------------------------------- media */
 
 const opt = "/assets/irisco/optimized";
-const gen = "/assets/irisco/generated";
-const seq = "/assets/irisco/seq";
+const cinema = "/assets/irisco/cinema";
 
 export const photo = (name: string, size: 900 | 1600 = 1600) => `${opt}/${name}-${size}.webp`;
 
-/** Transparent product layers — the "objects that move on scroll" kit. */
-export const layer = {
-  bean: `${gen}/coffee-v2/coffee-bean-assets-1600.webp`,
-  liquid: `${gen}/coffee-v2/coffee-liquid-assets-1600.webp`,
-  steam: `${gen}/coffee-v2/coffee-steam-assets-1600.webp`,
-  cupIvoryOpen: `${gen}/coffee-v2/irisco-cup-ivory-open-1600.webp`,
-  lidNavy: `${gen}/coffee-v2/irisco-lid-navy-1600.webp`,
-  cupNavy: `${gen}/coffee/irisco-navy-cup-1024.webp`,
-  surface: `${gen}/coffee-v2/coffee-surface.png`,
-  stone: `${gen}/coffee-v2/coffee-stone-surface-1600.webp`,
-} as const;
-
 /**
- * SWAP POINT — the real cup.
+ * The four generated clips.
  *
- * Drop the exported model at `public/models/cup.glb` and set this to
- * `"/models/cup.glb"`. The scene normalises it automatically: centred on X/Z,
- * base sitting on the plinth, scaled to the composition's height, Draco and
- * Meshopt handled. Leave it `null` and the procedural lathe stands in.
+ * `scrub` tracks are all-intra at 12fps — every frame independently decodable,
+ * so a ScrollTrigger can seek them frame-accurately with no stutter. `loop`
+ * tracks are seamless ping-pong (forward + reversed) for ambient beds. One
+ * streaming file instead of forty image requests: far lighter on the network
+ * and on the main thread.
  */
-export const cupModel: string | null = null;
+export type FilmSlug = "pour" | "product" | "macro" | "bakery";
 
-/** Scroll-scrubbed frame sequences, straight from the generated clips. */
-export const sequence = {
-  pour: { dir: `${seq}/pour`, frames: 40, poster: `${seq}/pour-poster.webp` },
-  product: { dir: `${seq}/product`, frames: 44, poster: `${seq}/product-poster.webp` },
-  macro: { dir: `${seq}/macro`, frames: 44, poster: `${seq}/macro-poster.webp` },
-  bakery: { dir: `${seq}/bakery`, frames: 40, poster: `${seq}/bakery-poster.webp` },
-} as const;
-
-export type SequenceSlug = keyof typeof sequence;
-
-export const frameSrc = (slug: SequenceSlug, index: number) =>
-  `${sequence[slug].dir}/${String(index + 1).padStart(4, "0")}.webp`;
+export const film = {
+  pour: {
+    loopMp4: `${cinema}/pour-loop.mp4`,
+    loopWebm: `${cinema}/pour-loop.webm`,
+    mob: `${cinema}/pour-mob.mp4`,
+    scrub: `${cinema}/pour-scrub.mp4`,
+    poster: `${cinema}/pour-poster.jpg`,
+    alt: "Slow-motion shot of espresso pouring into a ceramic cup",
+  },
+  product: {
+    loopMp4: `${cinema}/product-loop.mp4`,
+    loopWebm: `${cinema}/product-loop.webm`,
+    mob: `${cinema}/product-mob.mp4`,
+    scrub: `${cinema}/product-scrub.mp4`,
+    poster: `${cinema}/product-poster.jpg`,
+    alt: "Studio product study of a ceramic cup",
+  },
+  macro: {
+    loopMp4: `${cinema}/macro-loop.mp4`,
+    loopWebm: `${cinema}/macro-loop.webm`,
+    mob: `${cinema}/macro-mob.mp4`,
+    scrub: `${cinema}/macro-scrub.mp4`,
+    poster: `${cinema}/macro-poster.jpg`,
+    alt: "Macro study of coffee texture",
+  },
+  bakery: {
+    loopMp4: `${cinema}/bakery-loop.mp4`,
+    loopWebm: `${cinema}/bakery-loop.webm`,
+    mob: `${cinema}/bakery-mob.mp4`,
+    scrub: `${cinema}/bakery-scrub.mp4`,
+    poster: `${cinema}/bakery-poster.jpg`,
+    alt: "Macro study of freshly baked pastry",
+  },
+} as const satisfies Record<FilmSlug, Record<string, string>>;

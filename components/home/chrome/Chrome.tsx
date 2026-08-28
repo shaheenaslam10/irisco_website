@@ -1,20 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { chapters } from "../content";
 import { Portal } from "@/components/ui/Portal";
-import { scrollState } from "../motion/scrollState";
 
 /**
- * Fixed page chrome.
+ * Fixed page chrome, portalled to <body>.
  *
- * All of it renders through a portal into `document.body`, because
- * ScrollSmoother translates `#smooth-content` — and a translated ancestor
- * becomes the containing block for `position: fixed`, which would send all of
- * this scrolling away with the content.
+ * ScrollSmoother translates #smooth-content, and a translated ancestor becomes
+ * the containing block for position: fixed — so anything fixed inside the page
+ * would scroll away with the content. Everything here lives outside it.
  */
-
-/* ------------------------------------------------------------------- rail */
 
 export function ChapterRail() {
   const go = useCallback((id: string) => {
@@ -52,8 +48,14 @@ export function ChapterRail() {
   );
 }
 
-/* ------------------------------------------------------- grain + vignette */
-
+/**
+ * Atmosphere.
+ *
+ * The grain is a small static tile at low opacity — deliberately NOT a
+ * viewport-sized layer with mix-blend-mode, which forces the compositor to
+ * re-blend a full-screen surface every frame. That was the single biggest
+ * frame-time cost of the previous build.
+ */
 export function Atmosphere() {
   return (
     <Portal>
@@ -62,8 +64,6 @@ export function Atmosphere() {
     </Portal>
   );
 }
-
-/* ----------------------------------------------------------------- cursor */
 
 export function Cursor() {
   const ref = useRef<HTMLDivElement>(null);
@@ -89,20 +89,18 @@ export function Cursor() {
         dot.style.opacity = "1";
       }
       dot.dataset.hot = (event.target as Element | null)?.closest?.(
-        'a, button, [role="button"], input, textarea, select',
+        'a, button, [role="button"]',
       )
         ? "true"
         : "false";
     };
-
     const onLeave = () => {
       shown = false;
       dot.style.opacity = "0";
     };
-
     const loop = () => {
-      x += (tx - x) * 0.17;
-      y += (ty - y) * 0.17;
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
       dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       frame = requestAnimationFrame(loop);
     };
@@ -124,8 +122,6 @@ export function Cursor() {
     </Portal>
   );
 }
-
-/* -------------------------------------------------------------- preloader */
 
 export function Preloader() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -157,10 +153,12 @@ export function Preloader() {
 
     const step = (now: number) => {
       if (start === null) start = now;
-      const p = Math.min(1, (now - start) / 1100);
+      const p = Math.min(1, (now - start) / 900);
       const value = Math.round(p * 100);
       if (countRef.current) countRef.current.textContent = String(value).padStart(3, "0");
-      if (sweepRef.current) sweepRef.current.setAttribute("stroke-dashoffset", String(C * (1 - value / 100)));
+      if (sweepRef.current) {
+        sweepRef.current.setAttribute("stroke-dashoffset", String(C * (1 - value / 100)));
+      }
       if (p < 1) {
         frame = requestAnimationFrame(step);
         return;
@@ -181,13 +179,13 @@ export function Preloader() {
       <div className="h-preloader" data-done="false" ref={rootRef} aria-hidden="true">
         <div className="h-preloader-inner">
           <svg className="h-preloader-ring" viewBox="0 0 100 100">
-            <circle className="is-track" cx="50" cy="50" r="46" />
+            <circle className="is-track" cx="50" cy="50" r={46} />
             <circle
               ref={sweepRef}
               className="is-sweep"
               cx="50"
               cy="50"
-              r="46"
+              r={46}
               strokeDasharray={2 * Math.PI * 46}
               strokeDashoffset={2 * Math.PI * 46}
             />
@@ -198,39 +196,6 @@ export function Preloader() {
           </span>
         </div>
       </div>
-    </Portal>
-  );
-}
-
-/* --------------------------------------------------------------- scroll cue */
-
-/** Progress readout in the corner, driven by the shared scroll store. */
-export function ScrollReadout() {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    queueMicrotask(() => setMounted(true));
-    let frame = 0;
-    let last = -1;
-    const loop = () => {
-      const pct = Math.round(scrollState.page * 100);
-      if (ref.current && pct !== last) {
-        last = pct;
-        ref.current.textContent = String(pct).padStart(3, "0");
-      }
-      frame = requestAnimationFrame(loop);
-    };
-    frame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
-  if (!mounted) return null;
-  return (
-    <Portal>
-      <span className="h-readout" aria-hidden="true">
-        <span ref={ref}>000</span>
-      </span>
     </Portal>
   );
 }

@@ -2,22 +2,25 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { CupStage } from "../three/CupStage";
+import { CinemaVideo } from "../motion/CinemaVideo";
 import { arrival } from "../content";
 
 /**
  * 00 · Arrival.
  *
- * The cup is real geometry, turning in three dimensions, assembled in front of
- * you: plinth, cup, crema, steam, then beans floating in. Scroll turns it.
- * No video plane, no static product shot.
+ * Full-bleed footage, a headline that splits out of its mask, and the actions.
+ * Nothing else competing for attention — the previous build floated half a
+ * dozen layers over this and it read as noise.
  */
 export function Arrival() {
   return (
     <section className="h-hero" data-scene="arrival" id="chapter-arrival">
-      <div className="h-hero-glow" aria-hidden="true" />
+      <div className="h-hero-media" data-hero-zoom>
+        <CinemaVideo slug="pour" priority className="h-fill" />
+      </div>
+      <div className="h-hero-scrim" aria-hidden="true" />
 
-      <div className="h-hero-copy">
+      <div className="h-hero-inner">
         <p className="h-eyebrow" data-hero-fade>
           {arrival.eyebrow}
         </p>
@@ -33,11 +36,7 @@ export function Arrival() {
         <p className="h-lede" data-hero-fade>
           {arrival.lede}
         </p>
-      </div>
 
-      <CupStage className="h-hero-cup" />
-
-      <div className="h-hero-foot">
         <div className="h-hero-actions" data-hero-fade>
           <Link className="h-btn solid" href={arrival.actions[0].href}>
             <span>{arrival.actions[0].label}</span>
@@ -48,13 +47,14 @@ export function Arrival() {
             <ArrowUpRight size={15} />
           </Link>
         </div>
+      </div>
 
+      <div className="h-hero-foot">
         <ul className="h-hero-meta" data-hero-fade>
           {arrival.meta.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
-
         <p className="h-cue" data-hero-fade>
           <span className="h-cue-line" aria-hidden="true" />
           {arrival.cue}
