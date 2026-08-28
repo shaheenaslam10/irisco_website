@@ -6,10 +6,12 @@ import { study } from "../content";
 /**
  * 06 · The study.
  *
- * The high-speed macro clip is the *room*, not a window onto it: full-bleed,
- * scrubbed by the scroll, and graded into the espresso ground with a scrim
- * sampled from the page's own palette so the footage melts into the section
- * instead of sitting on top of it as a boxed rectangle.
+ * Was running the macro clip full-bleed, which read as blurry — macro footage
+ * is soft by nature, and at full width it fell apart. Now runs a landscape
+ * crop of the 4K clip: 2160x1215 taken from a genuinely 4K frame, delivered at
+ * 1536x864, so it holds up at full width instead of being upscaled mush.
+ *
+ * The wash is much lighter too — the blur was half the scrim's fault.
  */
 export function Study() {
   return (

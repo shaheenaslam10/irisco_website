@@ -37,6 +37,16 @@ export function Gallery() {
           </figcaption>
         </figure>
 
+        <figure className="h-gallery-cell is-square" key="feature">
+          <div className="h-gallery-frame">
+            <CinemaVideo slug="feature" priority className="h-fill" alt={gallery.squareAlt} />
+          </div>
+          <figcaption>
+            <b>{gallery.squareCaption}</b>
+            <span>{gallery.squareNote}</span>
+          </figcaption>
+        </figure>
+
         {gallery.frames.map((frame) => (
           <figure className={`h-gallery-cell is-${frame.span}`} key={frame.image}>
             <div className="h-gallery-frame">

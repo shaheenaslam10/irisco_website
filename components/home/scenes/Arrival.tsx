@@ -9,66 +9,56 @@ import { arrival } from "../content";
 /**
  * 00 · Arrival.
  *
- * Two clips, each used in the shape it was made for:
- *
- *  • the studio product clip (ultra-wide 2.29:1, dark, warm) is the full-bleed
- *    cinematic ground — the "main" video, because it is the right shape for a
- *    hero band and dark enough to keep the headline legible;
- *  • the square product clip (960x960, bright, light ground) is a *lit panel*
- *    beside the copy. At full bleed its near-white ground would blow out the
- *    page, so it is framed instead, with an amber bloom so it belongs to the
- *    room rather than sitting on top of it.
- *
- * The CSS bloom stays underneath as the base layer, so if the footage is slow
- * the hero still has colour and depth.
+ * No side panel, and no autoplay. The studio product clip is the full-bleed
+ * ground and the scroll is its playhead: it sits on frame one until you move,
+ * then plays through to the end as the hero leaves. Copy is centred.
  */
 export function Arrival() {
   return (
     <section className="h-hero" data-scene="arrival" id="chapter-arrival">
       <div className="h-hero-media" data-hero-zoom>
         <Backdrop />
-        <CinemaVideo slug="product" priority className="h-fill h-hero-ground" />
+        <CinemaVideo
+          slug="product"
+          mode="scrub"
+          priority
+          className="h-fill h-hero-ground"
+          data-scrub-video
+          alt=""
+        />
       </div>
       <div className="h-hero-scrim" aria-hidden="true" />
 
-      <div className="h-hero-grid">
-        <div className="h-hero-inner">
-          <p className="h-eyebrow" data-hero-fade>
-            {arrival.eyebrow}
-          </p>
+      <div className="h-hero-inner">
+        <p className="h-eyebrow" data-hero-fade>
+          {arrival.eyebrow}
+        </p>
 
-          <h1 className="h-display" data-split>
-            Part café.
-            <br />
-            Part living room.
-            <br />
-            <em>Entirely IRISCO.</em>
-          </h1>
+        <h1 className="h-display" data-split>
+          Part café.
+          <br />
+          Part living room.
+          <br />
+          <em>Entirely IRISCO.</em>
+        </h1>
 
-          <p className="h-lede" data-hero-fade>
-            {arrival.lede}
-          </p>
+        <p className="h-lede" data-hero-fade>
+          {arrival.lede}
+        </p>
 
-          <div className="h-hero-actions" data-hero-fade>
-            <Link className="h-btn solid" href={arrival.actions[0].href}>
-              <span>{arrival.actions[0].label}</span>
-              <ArrowUpRight size={15} />
-            </Link>
-            <Link className="h-btn ghost" href={arrival.actions[1].href}>
-              <span>{arrival.actions[1].label}</span>
-              <ArrowUpRight size={15} />
-            </Link>
-          </div>
-        </div>
+        <p className="h-hero-note" data-hero-fade>
+          {arrival.note}
+        </p>
 
-        <div className="h-hero-panel" data-hero-panel>
-          <span className="h-hero-panel-glow" aria-hidden="true" />
-          <div className="h-hero-frame">
-            <CinemaVideo slug="feature" priority className="h-fill" />
-          </div>
-          <span className="h-hero-panel-caption" aria-hidden="true">
-            IRISCO · to-go cup
-          </span>
+        <div className="h-hero-actions" data-hero-fade>
+          <Link className="h-btn solid" href={arrival.actions[0].href}>
+            <span>{arrival.actions[0].label}</span>
+            <ArrowUpRight size={15} />
+          </Link>
+          <Link className="h-btn ghost" href={arrival.actions[1].href}>
+            <span>{arrival.actions[1].label}</span>
+            <ArrowUpRight size={15} />
+          </Link>
         </div>
       </div>
 

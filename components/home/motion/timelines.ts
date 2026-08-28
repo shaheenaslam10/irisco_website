@@ -12,10 +12,26 @@ type Setup = (ctx: SceneCtx) => void | (() => void);
 /* -------------------------------------------------------------- 00 arrival */
 
 export const setupArrival: Setup = ({ motion, scene, mode }) => {
-  const { gsap } = motion;
+  const { gsap, ScrollTrigger } = motion;
   const fades = scene.querySelectorAll<HTMLElement>("[data-hero-fade]");
   const inner = scene.querySelector<HTMLElement>(".h-hero-inner");
   const media = scene.querySelector<HTMLElement>("[data-hero-zoom]");
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
+
+  /*
+   * The hero film does NOT autoplay. It sits on frame one and is played by the
+   * scroll: as the hero travels from filling the viewport to leaving it, the
+   * clip runs from start to end. Scrub back up and it runs backwards.
+   */
+  const scrub = createVideoScrub(gsap, video);
+  ScrollTrigger.create({
+    trigger: scene,
+    start: "top top",
+    end: "bottom top",
+    scrub: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => scrub.setProgress(self.progress),
+  });
 
   const intro = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.4 });
   if (fades.length) {
@@ -32,6 +48,8 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
   });
   if (media) exit.to(media, { scale: 1.14, yPercent: 5, ease: "none" }, 0);
   if (inner) exit.to(inner, { yPercent: mode === "compact" ? -8 : -16, opacity: 0, ease: "none" }, 0);
+
+  return () => scrub.destroy();
 };
 
 /* ----------------------------------------------------------------- 02 pour */
@@ -270,20 +288,8 @@ export const setupStudy: Setup = ({ motion, scene, mode }) => {
 /* ---------------------------------------------------------------- 08 invite */
 
 export const setupInvite: Setup = ({ motion, scene }) => {
-  const { gsap, ScrollTrigger } = motion;
+  const { gsap } = motion;
   const bg = scene.querySelector<HTMLElement>(".h-invite-bg");
-  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
-
-  // One last scroll-played pass as the page closes.
-  const scrub = createVideoScrub(gsap, video);
-  ScrollTrigger.create({
-    trigger: scene,
-    start: "top bottom",
-    end: "bottom bottom",
-    scrub: true,
-    invalidateOnRefresh: true,
-    onUpdate: (self) => scrub.setProgress(self.progress),
-  });
 
   if (bg) {
     gsap.fromTo(
@@ -303,8 +309,6 @@ export const setupInvite: Setup = ({ motion, scene }) => {
       },
     );
   }
-
-  return () => scrub.destroy();
 };
 
 /* ---------------------------------------------------------------- registry */

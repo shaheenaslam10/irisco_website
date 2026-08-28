@@ -2,20 +2,25 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { CinemaVideo } from "../motion/CinemaVideo";
-import { invite } from "../content";
+import { invite, photo } from "../content";
 
 /**
  * 07 · Your move.
  *
- * The ring that opened the counter closes the page, footage plays itself out
- * behind it one last time, and the only thing left is a door.
+ * The ring that opened the counter closes the page, the long room sits
+ * behind it, and the only thing left is a door.
  */
 export function Invite() {
   return (
     <section className="h-invite" data-scene="invite" id="chapter-invite">
+      {/*
+        Was a video plate, which went soft at full width behind the ring. A
+        sharp interior photograph holds its detail at any size, and reads as a
+        room rather than as smeared footage.
+      */}
       <div className="h-invite-bg" aria-hidden="true">
-        <CinemaVideo slug="product" mode="scrub" className="h-fill" data-scrub-video alt="" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={photo("interior-gallery")} alt="" loading="lazy" decoding="async" />
       </div>
 
       <svg className="h-invite-ring" viewBox="0 0 100 100" aria-hidden="true" data-draw-scope>

@@ -39,12 +39,14 @@ export const arrival = {
   accent: "Entirely IRISCO.",
   lede:
     "Pulled to the gram. Baked by eight. Set on a table that has never once hurried anybody.",
+  /** Shown under the headline; says plainly that the scroll drives the film. */
+  note: "The film behind these words is played by your scroll — not on a loop.", 
   actions: [
     { label: "Plan your visit", href: "/visit" },
     { label: "See the menu", href: "/menu" },
   ],
   meta: ["Café", "Bakery", "Pantry", "Gallery", "Chess"],
-  cue: "Scroll — the footage plays with you",
+  cue: "Scroll — the film plays with you",
 } as const;
 
 /* ----------------------------------------------------------------- 01 idea */
@@ -101,16 +103,12 @@ export const gallery = {
   reelCaption: "The room, moving",
   reelNote: "A slow three-dimensional pass, played by your scroll.",
   reelAlt: "A smooth 3D parallax study of the room",
+  squareCaption: "The to-go cup",
+  squareNote: "Lit like an object, because that is what it is.",
+  squareAlt: "An IRISCO to-go cup, lit and turning",
   lede:
     "Pakistani memory and contemporary café life share the same wall, in the same light, at the same time. Nothing here is behind glass.",
   frames: [
-    {
-      image: "interior-gallery",
-      caption: "The long room",
-      note: "Teal, brass, and a chandelier doing far more work than it needs to.",
-      span: "tall",
-      depth: 0.9,
-    },
     {
       image: "room-hero",
       caption: "The seating",
@@ -126,10 +124,17 @@ export const gallery = {
       depth: 0.84,
     },
     {
+      image: "interior-gallery",
+      caption: "The long room",
+      note: "Teal, brass, and a chandelier doing far more work than it needs to.",
+      span: "tall",
+      depth: 0.9,
+    },
+    {
       image: "main-counter",
       caption: "The counter",
       note: "Where the first order of the day is usually also the fastest.",
-      span: "tall",
+      span: "wide",
       depth: 1.2,
     },
   ],
@@ -223,8 +228,8 @@ export const study = {
     "Heat lifts off the surface faster than the eye can follow.",
     "Nothing here is retouched. It just needed slowing down.",
   ],
-  /** The high-speed macro clip from videos_v1. */
-  film: "macro" as const,
+  /** The sharp landscape crop of the 4K clip — macro was too soft full-bleed. */
+  film: "reelWide" as const,
 };
 
 /* ------------------------------------------------------------------- quote */
@@ -255,7 +260,14 @@ export const photo = (name: string, size: 900 | 1600 = 1600) => `${opt}/${name}-
  * streaming file instead of forty image requests: far lighter on the network
  * and on the main thread.
  */
-export type FilmSlug = "pour" | "product" | "macro" | "bakery" | "feature" | "reel";
+export type FilmSlug =
+  | "pour"
+  | "product"
+  | "macro"
+  | "bakery"
+  | "feature"
+  | "reel"
+  | "reelWide";
 
 export const film = {
   pour: {
@@ -311,6 +323,20 @@ export const film = {
     scrub: `${cinema}/reel-scrub.mp4`,
     poster: `${cinema}/reel-poster.jpg`,
     alt: "A smooth 3D parallax study of the room",
+  },
+  /**
+   * A landscape crop of the 4K portrait clip — 2160x1215 taken from the 4K
+   * frame, delivered at 1536x864. Used where a full-bleed plate is needed:
+   * because the source is genuinely 4K, the crop is still sharp at full width,
+   * unlike upscaling a 720-wide portrait encode.
+   */
+  reelWide: {
+    loopMp4: `${cinema}/reel-wide-scrub.mp4`,
+    loopWebm: `${cinema}/reel-wide-scrub.mp4`,
+    mob: `${cinema}/reel-wide-mob.mp4`,
+    scrub: `${cinema}/reel-wide-scrub.mp4`,
+    poster: `${cinema}/reel-wide-poster.jpg`,
+    alt: "A smooth three-dimensional pass through the room",
   },
   bakery: {
     loopMp4: `${cinema}/bakery-loop.mp4`,
