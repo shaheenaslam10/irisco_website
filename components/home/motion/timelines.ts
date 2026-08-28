@@ -101,6 +101,24 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
   return () => sequence?.destroy();
 };
 
+/**
+ * 01 · The idea — the full-bleed clip plays through as the chapter passes.
+ */
+export const setupIdea: Setup = ({ motion, scene }) => {
+  const { gsap, ScrollTrigger } = motion;
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
+  const scrub = createVideoScrub(gsap, video);
+  ScrollTrigger.create({
+    trigger: scene,
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => scrub.setProgress(self.progress),
+  });
+  return () => scrub.destroy();
+};
+
 /* ----------------------------------------------------------------- 02 pour */
 
 /**
@@ -358,6 +376,7 @@ export const setupInvite: Setup = ({ motion, scene }) => {
 
 export const sceneSetups: Record<string, Setup> = {
   arrival: setupArrival,
+  idea: setupIdea,
   pour: setupPour,
   room: setupRoom,
   counter: setupCounter,
