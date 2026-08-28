@@ -33,6 +33,7 @@ import { Pantry } from "./scenes/Pantry";
 import { Pour } from "./scenes/Pour";
 import { Quote } from "./scenes/Quote";
 import { Room } from "./scenes/Room";
+import { Study } from "./scenes/Study";
 
 type Mode = "desktop" | "compact";
 
@@ -187,6 +188,7 @@ export function HomeExperience() {
         <Room />
         <Gallery />
         <Counter />
+        <Study />
         <Pantry />
         <Marquee tone="teal" />
         <Quote />

@@ -2,21 +2,21 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { CinemaVideo } from "../motion/CinemaVideo";
+import { Backdrop } from "../chrome/Backdrop";
 import { arrival } from "../content";
 
 /**
  * 00 · Arrival.
  *
- * Full-bleed footage, a headline that splits out of its mask, and the actions.
- * Nothing else competing for attention — the previous build floated half a
- * dozen layers over this and it read as noise.
+ * No footage here on purpose: the clips are spent on the chapters the scroll
+ * actually plays, and the hero's largest contentful paint should be the words.
+ * The ground is a lightweight CSS bloom instead — no bytes, nothing to decode.
  */
 export function Arrival() {
   return (
     <section className="h-hero" data-scene="arrival" id="chapter-arrival">
       <div className="h-hero-media" data-hero-zoom>
-        <CinemaVideo slug="pour" priority className="h-fill" />
+        <Backdrop />
       </div>
       <div className="h-hero-scrim" aria-hidden="true" />
 

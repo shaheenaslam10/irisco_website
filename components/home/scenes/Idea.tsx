@@ -1,20 +1,20 @@
 "use client";
 
-import { CinemaVideo } from "../motion/CinemaVideo";
+import { Backdrop } from "../chrome/Backdrop";
 import { idea } from "../content";
 
 /**
  * 01 · The idea.
  *
  * The manifesto reads itself — words brighten as the scroll head passes them.
- * A quiet macro plate drifts behind at low opacity, so the chapter is not just
- * type on black but is not competing with the words either.
+ * A soft CSS bloom sits behind at low opacity, so the chapter is not just type
+ * on black — without spending a clip on a background.
  */
 export function Idea() {
   return (
     <section className="h-section h-idea" data-scene="idea" id="chapter-idea">
       <div className="h-idea-bed" aria-hidden="true">
-        <CinemaVideo slug="macro" className="h-fill" alt="" />
+        <Backdrop variant="cool" />
       </div>
 
       <div className="h-idea-inner">

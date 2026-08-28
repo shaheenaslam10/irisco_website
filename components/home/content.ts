@@ -24,8 +24,9 @@ export const chapters = [
   { id: "room" as const, index: "03", label: "The room" },
   { id: "gallery" as const, index: "04", label: "The gallery" },
   { id: "counter" as const, index: "05", label: "The counter" },
-  { id: "pantry" as const, index: "06", label: "The pantry" },
-  { id: "invite" as const, index: "07", label: "Your move" },
+  { id: "study" as const, index: "06", label: "The study" },
+  { id: "pantry" as const, index: "07", label: "The pantry" },
+  { id: "invite" as const, index: "08", label: "Your move" },
 ];
 
 /* -------------------------------------------------------------- 00 arrival */
@@ -43,7 +44,7 @@ export const arrival = {
     { label: "See the menu", href: "/menu" },
   ],
   meta: ["Café", "Bakery", "Pantry", "Gallery", "Chess"],
-  cue: "Scroll — the cup turns with you",
+  cue: "Scroll — the footage plays with you",
 } as const;
 
 /* ----------------------------------------------------------------- 01 idea */
@@ -74,7 +75,7 @@ export const pour = {
   closing: "It takes ninety seconds. In all this time, we have never once rushed it.",
 } as const;
 
-/* -------------------------------------------------------------- 04 counter */
+/* -------------------------------------------------------------- 05 counter */
 
 export const counter = {
   index: "05",
@@ -131,10 +132,10 @@ export const gallery = {
   ],
 } as const;
 
-/* --------------------------------------------------------------- 06 pantry */
+/* --------------------------------------------------------------- 07 pantry */
 
 export const pantry = {
-  index: "06",
+  index: "07",
   label: "The pantry",
   heading: "Coffee will lead you to the shelf.",
   lede:
@@ -174,7 +175,7 @@ export const pantry = {
   action: { label: "Browse the pantry", href: "/shop" },
 } as const;
 
-/* ----------------------------------------------------------------- 06 room */
+/* ----------------------------------------------------------------- 03 room */
 
 export const room = {
   index: "03",
@@ -193,7 +194,7 @@ export const room = {
 /* ---------------------------------------------------------------- 08 invite */
 
 export const invite = {
-  index: "07",
+  index: "08",
   label: "Your move",
   kicker: "The door is open.",
   heading: "Find us.",
@@ -205,6 +206,23 @@ export const invite = {
   ],
   closing: "IRISCO · Pakistan",
 } as const;
+
+/* ---------------------------------------------------------------- 06 study */
+
+export const study = {
+  index: "06",
+  label: "The study",
+  heading: "Held still, so you can see it.",
+  lede:
+    "Shot at high speed and played back slowly, the same ninety seconds look completely different. This one is yours to run — scroll and it moves.",
+  notes: [
+    "The crema forms, then settles into something like glass.",
+    "Heat lifts off the surface faster than the eye can follow.",
+    "Nothing here is retouched. It just needed slowing down.",
+  ],
+  /** The high-speed macro clip from videos_v1. */
+  film: "macro" as const,
+};
 
 /* ------------------------------------------------------------------- quote */
 

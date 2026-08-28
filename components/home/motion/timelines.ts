@@ -213,7 +213,61 @@ export const setupPantry: Setup = ({ motion, scene, mode }) => {
   };
 };
 
-/* --------------------------------------------------------------- 06 invite */
+/* ---------------------------------------------------------------- 06 study */
+
+/**
+ * The high-speed macro clip, played by the scroll.
+ *
+ * Pinned, so the wheel owns the frame, with the three notes lighting in turn
+ * beside it. Same idea as The pour, different composition: copy beside the
+ * footage rather than above it.
+ */
+export const setupStudy: Setup = ({ motion, scene, mode }) => {
+  const { gsap, ScrollTrigger } = motion;
+  const pin = scene.querySelector<HTMLElement>("[data-study-pin]");
+  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
+  const notes = Array.from(scene.querySelectorAll<HTMLElement>("[data-study-note]"));
+  const bar = scene.querySelector<HTMLElement>("[data-study-progress]");
+  if (!pin) return;
+
+  const isCompact = mode === "compact";
+  const scrub = createVideoScrub(gsap, video);
+  let active = -1;
+
+  const st = ScrollTrigger.create({
+    trigger: pin,
+    start: "top top",
+    end: () => `+=${window.innerHeight * (isCompact ? 1.5 : 2.2)}`,
+    pin: isCompact ? false : pin,
+    pinSpacing: !isCompact,
+    anticipatePin: isCompact ? 0 : 1,
+    scrub: true,
+    invalidateOnRefresh: true,
+    onUpdate: (self) => {
+      scrub.setProgress(self.progress);
+      if (bar) gsap.set(bar, { scaleX: self.progress });
+
+      const index = Math.min(notes.length - 1, Math.floor(self.progress * notes.length));
+      if (index === active) return;
+      active = index;
+      notes.forEach((note, i) => {
+        gsap.to(note, {
+          opacity: i === index ? 1 : 0.32,
+          duration: 0.4,
+          overwrite: true,
+        });
+        note.dataset.on = i === index ? "true" : "false";
+      });
+    },
+  });
+
+  return () => {
+    st.kill();
+    scrub.destroy();
+  };
+};
+
+/* ---------------------------------------------------------------- 08 invite */
 
 export const setupInvite: Setup = ({ motion, scene }) => {
   const { gsap, ScrollTrigger } = motion;
@@ -260,6 +314,7 @@ export const sceneSetups: Record<string, Setup> = {
   pour: setupPour,
   room: setupRoom,
   counter: setupCounter,
+  study: setupStudy,
   pantry: setupPantry,
   invite: setupInvite,
 };
