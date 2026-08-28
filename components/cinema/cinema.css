@@ -126,9 +126,15 @@
 }
 .c-line > span { display: block; will-change: transform; }
 
-/* Absolutely-filling helpers. */
-.c-abs-fill { position: absolute; inset: 0; }
+/* Absolutely-filling helpers.
+   The `.cv` variants are qualified with `.cv` on purpose: `.cv` sets
+   `position: relative` further down the file, and at equal specificity the
+   later rule wins — which would collapse every filling clip to zero height,
+   because its only children are absolutely positioned. */
+.c-abs-fill,
 .c-hero-fill { position: absolute; inset: 0; }
+.cv.c-abs-fill,
+.cv.c-hero-fill { position: absolute; inset: 0; }
 
 /* ------------------------------------------------------------------- canvas */
 
@@ -171,10 +177,11 @@
   object-fit: cover;
 }
 .cv-video {
-  opacity: 0;
-  transition: opacity 0.9s var(--ease-out);
+  /* Always visible. The element carries its own `poster`, so it shows a real
+     frame from the moment it mounts — and because `canplay` can fire before
+     React hydrates, gating on a ready flag could leave it invisible forever. */
+  opacity: 1;
 }
-.cv-video[data-ready="true"] { opacity: 1; }
 
 /* ----------------------------------------------------------------- buttons */
 
@@ -286,8 +293,8 @@ html.js-motion .c-preloader {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(11, 8, 6, 0.88) 0%, rgba(11, 8, 6, 0.34) 26%, rgba(11, 8, 6, 0.3) 52%, rgba(11, 8, 6, 0.95) 100%),
-    radial-gradient(120% 78% at 18% 88%, rgba(231, 166, 77, 0.18), transparent 62%);
+    linear-gradient(180deg, rgba(11, 8, 6, 0.8) 0%, rgba(11, 8, 6, 0.26) 24%, rgba(11, 8, 6, 0.2) 54%, rgba(11, 8, 6, 0.9) 100%),
+    radial-gradient(120% 78% at 18% 88%, rgba(231, 166, 77, 0.2), transparent 62%);
 }
 .c-hero-inner {
   position: relative;
@@ -1059,6 +1066,12 @@ html.js-motion .cinema [data-hero-fade] { opacity: 0; }
 html.js-motion .cinema [data-hero-line] > span { transform: translateY(106%); }
 html.js-motion .cinema .c-statement .w { color: rgba(245, 241, 232, 0.16); }
 html.js-motion .cinema .c-counter-figure { clip-path: circle(0% at 50% 50%); }
+/* The ritual steps are crossfaded by the pinned timeline. If that timeline
+   never runs, the first beat must still be on screen. */
+html.js-motion .cinema [data-ritual-step]:first-child { opacity: 1; }
+/* Likewise the pantry's first card, revealed by the horizontal container
+   animation. */
+html.js-motion .cinema [data-pantry-item]:first-of-type { opacity: 1; }
 
 /* Pantry cards are faded in by the horizontal container animation, which only
    exists on desktop — on a phone they must simply be there. */
