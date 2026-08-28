@@ -235,7 +235,11 @@
  * which stays as the base layer so the hero still has colour if footage is
  * slow to arrive.
  */
-.h-hero-ground { opacity: 0.9; }
+.h-hero-ground {
+  opacity: 0.92;
+  /* Shows the poster until frame one has decoded, so the hero is never empty. */
+  background: url("/assets/irisco/cinema/hero-poster.jpg") center / cover no-repeat;
+}
 
 .h-hero-scrim {
   position: absolute;
@@ -337,28 +341,22 @@
 
 /* ============================================================ 01 · IDEA */
 
-.h-idea { overflow: hidden; }
-.h-idea-bed {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.16;
-  filter: saturate(0.5) contrast(1.06);
+.h-idea-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
 }
-.h-idea-bed::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    var(--espresso) 0%,
-    rgba(13, 9, 6, 0.72) 30%,
-    rgba(13, 9, 6, 0.72) 70%,
-    var(--espresso) 100%
-  );
+.h-idea-inner { position: relative; max-width: 52rem; }
+.h-idea-stage { display: grid; place-items: center; min-height: 0; }
+/*
+ * Lifted so the clip actually reads. The macro source is dark and soft, so at
+ * native levels it was close to invisible; the same treatment as the pour film.
+ */
+.h-idea-film {
+  filter: brightness(1.32) contrast(1.08) saturate(1.05);
+  max-height: 62svh;
 }
-.h-idea-inner { position: relative; z-index: 1; max-width: 56rem; }
 .h-idea-inner .h-kicker { margin: 1.4rem 0 clamp(2.5rem, 6vw, 5rem); }
 .h-statement {
   font-family: var(--font-display);
@@ -800,44 +798,6 @@
   background: radial-gradient(125% 95% at 50% 45%, transparent 54%, rgba(0, 0, 0, 0.38) 100%);
 }
 
-.h-rail {
-  position: fixed;
-  z-index: 150;
-  right: clamp(0.85rem, 2vw, 2rem);
-  top: 50%;
-  translate: 0 -50%;
-  display: none;
-  grid-template-columns: auto auto;
-  align-items: center;
-  gap: 0.8rem;
-}
-.h-rail-list { display: grid; gap: 0.45rem; }
-.h-rail-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  border: 0;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  font-size: 0.56rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(245, 241, 232, 0.32);
-  transition: color 0.35s var(--ease);
-}
-.h-rail-item span { opacity: 0; translate: 6px 0; transition: opacity 0.35s var(--ease), translate 0.35s var(--ease); }
-.h-rail-item b { font-weight: 400; font-variant-numeric: tabular-nums; }
-.h-rail-item i { width: 13px; height: 1px; background: currentColor; transition: width 0.35s var(--ease); }
-.h-rail-item:hover { color: rgba(245, 241, 232, 0.7); }
-.h-rail-item:hover span { opacity: 1; translate: 0 0; }
-.h-rail-item[data-active="true"] { color: var(--amber); }
-.h-rail-item[data-active="true"] i { width: 24px; }
-.h-rail-item[data-active="true"] span { opacity: 1; translate: 0 0; }
-.h-rail-line { position: relative; width: 1px; height: clamp(100px, 18vh, 180px); background: rgba(245, 241, 232, 0.16); overflow: hidden; }
-.h-rail-line i { position: absolute; inset: 0; background: var(--amber); transform: scaleY(0); transform-origin: top; }
-
 .h-cursor {
   position: fixed;
   z-index: 399;
@@ -874,6 +834,28 @@ html.js-motion .h-preloader {
 .h-preloader-word { font-family: var(--font-display); font-size: clamp(1.4rem, 3.6vw, 2.2rem); letter-spacing: -0.02em; }
 .h-preloader-count { font-size: 0.62rem; letter-spacing: 0.34em; color: var(--faint); font-variant-numeric: tabular-nums; }
 
+/* =============================================================== HEADER */
+
+/*
+ * The shared header is a light paper bar once scrolled, which suits the ivory
+ * inner pages but sits over the footage here like a blind pulled down across
+ * it. On this page it stays dark and translucent instead.
+ */
+body:has([data-home]) .site-header { --nav-fg: rgba(245, 241, 232, 0.9); }
+body:has([data-home]) .site-header.is-scrolled {
+  --nav-fg: rgba(245, 241, 232, 0.92);
+  border-bottom-color: rgba(245, 241, 232, 0.1);
+}
+body:has([data-home]) .site-header.is-scrolled::before {
+  background: rgba(13, 9, 6, 0.72);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+body:has([data-home]) .site-header .brand-iris,
+body:has([data-home]) .site-header.is-scrolled .brand-iris { color: var(--ivory); }
+body:has([data-home]) .site-header .brand-co,
+body:has([data-home]) .site-header.is-scrolled .brand-co { color: var(--aqua); }
+body:has([data-home]) .menu-toggle { color: rgba(245, 241, 232, 0.9); }
+
 /* =========================================================== MOTION GATE */
 
 html.js-motion .home [data-reveal] { opacity: 0; }
@@ -885,7 +867,6 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
 /* ============================================================ RESPONSIVE */
 
 @media (min-width: 1024px) {
-  .h-rail { display: grid; }
   .h-section,
   .h-counter,
   .h-invite,
@@ -926,6 +907,8 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-pantry-card { scroll-snap-align: start; }
   .h-pour-beats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
   .h-hero-pin { align-content: center; }
+  .h-idea-grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .h-idea-film { max-height: 46svh; }
   .h-pour-pin {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr) auto;

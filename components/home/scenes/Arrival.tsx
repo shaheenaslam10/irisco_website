@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Backdrop } from "../chrome/Backdrop";
-import { CinemaVideo } from "../motion/CinemaVideo";
 import { arrival } from "../content";
 
 /**
@@ -25,14 +24,7 @@ export function Arrival() {
       <div className="h-hero-pin" data-hero-pin>
         <div className="h-hero-media" data-hero-zoom>
           <Backdrop />
-          <CinemaVideo
-            slug="product"
-            mode="scrub"
-            priority
-            className="h-fill h-hero-ground"
-            data-scrub-video
-            alt=""
-          />
+        <canvas className="h-fill h-hero-ground" data-hero-seq aria-hidden="true" />
         </div>
         <div className="h-hero-scrim" aria-hidden="true" />
 

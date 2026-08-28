@@ -20,9 +20,8 @@ import {
   buildWordHighlight,
 } from "./motion/reveals";
 import { sceneSetups } from "./motion/timelines";
-import { chapters } from "./content";
 
-import { Atmosphere, ChapterRail, Cursor, Preloader } from "./chrome/Chrome";
+import { Atmosphere, Cursor, Preloader } from "./chrome/Chrome";
 import { Marquee } from "./chrome/Marquee";
 import { Arrival } from "./scenes/Arrival";
 import { Counter } from "./scenes/Counter";
@@ -37,48 +36,11 @@ import { Study } from "./scenes/Study";
 
 type Mode = "desktop" | "compact";
 
-/* --------------------------------------------------------- rail activation */
-
-function buildRail(motion: Motion, root: HTMLElement) {
-  const { gsap, ScrollTrigger } = motion;
-
-  // `data-rail-*` lives in a portal outside #smooth-content.
-  const railItems = Array.from(document.querySelectorAll<HTMLElement>("[data-rail-item]"));
-  const railBar = document.querySelector<HTMLElement>("[data-rail-progress]");
-
-  if (railBar) {
-    ScrollTrigger.create({
-      trigger: root,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => gsap.set(railBar, { scaleY: self.progress }),
-    });
-  }
-
-  const activate = (id: string) => {
-    railItems.forEach((item) => {
-      item.dataset.active = item.dataset.railItem === id ? "true" : "false";
-    });
-  };
-
-  chapters.forEach((chapter) => {
-    const scene = document.getElementById(`chapter-${chapter.id}`);
-    if (!scene) return;
-    ScrollTrigger.create({
-      trigger: scene,
-      start: "top 55%",
-      end: "bottom 55%",
-      onToggle: (self) => {
-        if (self.isActive) activate(chapter.id);
-      },
-    });
-  });
-}
-
 /* ------------------------------------------------------------------- layer */
 
 function buildLayer(motion: Motion, root: HTMLElement, mode: Mode) {
   const teardown: Array<() => void> = [];
+  void root;
 
   const stopSplit = buildSplitHeadings(motion, root);
   if (stopSplit) teardown.push(stopSplit);
@@ -102,7 +64,6 @@ function buildLayer(motion: Motion, root: HTMLElement, mode: Mode) {
     }
   }
 
-  buildRail(motion, root);
 
   return () => teardown.forEach((fn) => fn());
 }
@@ -178,7 +139,6 @@ export function HomeExperience() {
       <Preloader />
       <Atmosphere />
       <Cursor />
-      <ChapterRail />
 
       <div className="home" ref={root} data-home-root>
         <Arrival />

@@ -6,35 +6,38 @@ import { idea } from "../content";
 /**
  * 01 · The idea.
  *
- * The manifesto reads itself — words brighten as the scroll head passes them.
+ * Copy on the left, the clip on the right — matching The pour, so the page has
+ * a consistent rhythm of words beside footage rather than words on top of it.
  *
- * This is where the macro clip lives. It is the softest clip in the set
- * (sharpness 106 against 600+ for the photography), so it is never asked to
- * carry detail: at 18% behind a heavy vignette it is a drifting warmth, which
- * is the one thing it is genuinely good at.
+ * The clip is lifted (see .h-idea-film) because the macro source is dark, and
+ * dimmed further by compression the detail disappeared entirely.
  */
 export function Idea() {
   return (
     <section className="h-section h-idea" data-scene="idea" id="chapter-idea">
-      <div className="h-idea-bed" aria-hidden="true">
-        <CinemaVideo slug="macro" className="h-fill" alt="" />
-      </div>
+      <div className="h-idea-grid">
+        <div className="h-idea-inner" data-reveal-group>
+          <div className="h-index" data-reveal>
+            <b>{idea.index}</b> {idea.label}
+          </div>
+          <p className="h-kicker" data-reveal>
+            {idea.kicker}
+          </p>
 
-      <div className="h-idea-inner">
-        <div className="h-index" data-reveal>
-          <b>{idea.index}</b> {idea.label}
+          <p className="h-statement" data-words>
+            {idea.statement}
+          </p>
+
+          <p className="h-sign" data-reveal>
+            {idea.signature}
+          </p>
         </div>
-        <p className="h-kicker" data-reveal>
-          {idea.kicker}
-        </p>
 
-        <p className="h-statement" data-words>
-          {idea.statement}
-        </p>
-
-        <p className="h-sign" data-reveal>
-          {idea.signature}
-        </p>
+        <div className="h-idea-stage">
+          <div className="h-film h-idea-film">
+            <CinemaVideo slug="macro" mode="scrub" className="h-fill" data-scrub-video alt="" />
+          </div>
+        </div>
       </div>
     </section>
   );

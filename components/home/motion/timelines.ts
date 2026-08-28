@@ -1,5 +1,7 @@
 import type { Motion } from "./gsapSetup";
 import { createVideoScrub } from "./videoScrub";
+import { createSequenceScrub } from "./sequenceScrub";
+import { heroSequence } from "../content";
 
 export type SceneCtx = {
   motion: Motion;
@@ -17,7 +19,7 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
   const fades = scene.querySelectorAll<HTMLElement>("[data-hero-fade]");
   const inner = scene.querySelector<HTMLElement>(".h-hero-inner");
   const media = scene.querySelector<HTMLElement>("[data-hero-zoom]");
-  const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
+  const canvas = scene.querySelector<HTMLCanvasElement>("[data-hero-seq]");
   const beats = Array.from(scene.querySelectorAll<HTMLElement>("[data-hero-beat]"));
 
   /*
@@ -28,7 +30,9 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
    * for a five-second clip to read at a comfortable pace without the page
    * feeling stuck. Only after the last frame does the story move on.
    */
-  const scrub = createVideoScrub(gsap, video);
+  const sequence = canvas
+    ? createSequenceScrub(gsap, canvas, heroSequence.frames, heroSequence.src)
+    : null;
 
   if (pin) {
     const st = ScrollTrigger.create({
@@ -41,7 +45,7 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
       scrub: true,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
-        scrub.setProgress(self.progress);
+        sequence?.setProgress(self.progress);
 
         // The one line of copy keeps pace with the footage.
         if (!beats.length) return;
@@ -63,7 +67,7 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
       end: "bottom top",
       scrub: true,
       invalidateOnRefresh: true,
-      onUpdate: (self) => scrub.setProgress(self.progress),
+      onUpdate: (self) => sequence?.setProgress(self.progress),
     });
   }
 
@@ -86,10 +90,15 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
       scrub: true,
     },
   });
-  if (media) exit.to(media, { scale: 1.1, ease: "none" }, 0);
+  /*
+   * The media is deliberately NOT scaled any more. A continuously rescaled
+   * video layer forces a resample every frame, and that was compounding the
+   * scrub stutter. Only the copy drifts now.
+   */
+  void media;
   if (inner) exit.to(inner, { yPercent: mode === "compact" ? -4 : -8, opacity: 0.15, ease: "none" }, 0);
 
-  return () => scrub.destroy();
+  return () => sequence?.destroy();
 };
 
 /* ----------------------------------------------------------------- 02 pour */

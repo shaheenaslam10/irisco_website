@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import { chapters } from "../content";
+import { useEffect, useRef } from "react";
 import { Portal } from "@/components/ui/Portal";
 
 /**
@@ -11,42 +10,6 @@ import { Portal } from "@/components/ui/Portal";
  * the containing block for position: fixed — so anything fixed inside the page
  * would scroll away with the content. Everything here lives outside it.
  */
-
-export function ChapterRail() {
-  const go = useCallback((id: string) => {
-    const target = document.getElementById(`chapter-${id}`);
-    if (!target) return;
-    window.__smoother?.scrollTo(target, true, "top top");
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  return (
-    <Portal>
-      <aside className="h-rail" aria-label="Chapters">
-        <ol className="h-rail-list">
-          {chapters.map((chapter) => (
-            <li key={chapter.id}>
-              <button
-                type="button"
-                className="h-rail-item"
-                data-rail-item={chapter.id}
-                data-active={chapter.id === "arrival" ? "true" : "false"}
-                onClick={() => go(chapter.id)}
-              >
-                <span>{chapter.label}</span>
-                <b>{chapter.index}</b>
-                <i aria-hidden="true" />
-              </button>
-            </li>
-          ))}
-        </ol>
-        <span className="h-rail-line" aria-hidden="true">
-          <i data-rail-progress />
-        </span>
-      </aside>
-    </Portal>
-  );
-}
 
 /**
  * Atmosphere.

@@ -248,6 +248,18 @@ export const marquee = [
   "Coffee", "Bakery", "Pantry", "Gallery", "Conversation", "Chess", "Slow afternoons",
 ] as const;
 
+/**
+ * The hero film as a pre-decoded image sequence. See motion/sequenceScrub.ts
+ * for why: a blit is smooth, a seek is not.
+ */
+export const heroSequence = {
+  frames: 48,
+  dir: "/assets/irisco/cinema/hero-seq",
+  poster: "/assets/irisco/cinema/hero-poster.jpg",
+  src: (index: number) =>
+    `/assets/irisco/cinema/hero-seq/${String(index + 1).padStart(4, "0")}.webp`,
+} as const;
+
 /* -------------------------------------------------------------------- media */
 
 const opt = "/assets/irisco/optimized";
