@@ -209,11 +209,17 @@
   position: relative;
   min-height: 100svh;
   display: grid;
-  align-content: end;
+  align-content: center;
   gap: clamp(1.6rem, 3vw, 2.6rem);
   padding: calc(var(--header-h, 84px) + 3rem) var(--gutter) clamp(2.5rem, 5vw, 4rem);
   overflow: hidden;
   isolation: isolate;
+}
+.h-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
 }
 
 .h-hero-media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
@@ -236,8 +242,50 @@
     radial-gradient(90% 60% at 16% 88%, rgba(231, 166, 77, 0.16), transparent 64%);
 }
 
-.h-hero-inner { position: relative; display: grid; gap: 1.5rem; max-width: 46rem; }
-.h-hero-actions { display: flex; flex-wrap: wrap; gap: 1rem 1.1rem; margin-top: 0.6rem; }
+.h-hero-inner { position: relative; display: grid; gap: 1.4rem; max-width: 34rem; }
+.h-hero-actions { display: flex; flex-wrap: wrap; gap: 1rem 1.1rem; margin-top: 0.4rem; }
+
+/*
+ * The square product clip, framed as a lit panel.
+ *
+ * It is a bright, light-ground clip: at full bleed its near-white ground would
+ * blow out the dark page, so it is contained, given a hairline and a shadow,
+ * and lit from behind with an amber bloom so it belongs to the room.
+ */
+.h-hero-panel { position: relative; display: grid; gap: 0.9rem; justify-items: center; }
+.h-hero-panel-glow {
+  position: absolute;
+  inset: -18% -12%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(231, 166, 77, 0.28) 0%,
+    rgba(231, 166, 77, 0.08) 42%,
+    rgba(231, 166, 77, 0) 70%
+  );
+}
+.h-hero-frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #efe9e2;
+  box-shadow:
+    0 50px 90px -40px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(245, 241, 232, 0.14);
+}
+.h-hero-panel-caption {
+  position: relative;
+  z-index: 1;
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
 
 .h-hero-foot {
   position: relative;
@@ -419,18 +467,24 @@
    * taller than the viewport has its bottom cut off, and because
    * ScrollSmoother makes ScrollTrigger pin by transform, the overflow then
    * visually overlaps the chapter below. The rows below guarantee the content
-   * always fits — the stage row absorbs the remainder via minmax(0, 1fr).
+   * always fits — the film row absorbs the remainder via minmax(0, 1fr).
    */
   height: 100svh;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: clamp(1rem, 2.2vw, 1.8rem);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "copy film"
+    "track track";
+  align-items: center;
+  gap: clamp(1.4rem, 3vw, 2.6rem) clamp(2rem, 4vw, 4rem);
   padding: clamp(2.5rem, 5vw, 5rem) var(--gutter);
   overflow: hidden;
 }
-.h-pour-head { display: grid; gap: 0.9rem; max-width: 44rem; }
+.h-pour-head { grid-area: copy; display: grid; gap: 0.9rem; align-content: center; }
 
-.h-pour-stage { display: grid; place-items: center; min-height: 0; }
+.h-pour-stage { grid-area: film; display: grid; place-items: center; min-height: 0; }
+.h-pour-track { grid-area: track; }
 .h-film {
   position: relative;
   width: min(100%, 1120px);
@@ -573,9 +627,44 @@
 
 /* =========================================================== 06 · STUDY */
 
-.h-study { background: var(--espresso-2); }
+.h-study {
+  position: relative;
+  background: var(--espresso-2);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/*
+ * The clip is the room, not a window onto it. Full-bleed, scrubbed by the
+ * scroll, then graded into the page with a wash built from the site's own
+ * espresso and navy so the footage melts into the section rather than reading
+ * as a bright rectangle pasted on top of it.
+ */
+.h-study-bg { position: absolute; inset: 0; z-index: 0; }
+.h-study-bg .cv-poster,
+.h-study-bg .cv-video { opacity: 0.62; }
+
+.h-study-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(13, 9, 6, 0.94) 0%,
+      rgba(13, 9, 6, 0.82) 34%,
+      rgba(13, 9, 6, 0.34) 66%,
+      rgba(19, 13, 9, 0.5) 100%
+    ),
+    linear-gradient(0deg, rgba(13, 9, 6, 0.9) 0%, rgba(13, 9, 6, 0) 46%),
+    radial-gradient(70% 60% at 26% 50%, rgba(13, 9, 6, 0.72), rgba(13, 9, 6, 0) 72%),
+    radial-gradient(50% 50% at 78% 34%, rgba(231, 166, 77, 0.12), rgba(231, 166, 77, 0) 70%);
+}
+
 .h-study-pin {
   position: relative;
+  z-index: 2;
   /* Fixed height for the same reason as The pour: a pinned block must fit the
      viewport or its overflow overlaps the chapter below. */
   height: 100svh;
@@ -583,16 +672,8 @@
   align-content: center;
   gap: clamp(1.2rem, 2.4vw, 2rem);
   padding: clamp(2.5rem, 5vw, 5rem) var(--gutter);
-  overflow: hidden;
 }
-.h-study-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: center;
-  gap: clamp(2rem, 5vw, 5rem);
-  min-height: 0;
-}
-.h-study-copy { display: grid; gap: 1rem; }
+.h-study-copy { display: grid; gap: 1rem; max-width: 40rem; }
 .h-study-notes { display: grid; gap: 0.7rem; margin-top: 0.6rem; }
 .h-study-notes li {
   display: grid;
@@ -606,8 +687,6 @@
 .h-study-notes b { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--amber); }
 .h-study-notes span { font-size: 0.94rem; line-height: 1.55; color: var(--muted); }
 
-.h-study-stage { display: grid; gap: 1rem; min-height: 0; }
-.h-study-stage .h-film { max-height: 60svh; }
 .h-study-progress { position: relative; height: 1px; background: rgba(245, 241, 232, 0.16); overflow: hidden; }
 .h-study-progress i {
   position: absolute; inset: 0; background: var(--amber);
@@ -868,8 +947,9 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
 }
 
 @media (max-height: 720px) {
-  .h-pour-pin { gap: 0.8rem; padding-block: 2rem; }
+  .h-pour-pin { gap: 0.8rem 2rem; padding-block: 2rem; }
   .h-pour-beat .h-pour-note { display: none; }
+  .h-hero-frame { max-width: 300px; }
   .h-room-band, .h-invite-inner { min-height: 88svh; }
 }
 
@@ -881,9 +961,17 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-pantry-viewport { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
   .h-pantry-card { scroll-snap-align: start; }
   .h-pour-beats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-  .h-study-grid { grid-template-columns: minmax(0, 1fr); gap: 1.8rem; }
+  .h-hero { align-content: start; }
+  .h-hero-grid { grid-template-columns: minmax(0, 1fr); gap: clamp(1.8rem, 5vw, 3rem); }
+  .h-hero-inner { max-width: none; }
+  .h-hero-frame { max-width: 380px; }
+  .h-pour-pin {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "copy" "film" "track";
+    align-content: center;
+  }
   .h-study-notes { display: none; }
-  .h-study-stage .h-film { max-height: 44svh; }
 }
 
 @media (max-width: 700px) {

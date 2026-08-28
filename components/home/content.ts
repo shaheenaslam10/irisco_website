@@ -252,7 +252,7 @@ export const photo = (name: string, size: 900 | 1600 = 1600) => `${opt}/${name}-
  * streaming file instead of forty image requests: far lighter on the network
  * and on the main thread.
  */
-export type FilmSlug = "pour" | "product" | "macro" | "bakery";
+export type FilmSlug = "pour" | "product" | "macro" | "bakery" | "feature";
 
 export const film = {
   pour: {
@@ -278,6 +278,20 @@ export const film = {
     scrub: `${cinema}/macro-scrub.mp4`,
     poster: `${cinema}/macro-poster.jpg`,
     alt: "Macro study of coffee texture",
+  },
+  /**
+   * `videos_v1/video.mp4` — a square (960x960), bright, light-background
+   * product clip. Because it reads as a lit object rather than a plate, it is
+   * used as a framed panel in the hero, never as a full-bleed backdrop: at
+   * full bleed its near-white ground would blow out the dark page.
+   */
+  feature: {
+    loopMp4: `${cinema}/feature-loop.mp4`,
+    loopWebm: `${cinema}/feature-loop.webm`,
+    mob: `${cinema}/feature-mob.mp4`,
+    scrub: `${cinema}/feature-loop.mp4`,
+    poster: `${cinema}/feature-poster.jpg`,
+    alt: "An IRISCO cup, lit and turning",
   },
   bakery: {
     loopMp4: `${cinema}/bakery-loop.mp4`,

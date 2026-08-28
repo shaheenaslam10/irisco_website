@@ -38,6 +38,7 @@ CLIPS=(
   "product|Hailuo_Video_Commercial studio product moti"
   "macro|Hailuo_Video_High-speed slow motion product"
   "bakery|Hailuo_Video_Macro slow-motion shot of a ba"
+  "feature|video"
 )
 
 for entry in "${CLIPS[@]}"; do

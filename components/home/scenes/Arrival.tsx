@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Backdrop } from "../chrome/Backdrop";
+import { CinemaVideo } from "../motion/CinemaVideo";
 import { arrival } from "../content";
 
 /**
  * 00 · Arrival.
  *
- * No footage here on purpose: the clips are spent on the chapters the scroll
- * actually plays, and the hero's largest contentful paint should be the words.
- * The ground is a lightweight CSS bloom instead — no bytes, nothing to decode.
+ * Copy on the left, and the square product clip on the right as a *lit panel*
+ * rather than a backdrop — it is a bright, light-ground clip, so at full bleed
+ * it would blow out the dark page. Framed, it becomes the thing your eye lands
+ * on, with an amber bloom behind it so it sits in the room instead of on top
+ * of it.
  */
 export function Arrival() {
   return (
@@ -20,32 +23,44 @@ export function Arrival() {
       </div>
       <div className="h-hero-scrim" aria-hidden="true" />
 
-      <div className="h-hero-inner">
-        <p className="h-eyebrow" data-hero-fade>
-          {arrival.eyebrow}
-        </p>
+      <div className="h-hero-grid">
+        <div className="h-hero-inner">
+          <p className="h-eyebrow" data-hero-fade>
+            {arrival.eyebrow}
+          </p>
 
-        <h1 className="h-display" data-split>
-          Part café.
-          <br />
-          Part living room.
-          <br />
-          <em>Entirely IRISCO.</em>
-        </h1>
+          <h1 className="h-display" data-split>
+            Part café.
+            <br />
+            Part living room.
+            <br />
+            <em>Entirely IRISCO.</em>
+          </h1>
 
-        <p className="h-lede" data-hero-fade>
-          {arrival.lede}
-        </p>
+          <p className="h-lede" data-hero-fade>
+            {arrival.lede}
+          </p>
 
-        <div className="h-hero-actions" data-hero-fade>
-          <Link className="h-btn solid" href={arrival.actions[0].href}>
-            <span>{arrival.actions[0].label}</span>
-            <ArrowUpRight size={15} />
-          </Link>
-          <Link className="h-btn ghost" href={arrival.actions[1].href}>
-            <span>{arrival.actions[1].label}</span>
-            <ArrowUpRight size={15} />
-          </Link>
+          <div className="h-hero-actions" data-hero-fade>
+            <Link className="h-btn solid" href={arrival.actions[0].href}>
+              <span>{arrival.actions[0].label}</span>
+              <ArrowUpRight size={15} />
+            </Link>
+            <Link className="h-btn ghost" href={arrival.actions[1].href}>
+              <span>{arrival.actions[1].label}</span>
+              <ArrowUpRight size={15} />
+            </Link>
+          </div>
+        </div>
+
+        <div className="h-hero-panel" data-hero-panel>
+          <span className="h-hero-panel-glow" aria-hidden="true" />
+          <div className="h-hero-frame">
+            <CinemaVideo slug="feature" priority className="h-fill" />
+          </div>
+          <span className="h-hero-panel-caption" aria-hidden="true">
+            IRISCO · to-go cup
+          </span>
         </div>
       </div>
 

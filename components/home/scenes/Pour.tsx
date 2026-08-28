@@ -6,12 +6,11 @@ import { pour } from "../content";
 /**
  * 02 · The pour.
  *
- * The signature moment: the wheel is the playhead. Scroll down and the coffee
- * pours, scroll up and it pours backwards.
+ * Text on the left, the film on the right, the beat captions across the bottom
+ * of the frame, and the transition line below the whole thing.
  *
- * It is one streaming all-intra file rather than forty image requests — a
- * fraction of the network cost, and seeking costs nothing because every frame
- * is a keyframe.
+ * Still pinned, and the wheel is still the playhead — the footage advances as
+ * you scroll and rewinds if you go back up.
  */
 export function Pour() {
   return (
@@ -62,6 +61,7 @@ export function Pour() {
         </div>
       </div>
 
+      {/* The transition line, below the pinned frame. */}
       <p className="h-pour-closing" data-reveal>
         {pour.closing}
       </p>
