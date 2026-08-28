@@ -1,74 +1,89 @@
 import type { Gsap } from "./gsapSetup";
 
 export type VideoScrub = {
-  /** Feed 0→1 scroll progress; the clip eases toward that frame. */
+  /** Feed 0 → 1; the clip eases to that frame. */
   setProgress: (progress: number) => void;
   destroy: () => void;
 };
 
 /**
- * Frame-accurate, scroll-driven video playback.
+ * Scroll-driven video playback.
  *
- * The scrub encodes are all-intra (every frame is a keyframe), so seeking is
- * cheap — but seeking on *every* scroll event still stutters. Instead we keep a
- * target time and a current time and ease between them on the GSAP ticker,
- * which is the same clock driving Lenis and every other tween on the page.
+ * The smoothness problem, and the fix
+ * -----------------------------------
+ * Seeking a video on *every* scroll tick is what makes this stutter: each seek
+ * forces a decode, and most of those land on a frame the viewer is already
+ * looking at. So instead of seeking continuously, we track a float frame
+ * position, ease it toward the target, and only touch `currentTime` when the
+ * frame number actually changes. Over a whole chapter that turns thousands of
+ * seeks into one per frame — and the motion still reads as continuous because
+ * the easing happens in between.
  *
- * Three guards keep it smooth:
- *   1. skip while the media element is mid-seek,
- *   2. skip sub-perceptual deltas (<20ms),
- *   3. do nothing until there is enough data to draw a frame.
+ * Three guards on top of that:
+ *   1. never seek while a seek is already in flight (and do not mark the frame
+ *      as applied, so it is retried on the next tick rather than skipped);
+ *   2. do nothing until there is enough data to draw a frame;
+ *   3. clamp to the last drawable instant so we never park on a black frame.
+ *
+ * The scrub encodes are all-intra at 12fps, so every seek is a single-frame
+ * decode with no dependency on a keyframe interval.
  */
 export function createVideoScrub(gsap: Gsap, video: HTMLVideoElement | null): VideoScrub {
   const noop: VideoScrub = { setProgress: () => {}, destroy: () => {} };
   if (!video) return noop;
 
   let duration = 0;
-  let target = 0;
-  let current = 0;
+  let frameCount = 0;
+  let targetFrame = 0;
+  let currentFrame = 0;
+  let appliedFrame = -1;
   let active = true;
 
-  const readDuration = () => {
+  const measure = () => {
     duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
+    // The scrub encodes are 12fps; if a different clip is ever used, fall back
+    // to something sane rather than dividing by zero.
+    frameCount = duration > 0 ? Math.max(2, Math.round(duration * 12)) : 0;
   };
 
   const tick = () => {
-    if (!active || !duration || video.readyState < 2) return;
-    current += (target - current) * 0.16;
-    if (Math.abs(target - current) < 0.003) current = target;
-    const time = gsap.utils.clamp(0, duration - 0.03, current * duration);
-    if (!video.seeking && Math.abs(video.currentTime - time) > 0.02) {
-      video.currentTime = time;
-    }
+    if (!active || !duration || frameCount < 2 || video.readyState < 2) return;
+
+    currentFrame += (targetFrame - currentFrame) * 0.2;
+    if (Math.abs(targetFrame - currentFrame) < 0.01) currentFrame = targetFrame;
+
+    const frame = Math.round(currentFrame);
+    if (frame === appliedFrame) return;
+    // Mid-seek: leave appliedFrame alone so this frame is retried next tick.
+    if (video.seeking) return;
+
+    appliedFrame = frame;
+    const time = (frame / (frameCount - 1)) * duration;
+    video.currentTime = Math.min(duration - 0.001, Math.max(0, time));
   };
 
-  const start = () => {
-    readDuration();
-    current = video.currentTime && duration ? video.currentTime / duration : 0;
+  const begin = () => {
+    measure();
+    if (!duration) return;
+    // Start from the frame the scroll is actually asking for.
+    currentFrame = targetFrame;
+    appliedFrame = -1;
     gsap.ticker.add(tick);
   };
 
-  if (video.readyState >= 1) start();
-  else video.addEventListener("loadedmetadata", start, { once: true });
+  if (video.readyState >= 1) begin();
+  else video.addEventListener("loadedmetadata", begin, { once: true });
 
   return {
     setProgress: (progress: number) => {
-      target = gsap.utils.clamp(0, 1, progress);
-      if (!duration) readDuration();
+      const p = gsap.utils.clamp(0, 1, progress);
+      if (!frameCount) measure();
+      targetFrame = p * Math.max(0, frameCount - 1);
     },
     destroy: () => {
       active = false;
-      video.removeEventListener("loadedmetadata", start);
+      video.removeEventListener("loadedmetadata", begin);
       gsap.ticker.remove(tick);
     },
   };
-}
-
-/** Draw an SVG circle's stroke as progress: `data-ring` elements use it. */
-export function setRingProgress(circle: SVGCircleElement | null, progress: number) {
-  if (!circle) return;
-  const length = circle.getTotalLength?.() ?? 0;
-  if (!length) return;
-  circle.style.strokeDasharray = `${length}`;
-  circle.style.strokeDashoffset = `${length * (1 - progress)}`;
 }

@@ -35,12 +35,16 @@ export const arrival = {
   index: "00",
   label: "Arrival",
   eyebrow: "IRISCO · Pakistan",
-  lines: ["Part café.", "Part living room."],
-  accent: "Entirely IRISCO.",
-  lede:
-    "Pulled to the gram. Baked by eight. Set on a table that has never once hurried anybody.",
-  /** Shown under the headline; says plainly that the scroll drives the film. */
-  note: "The film behind these words is played by your scroll — not on a loop.", 
+  /**
+   * The hero is pinned until the film finishes. These three lines are the only
+   * thing that changes while it plays — the words keep pace with the footage
+   * rather than sitting under it as a caption explaining itself.
+   */
+  beats: [
+    "Pulled to the gram.",
+    "Baked by eight.",
+    "Set on a table that has never once hurried anybody.",
+  ],
   actions: [
     { label: "Plan your visit", href: "/visit" },
     { label: "See the menu", href: "/menu" },

@@ -207,7 +207,17 @@
 
 .h-hero {
   position: relative;
-  min-height: 100svh;
+  background: var(--espresso);
+}
+
+/*
+ * Pinned for the length of the film. Fixed height, not min-height: a pinned
+ * block taller than the viewport has its bottom cut off, and because
+ * ScrollSmoother pins by transform the overflow then overlaps the next chapter.
+ */
+.h-hero-pin {
+  position: relative;
+  height: 100svh;
   display: grid;
   align-content: center;
   gap: clamp(1.6rem, 3vw, 2.6rem);
@@ -215,7 +225,6 @@
   overflow: hidden;
   isolation: isolate;
 }
-.h-hero-grid { display: block; }
 
 .h-hero-media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
 .h-hero-media > * { will-change: transform; }
@@ -255,12 +264,24 @@
   text-align: center;
 }
 .h-hero-inner .h-lede { max-width: 42ch; }
-.h-hero-note {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--faint);
+/*
+ * The one line that changes while the film plays. Stacked absolutely so the
+ * crossfade never shifts the layout underneath it.
+ */
+.h-hero-beats {
+  position: relative;
+  width: min(100%, 42ch);
+  min-height: 2.6em;
+  margin-inline: auto;
 }
+.h-hero-beat {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.h-hero-beat[data-on="true"] { opacity: 1; }
 .h-hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -383,6 +404,13 @@
 .h-pour-head { grid-area: copy; display: grid; gap: 0.8rem; align-content: center; }
 
 .h-pour-stage { grid-area: film; display: grid; place-items: center; min-height: 0; }
+/*
+ * Lifted, so the cup reads properly. The source clip is dark, and dimmed
+ * further by compression it was close to unreadable at the edges of frame.
+ */
+.h-pour-stage .h-film {
+  filter: brightness(1.28) contrast(1.06) saturate(1.04);
+}
 .h-pour-track { grid-area: track; }
 .h-film {
   position: relative;
@@ -866,6 +894,19 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-room-band { padding-right: calc(var(--gutter) + var(--rail)); }
 }
 
+/*
+ * Short viewports: the pinned hero has to fit eyebrow + three-line headline +
+ * beat line + actions in one screen, or the pin clips its own bottom.
+ */
+@media (max-height: 820px) {
+  .h-hero-pin {
+    gap: clamp(0.8rem, 1.8vw, 1.5rem);
+    padding-block: calc(var(--header-h, 84px) + 1.5rem) clamp(1.6rem, 3vw, 2.4rem);
+  }
+  .h-hero-pin .h-display { font-size: clamp(2.3rem, 6.2vw, 5.2rem); }
+  .h-hero-beats { min-height: 2.2em; }
+}
+
 @media (max-height: 720px) {
   .h-pour-pin { gap: 0.8rem 2rem; padding-block: 2rem; }
   .h-pour-beat .h-pour-note { display: none; }
@@ -884,7 +925,7 @@ html.js-motion .home [data-pour-beat]:not(:first-child) { opacity: 0; }
   .h-pantry-viewport { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
   .h-pantry-card { scroll-snap-align: start; }
   .h-pour-beats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-  .h-hero { align-content: center; }
+  .h-hero-pin { align-content: center; }
   .h-pour-pin {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr) auto;

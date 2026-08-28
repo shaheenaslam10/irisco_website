@@ -13,25 +13,59 @@ type Setup = (ctx: SceneCtx) => void | (() => void);
 
 export const setupArrival: Setup = ({ motion, scene, mode }) => {
   const { gsap, ScrollTrigger } = motion;
+  const pin = scene.querySelector<HTMLElement>("[data-hero-pin]");
   const fades = scene.querySelectorAll<HTMLElement>("[data-hero-fade]");
   const inner = scene.querySelector<HTMLElement>(".h-hero-inner");
   const media = scene.querySelector<HTMLElement>("[data-hero-zoom]");
   const video = scene.querySelector<HTMLVideoElement>("[data-scrub-video] video");
+  const beats = Array.from(scene.querySelectorAll<HTMLElement>("[data-hero-beat]"));
 
   /*
-   * The hero film does NOT autoplay. It sits on frame one and is played by the
-   * scroll: as the hero travels from filling the viewport to leaving it, the
-   * clip runs from start to end. Scrub back up and it runs backwards.
+   * The hero HOLDS until the film has finished.
+   *
+   * Nothing autoplays. The clip is pinned and played by the scroll from first
+   * frame to last — roughly two and a half viewports of travel, which is enough
+   * for a five-second clip to read at a comfortable pace without the page
+   * feeling stuck. Only after the last frame does the story move on.
    */
   const scrub = createVideoScrub(gsap, video);
-  ScrollTrigger.create({
-    trigger: scene,
-    start: "top top",
-    end: "bottom top",
-    scrub: true,
-    invalidateOnRefresh: true,
-    onUpdate: (self) => scrub.setProgress(self.progress),
-  });
+
+  if (pin) {
+    const st = ScrollTrigger.create({
+      trigger: pin,
+      start: "top top",
+      end: () => `+=${window.innerHeight * 2.5}`,
+      pin,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        scrub.setProgress(self.progress);
+
+        // The one line of copy keeps pace with the footage.
+        if (!beats.length) return;
+        const index = Math.min(beats.length - 1, Math.floor(self.progress * beats.length));
+        beats.forEach((beat, i) => {
+          if ((beat.dataset.on === "true") === (i === index)) return;
+          beat.dataset.on = i === index ? "true" : "false";
+          gsap.to(beat, { opacity: i === index ? 1 : 0, duration: 0.5, overwrite: true });
+        });
+      },
+    });
+    // Keep the pin alive for the lifetime of the page, but hand back the scrub.
+    gsap.set(beats.slice(1), { opacity: 0 });
+    void st;
+  } else {
+    ScrollTrigger.create({
+      trigger: scene,
+      start: "top top",
+      end: "bottom top",
+      scrub: true,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => scrub.setProgress(self.progress),
+    });
+  }
 
   const intro = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.4 });
   if (fades.length) {
@@ -43,11 +77,17 @@ export const setupArrival: Setup = ({ motion, scene, mode }) => {
     );
   }
 
+  // A gentle drift over the pin: the film moves slightly as it plays out.
   const exit = gsap.timeline({
-    scrollTrigger: { trigger: scene, start: "top top", end: "bottom top", scrub: true },
+    scrollTrigger: {
+      trigger: pin ?? scene,
+      start: "top top",
+      end: () => `+=${window.innerHeight * 2.5}`,
+      scrub: true,
+    },
   });
-  if (media) exit.to(media, { scale: 1.14, yPercent: 5, ease: "none" }, 0);
-  if (inner) exit.to(inner, { yPercent: mode === "compact" ? -8 : -16, opacity: 0, ease: "none" }, 0);
+  if (media) exit.to(media, { scale: 1.1, ease: "none" }, 0);
+  if (inner) exit.to(inner, { yPercent: mode === "compact" ? -4 : -8, opacity: 0.15, ease: "none" }, 0);
 
   return () => scrub.destroy();
 };
