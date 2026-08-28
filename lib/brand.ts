@@ -53,11 +53,16 @@ export const brand = {
     chilli: "#b8432a",
   },
 
-  /** The 3D hero cup, in the two finishes IRISCO actually ships. */
+  /**
+   * The hero cup. IRISCO ships a beige disposable cup with a dark blue lid and
+   * the logo printed on it — so the body is warm and the lid is navy.
+   */
   cup: {
+    body: "#d8cdbd", // beige cup
+    lid: "#1f3f5c", // dark blue lid
+    crema: "#3a1e0c",
     navy: "#183c55",
     ivory: "#dcd8d0",
-    crema: "#3a1e0c",
   },
 } as const;
 

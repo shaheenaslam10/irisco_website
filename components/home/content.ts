@@ -246,6 +246,16 @@ export const layer = {
   stone: `${gen}/coffee-v2/coffee-stone-surface-1600.webp`,
 } as const;
 
+/**
+ * SWAP POINT — the real cup.
+ *
+ * Drop the exported model at `public/models/cup.glb` and set this to
+ * `"/models/cup.glb"`. The scene normalises it automatically: centred on X/Z,
+ * base sitting on the plinth, scaled to the composition's height, Draco and
+ * Meshopt handled. Leave it `null` and the procedural lathe stands in.
+ */
+export const cupModel: string | null = null;
+
 /** Scroll-scrubbed frame sequences, straight from the generated clips. */
 export const sequence = {
   pour: { dir: `${seq}/pour`, frames: 40, poster: `${seq}/pour-poster.webp` },
