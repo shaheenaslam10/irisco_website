@@ -1,25 +1,39 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Hanken_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./inner-pages.css";
-import "@/components/story/story.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
-const display = Fraunces({
-  subsets: ["latin"],
+/**
+ * Both families are self-hosted variable woff2 (via @fontsource-variable) rather
+ * than fetched from Google at build time: no external request, no fallback
+ * flash, and the full Fraunces axis set — weight, optical size, SOFT and WONK.
+ * `font-optical-sizing: auto` in globals.css lets the display face tighten up
+ * as it gets larger.
+ */
+const display = localFont({
+  src: [
+    { path: "./fonts/fraunces-latin-full-normal.woff2", style: "normal" },
+    { path: "./fonts/fraunces-latin-full-italic.woff2", style: "italic" },
+  ],
   display: "swap",
-  axes: ["opsz"],
-  style: ["normal", "italic"],
   variable: "--font-fraunces",
+  preload: true,
+  fallback: ["Iowan Old Style", "Palatino Linotype", "Georgia", "serif"],
 });
 
-const sans = Hanken_Grotesk({
-  subsets: ["latin"],
+const sans = localFont({
+  src: [
+    { path: "./fonts/hanken-grotesk-latin-wght-normal.woff2", style: "normal" },
+    { path: "./fonts/hanken-grotesk-latin-wght-italic.woff2", style: "italic" },
+  ],
   display: "swap",
   variable: "--font-hanken",
+  preload: true,
+  fallback: ["Segoe UI", "system-ui", "sans-serif"],
 });
 
 // Configurable via NEXT_PUBLIC_SITE_URL; falls back to localhost for local builds.
@@ -79,6 +93,22 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
+      <head>
+        {/*
+          Motion bootstrap. Runs before first paint so the cinema page can hide
+          exactly the elements its timelines are about to reveal — and never
+          hides anything for visitors who asked for reduced motion or who have
+          no JS at all.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var d=document.documentElement;d.classList.add('js');" +
+              "if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)" +
+              "d.classList.add('js-motion')}catch(e){}})()",
+          }}
+        />
+      </head>
       <body>
         <a className="skip-link" href="#main">Skip to content</a>
         <SmoothScroll />
