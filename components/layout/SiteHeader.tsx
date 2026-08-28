@@ -1,26 +1,102 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { navigation } from "@/lib/content/site";
+import { BrandMark } from "./BrandMark";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  // Close the overlay whenever the route changes. Adjusting state during render
+  // (rather than in an effect) is React's recommended pattern here, and it also
+  // covers back/forward navigation, not just link clicks.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
+
+  // Solidify the bar once the hero starts leaving the viewport.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 48);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Lock scroll (and pause Lenis) while the full-screen menu is open.
+  useEffect(() => {
+    const lenis = window.__lenis;
+    if (open) {
+      lenis?.stop();
+      document.body.style.overflow = "hidden";
+    } else {
+      lenis?.start();
+      document.body.style.overflow = "";
+    }
+    return () => {
+      lenis?.start();
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
-    <header className="site-header">
-      <Link href="/" className="brand" aria-label="IRISCO home">
-        <Image src="/assets/irisco/optimized/logo-wordmark.webp" width={176} height={70} alt="IRISCO" priority />
+    <header
+      className={`site-header${scrolled ? " is-scrolled" : ""}`}
+      data-hero="dark"
+    >
+      <Link href="/" className="brand" aria-label="IRISCO — home">
+        <BrandMark />
       </Link>
-      <button className="menu-toggle" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="primary-navigation">
-        <span>{open ? "Close" : "Menu"}</span>{open ? <X size={19} /> : <Menu size={19} />}
-      </button>
-      <nav id="primary-navigation" className={open ? "nav-open" : ""} aria-label="Primary navigation">
-        {navigation.map((item) => <Link key={item.href} href={item.href} onClick={() => setOpen(false)} aria-current={pathname === item.href ? "page" : undefined}>{item.label}</Link>)}
+
+      <nav className="site-nav" aria-label="Primary">
+        {navigation.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={isActive(item.href) ? "page" : undefined}
+          >
+            {item.label}
+          </Link>
+        ))}
       </nav>
+
+      <button
+        className="menu-toggle"
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="mobile-nav"
+      >
+        <span>{open ? "Close" : "Menu"}</span>
+        {open ? <X size={18} /> : <Menu size={18} />}
+      </button>
+
+      <div id="mobile-nav" className={`nav-overlay${open ? " open" : ""}`}>
+        <nav className="nav-overlay-links" aria-label="Mobile">
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="nav-overlay-foot">
+          <span>Coffee · Bakery · Pantry · Gallery</span>
+          <span>IRISCO · Pakistan</span>
+        </div>
+      </div>
     </header>
   );
 }

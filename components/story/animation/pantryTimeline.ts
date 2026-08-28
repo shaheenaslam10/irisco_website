@@ -1,13 +1,68 @@
 import type { StoryGsap } from "./setupStoryMotion";
 
+/**
+ * Horizontal "shelf" — the section pins and the track translates left across the
+ * full scroll distance. Panel meta reveals are driven off the same tween via
+ * ScrollTrigger's containerAnimation. Only mounted on desktop; on compact the
+ * track is a normal vertical stack (see story.css) and this never runs.
+ */
 export function createPantryTimeline(gsap: StoryGsap, scene: HTMLElement) {
-  const select = gsap.utils.selector(scene);
+  const track = scene.querySelector<HTMLElement>(".pantry-track");
+  if (!track) return gsap.timeline();
 
-  return gsap.timeline({
-    scrollTrigger: { trigger: scene, start: "top top", end: "+=155%", scrub: 1, pin: true },
-  })
-    .from(select(".shelf-line"), { scaleX: 0, transformOrigin: "left", stagger: .08 })
-    .from(select(".shelf-object"), { y: 180, rotate: (index: number) => index % 2 ? 5 : -4, opacity: 0, stagger: .08 }, 0)
-    .to(select(".shelf-object"), { opacity: 0, duration: .2 }, .72)
-    .fromTo(select(".pantry-photo"), { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1 }, .72);
+  const distance = () => Math.max(0, track.scrollWidth - scene.offsetWidth);
+
+  const timeline = gsap.timeline({
+    defaults: { ease: "none" },
+    scrollTrigger: {
+      trigger: scene,
+      start: "top top",
+      end: () => "+=" + distance(),
+      scrub: 1,
+      pin: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  timeline.to(track, { x: () => -distance() });
+
+  // Reveal each panel's copy as it enters, measured against the horizontal tween.
+  gsap.utils.toArray<HTMLElement>(scene.querySelectorAll(".pantry-item")).forEach((item) => {
+    const meta = item.querySelector(".pantry-item-meta");
+    const image = item.querySelector(".pantry-item-image img");
+    if (meta) {
+      gsap.from(meta, {
+        y: 48,
+        autoAlpha: 0,
+        duration: 0.6,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: item,
+          containerAnimation: timeline,
+          start: "left 82%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }
+    if (image) {
+      gsap.fromTo(
+        image,
+        { scale: 1.14 },
+        {
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: item,
+            containerAnimation: timeline,
+            start: "left right",
+            end: "right left",
+            scrub: true,
+          },
+        },
+      );
+    }
+  });
+
+  return timeline;
 }

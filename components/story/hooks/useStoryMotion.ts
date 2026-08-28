@@ -1,11 +1,12 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
 import { createOpeningTimeline } from "../animation/openingTimeline";
-import { createBakeryTimeline } from "../animation/bakeryTimeline";
-import { createCommunityTimeline } from "../animation/communityTimeline";
-import { createCultureTimeline } from "../animation/cultureTimeline";
+import { createManifestoTimeline } from "../animation/manifestoTimeline";
+import { createRitualTimeline } from "../animation/ritualTimeline";
+import { createCounterTimeline } from "../animation/counterTimeline";
 import { createPantryTimeline } from "../animation/pantryTimeline";
-import { createProductTimeline } from "../animation/productTimeline";
+import { createSpaceTimeline } from "../animation/spaceTimeline";
+import { createInvitationTimeline } from "../animation/invitationTimeline";
 import {
   COMPACT_STORY_QUERY,
   DESKTOP_STORY_QUERY,
@@ -31,20 +32,27 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
       if (cancelled) return;
       context = gsap.context(() => {
         media = gsap.matchMedia();
+
+        // Desktop: seven distinct scroll devices, one per scene.
         media.add(DESKTOP_STORY_QUERY, () => {
           const opening = scene(storyRoot, "opening");
-          const bakery = scene(storyRoot, "bakery");
+          const manifesto = scene(storyRoot, "manifesto");
+          const ritual = scene(storyRoot, "ritual");
+          const counter = scene(storyRoot, "counter");
           const pantry = scene(storyRoot, "pantry");
-          const product = scene(storyRoot, "product");
-          const culture = scene(storyRoot, "culture");
-          const community = scene(storyRoot, "community");
+          const space = scene(storyRoot, "space");
+          const invitation = scene(storyRoot, "invitation");
           if (opening) createOpeningTimeline(gsap, opening, "desktop");
-          if (bakery) createBakeryTimeline(gsap, bakery);
+          if (manifesto) createManifestoTimeline(gsap, manifesto);
+          if (ritual) createRitualTimeline(gsap, ritual);
+          if (counter) createCounterTimeline(gsap, counter);
           if (pantry) createPantryTimeline(gsap, pantry);
-          if (product) createProductTimeline(gsap, product);
-          if (culture) createCultureTimeline(gsap, culture);
-          if (community) createCommunityTimeline(gsap, community);
+          if (space) createSpaceTimeline(gsap, space);
+          if (invitation) createInvitationTimeline(gsap, invitation);
         });
+
+        // Compact: the hero keeps its (shorter) scrub; every other scene is a
+        // vertical stack that simply reveals as it enters.
         media.add(COMPACT_STORY_QUERY, () => {
           const opening = scene(storyRoot, "opening");
           if (opening) createOpeningTimeline(gsap, opening, "compact");
@@ -52,7 +60,8 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
             gsap.from(element, {
               opacity: 0,
               y: 35,
-              duration: .8,
+              duration: 0.8,
+              ease: "power3.out",
               scrollTrigger: { trigger: element, start: "top 88%" },
             });
           });

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "irisco",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "TEMP=D:/_tmp TMP=D:/_tmp TMPDIR=D:/_tmp npm_config_cache=/d/_npmcache exec npm run start"],
+      "port": 3000
+    }
+  ]
+}

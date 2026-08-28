@@ -3,12 +3,12 @@
 import { useRef } from "react";
 import { useStoryMotion } from "./hooks/useStoryMotion";
 import { ArrivalScene } from "./scenes/ArrivalScene";
-import { BakeryScene } from "./scenes/BakeryScene";
-import { CommunityScene } from "./scenes/CommunityScene";
-import { CultureScene } from "./scenes/CultureScene";
-import { FinalScene } from "./scenes/FinalScene";
+import { ManifestoScene } from "./scenes/ManifestoScene";
+import { RitualScene } from "./scenes/RitualScene";
+import { CounterScene } from "./scenes/CounterScene";
 import { PantryScene } from "./scenes/PantryScene";
-import { ProductScene } from "./scenes/ProductScene";
+import { SpaceScene } from "./scenes/SpaceScene";
+import { InvitationScene } from "./scenes/InvitationScene";
 
 export function StoryExperience() {
   const root = useRef<HTMLDivElement>(null);
@@ -17,12 +17,12 @@ export function StoryExperience() {
   return (
     <div ref={root}>
       <ArrivalScene />
-      <BakeryScene />
+      <ManifestoScene />
+      <RitualScene />
+      <CounterScene />
       <PantryScene />
-      <ProductScene />
-      <CultureScene />
-      <CommunityScene />
-      <FinalScene />
+      <SpaceScene />
+      <InvitationScene />
     </div>
   );
 }

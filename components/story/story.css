@@ -1,309 +1,314 @@
-/* Homepage storytelling styles. Brand tokens remain in app/globals.css. */
-
-.story-hero { position: relative; min-height: 100svh; padding: calc(var(--header-h) + 3rem) clamp(1.25rem, 6vw, 7rem) 4rem; display: flex; align-items: flex-end; isolation: isolate; background: var(--paper); }
-.hero-art { position: absolute; z-index: -1; inset: calc(var(--header-h) + 1rem) 0 0 32%; overflow: hidden; }
-.hero-art img { object-fit: cover; object-position: 50% 50%; }
-.hero-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--paper) 0%, transparent 36%), linear-gradient(0deg, rgba(250,249,245,.8), transparent 45%); }
-.bean-path { position: absolute; inset: 5% 5%; width: 90%; height: 90%; overflow: visible; }
-.bean-path path { fill: none; stroke: var(--navy); stroke-width: 1.4; stroke-dasharray: 4 9; opacity: .34; }
-.bean-path ellipse { fill: var(--aqua); transform: rotate(32deg); transform-origin: center; }
-.hero-copy { max-width: 720px; position: relative; z-index: 2; }
-.hero-copy h1 { font-size: clamp(4rem, 8.3vw, 9.2rem); color: var(--navy); margin-bottom: 1.8rem; }
-.hero-copy > p:not(.eyebrow) { max-width: 520px; line-height: 1.65; font-size: 1rem; margin: 0 0 2rem; }
-.story-hero > .chapter-index { position: absolute; right: clamp(1.25rem,4vw,4rem); bottom: 2rem; writing-mode: vertical-rl; }
-.editorial-intro { padding: clamp(6rem, 13vw, 12rem) clamp(1.25rem, 12vw, 13rem); display: grid; grid-template-columns: .7fr 2fr; gap: 5vw; border-top: 1px solid var(--rule); }
-.editorial-statement { margin: 0; max-width: 1050px; font-family: var(--font-display), serif; font-size: clamp(2.3rem, 5vw, 5.7rem); line-height: 1.04; letter-spacing: -.035em; }
+/* =============================================================
+   IRISCO homepage — the scroll film.
+   Tokens & chrome live in app/globals.css. Every scene's CSS
+   default is its reduced-motion static state: when the motion
+   engine is skipped (reduced motion, or JS off), the page still
+   reads as designed. Seven scenes, each a deliberately different
+   device — arrival, manifesto, ritual, counter, pantry, space,
+   invitation.
+   ============================================================= */
 
 .story-scene { position: relative; min-height: 100svh; overflow: hidden; }
-.light-copy { color: white; }
-.scene-copy { position: absolute; z-index: 5; left: clamp(1.25rem, 7vw, 8rem); top: 50%; transform: translateY(-50%); max-width: 480px; }
-.scene-copy h2, .product-copy h2, .community-copy h2, .culture-caption h2 { font-size: clamp(4rem, 7.5vw, 8rem); margin-bottom: 1.5rem; }
-.scene-copy > p:last-child, .product-copy > p { line-height: 1.7; max-width: 400px; }
-.coffee-scene { color: var(--navy-dark); background: var(--ivory); isolation: isolate; }
-.coffee-scene::before { content: ""; position: absolute; z-index: 0; top: 0; bottom: 0; left: 42%; width: 1px; background: var(--rule); }
-.coffee-copy { color: var(--navy-dark); }
-.coffee-copy h2 { color: var(--navy); }
-.coffee-copy > p:last-child { max-width: 340px; }
-.coffee-stage { position: absolute; z-index: 1; inset: 0 0 0 42%; overflow: hidden; background: var(--paper); }
-.coffee-surface { position: absolute; z-index: 0; left: 7%; right: 7%; bottom: 7%; height: 31%; background: #ebe7df; border-top: 1px solid rgba(7,83,106,.24); clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%); }
-.coffee-surface i { position: absolute; left: 12%; right: 12%; top: 0; height: 1px; background: var(--aqua); opacity: .72; transform-origin: center; }
-.coffee-surface::after { content: ""; position: absolute; left: 50%; top: 21%; width: min(39vw, 560px); height: min(10vw, 124px); border: 1px solid rgba(7,83,106,.18); border-radius: 50%; transform: translateX(-50%); }
-.coffee-object { position: absolute; z-index: 3; right: clamp(8%, 10vw, 15%); bottom: 9%; width: clamp(300px, 27vw, 460px); aspect-ratio: 2 / 3; will-change: transform; }
-.coffee-cup-image { position: relative; z-index: 2; display: block; width: 100%; height: auto; }
-.coffee-shadow { position: absolute; z-index: 2; right: clamp(10%, 11.8vw, 17%); bottom: 8.1%; width: clamp(230px, 21vw, 360px); height: clamp(18px, 2.25vw, 34px); border-radius: 50%; background: rgba(4,56,68,.72); filter: blur(15px); opacity: .28; transform-origin: center; will-change: transform, opacity; }
-.coffee-shadow i { position: absolute; inset: 25% 17%; border-radius: inherit; background: rgba(4,56,68,.82); }
-.coffee-steam { position: absolute; z-index: 1; top: -7%; left: 50%; width: 35%; height: 18%; overflow: visible; transform: translateX(-50%); }
-.coffee-steam-line { fill: none; stroke: var(--navy); stroke-width: 2.2; stroke-linecap: round; opacity: .42; filter: blur(.35px); }
-.coffee-stage-note { position: absolute; z-index: 4; top: 15%; right: 5%; display: flex; align-items: center; gap: .65rem; color: var(--navy); font-size: .58rem; font-weight: 700; letter-spacing: .17em; opacity: .62; }
-.coffee-stage-note i { width: 46px; height: 1px; background: var(--aqua); }
 
-.quiet-grid { min-height: 80svh; padding: clamp(6rem, 12vw, 11rem) clamp(1.25rem, 8vw, 9rem); display: grid; grid-template-columns: 1.25fr .75fr; gap: 12vw; align-items: center; }
-.quiet-grid h2 { font-size: clamp(4rem, 7vw, 8rem); }
-.menu-list { display: grid; border-top: 1px solid var(--rule); }
-.menu-list span, .menu-list a { padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
-.menu-list span { font-family: var(--font-display), serif; font-size: 1.5rem; }
+/* ============================ 01 · Arrival ============================ */
+.opening-scene {
+  position: relative;
+  height: 100svh;
+  background: var(--ink);
+  isolation: isolate;
+  overflow: hidden;
+}
+.opening-stage { position: absolute; inset: 0; overflow: hidden; }
 
-.bakery-scene { background: #111; }
-.bakery-photo { position: absolute; inset: 0; }
-.bakery-photo img { object-position: center 50%; }
-.bakery-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.68), transparent 63%), linear-gradient(0deg, rgba(0,0,0,.34), transparent 55%); }
-.bakery-caption { position: absolute; z-index: 3; left: clamp(1.25rem, 6vw, 7rem); bottom: 8%; color: white; }
-.bakery-caption h2 { font-size: clamp(3.5rem, 7vw, 7.5rem); }
-.bakery-notes { position: absolute; z-index: 3; right: 4vw; top: 20%; display: grid; gap: .8rem; }
-.bakery-note { padding: .65rem 1rem; color: white; border: 1px solid rgba(255,255,255,.5); font-size: .67rem; text-transform: uppercase; letter-spacing: .16em; }
+.opening-lens { position: absolute; inset: 0; z-index: 0; }
+.opening-lens img { object-fit: cover; object-position: 50% 40%; }
 
-.pantry-scene { background: var(--ivory); display: grid; grid-template-columns: 38% 62%; }
-.pantry-head { padding: clamp(6rem, 12vh, 10rem) 4vw; display: flex; flex-direction: column; justify-content: center; }
-.pantry-head h2 { font-size: clamp(3.5rem, 5.6vw, 6.5rem); margin-bottom: 1.5rem; }
-.pantry-head > p:last-child { max-width: 430px; line-height: 1.7; }
-.shelf-stage { position: relative; overflow: hidden; background: #151b1a; }
-.shelf-line { position: absolute; z-index: 1; left: 6%; right: 6%; height: 3px; background: rgba(255,255,255,.25); }
-.line-a { top: 32%; }.line-b { top: 58%; }.line-c { top: 83%; }
-.shelf-object { position: absolute; z-index: 2; width: 34%; height: 22%; border: 1px solid rgba(255,255,255,.15); overflow: hidden; }
-.shelf-object img { object-fit: cover; }.object-a { top: 8%; left: 8%; }.object-b { top: 35%; right: 8%; }.object-c { bottom: 5%; left: 18%; }
-.pantry-photo { position: absolute; z-index: 3; inset: 0; opacity: 0; }.pantry-photo img { object-position: 56% center; }
+/* Night grade that lifts on scroll — a scrim only across the corners where
+   the type sits, never a flat full-frame overlay. */
+.opening-grade {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .5;
+  background:
+    radial-gradient(130% 100% at 50% 34%, transparent 30%, color-mix(in srgb, var(--ink) 82%, transparent) 100%);
+}
+.opening-scrim {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background:
+    linear-gradient(0deg, color-mix(in srgb, var(--ink) 80%, transparent), transparent 46%),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 64%, transparent), transparent 52%);
+}
 
-.product-scene { background: #160c08; }
-.product-photo { position: absolute; inset: 0; }
-.product-photo img { object-position: 50% 52%; }
-.product-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,7,4,.16), rgba(17,7,4,.86) 75%); }
-.product-copy { position: absolute; z-index: 4; width: min(470px, 38vw); right: 7vw; top: 50%; transform: translateY(-50%); }
-.product-copy > p { margin-bottom: 1.6rem; }
-.particles { position: absolute; inset: 0; pointer-events: none; }
-.chilli-particle { position: absolute; width: 5px; height: 9px; background: var(--chilli); border-radius: 50%; transform: rotate(30deg); }
-.chilli-particle:nth-child(1) { left: 12%; top: 18%; }.chilli-particle:nth-child(2) { left: 25%; top: 28%; }.chilli-particle:nth-child(3) { left: 36%; top: 12%; }.chilli-particle:nth-child(4) { left: 45%; top: 42%; }.chilli-particle:nth-child(5) { left: 57%; top: 20%; }.chilli-particle:nth-child(6) { left: 68%; top: 35%; }.chilli-particle:nth-child(7) { left: 80%; top: 14%; }.chilli-particle:nth-child(8) { left: 20%; top: 70%; }.chilli-particle:nth-child(9) { left: 42%; top: 78%; }.chilli-particle:nth-child(10) { left: 62%; top: 66%; }.chilli-particle:nth-child(11) { left: 88%; top: 75%; }.chilli-particle:nth-child(12) { left: 8%; top: 52%; }.chilli-particle:nth-child(13) { left: 74%; top: 88%; }
+/* The IRISCO ring — an aperture that draws open on load, then dissolves.
+   The signature move; it echoes the real ring of bulbs in the photograph. */
+.opening-ring {
+  position: absolute; z-index: 3; left: 50%; top: 44%;
+  width: min(62vh, 62vw); aspect-ratio: 1; transform: translate(-50%, -50%);
+  pointer-events: none; overflow: visible;
+}
+.opening-ring circle {
+  fill: none; stroke: var(--aqua); stroke-width: .4; stroke-dasharray: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--glow) 65%, transparent));
+  opacity: .82;
+}
 
-.culture-intro { padding: clamp(8rem, 15vw, 15rem) 8vw; text-align: center; }
-.culture-intro h2 { font-size: clamp(3.2rem, 7vw, 8rem); }
-.culture-scene { background: #151515; }
-.culture-photo { position: absolute; inset: 0; }
-.culture-photo img { object-position: center 34%; }
-.culture-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.65), transparent 55%); }
-.chandelier-overlay { position: absolute; z-index: 3; width: 100%; height: 100%; inset: 0; }
-.chandelier-overlay line, .chandelier-ring { stroke: rgba(255,255,255,.55); stroke-width: 2; fill: none; }
-.chandelier-ring { stroke-dasharray: 900; }
-.bulb { fill: #ffd082; filter: drop-shadow(0 0 12px #f3a837); }
-.culture-caption { position: absolute; z-index: 4; left: 7vw; bottom: 7%; }
+.opening-copy {
+  position: absolute; z-index: 5;
+  left: var(--gutter); right: var(--gutter); bottom: clamp(3rem, 9vh, 7rem);
+}
+.opening-text-state { position: absolute; left: 0; right: 0; bottom: 0; max-width: 60rem; }
+.opening-kicker { color: var(--aqua); margin-bottom: 1.3rem; }
+.opening-title,
+.opening-text-ritual,
+.opening-text-resolution {
+  margin: 0; font-family: var(--font-display); font-weight: 470;
+  font-size: clamp(3.2rem, 8.6vw, 8.6rem); line-height: .92; letter-spacing: -.04em;
+  color: var(--paper); text-wrap: balance;
+}
+.opening-copy .line { display: block; overflow: hidden; padding-bottom: .04em; }
+.opening-copy .line-inner { display: block; }
+.opening-lede {
+  max-width: 40rem; margin-top: 1.7rem;
+  font-size: clamp(1.05rem, .95rem + .5vw, 1.35rem); line-height: 1.55;
+  color: rgba(255, 255, 255, .84);
+}
+.opening-text-arrival .hero-actions { margin-top: 2.1rem; }
 
-.space-window { padding: clamp(6rem, 11vw, 11rem) 6vw; display: grid; grid-template-columns: 1.4fr .6fr; gap: 7vw; align-items: center; }
-.space-window > div { position: relative; min-height: 68svh; overflow: hidden; }
-.space-window aside h2 { font-size: clamp(3.5rem, 5.5vw, 6rem); margin-bottom: 1.5rem; }
-.space-window aside p { line-height: 1.7; }
+/* ============================ 02 · Manifesto ============================ */
+.manifesto-scene {
+  position: relative; height: 100svh; overflow: hidden;
+  background: var(--ink); color: var(--paper);
+  display: grid; align-items: center;
+}
+/* Ambient depth: a warm glow off the top, a faint ring echoing the signature. */
+.manifesto-scene::before {
+  content: ""; position: absolute; z-index: 0; inset: 0; pointer-events: none;
+  background: radial-gradient(90% 70% at 78% 8%, color-mix(in srgb, var(--glow) 15%, transparent), transparent 60%);
+}
+.manifesto-halo {
+  position: absolute; z-index: 0; right: -20vw; top: 50%; transform: translateY(-50%);
+  width: 70vw; height: 70vw; max-width: 900px; max-height: 900px; border-radius: 50%;
+  border: 1px solid var(--rule-light); pointer-events: none; opacity: .5;
+}
+.manifesto-inner { position: relative; z-index: 2; padding-inline: var(--gutter); max-width: 66rem; }
+.manifesto-lead {
+  margin-bottom: 2rem; font-size: .72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .24em; color: var(--aqua);
+}
+.manifesto-statement {
+  margin: 0; font-family: var(--font-display); font-weight: 460;
+  font-size: clamp(2.5rem, 6.2vw, 6.6rem); line-height: 1.04; letter-spacing: -.03em;
+}
+.manifesto-statement .line { display: block; overflow: hidden; padding-bottom: .05em; }
+.manifesto-statement .line-inner { display: block; }
+.manifesto-statement em { font-style: italic; color: var(--aqua); }
 
-.community-scene { background: #111; }
-.community-photo { position: absolute; inset: 0; }
-.community-photo img { object-position: center 43%; }
-.community-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.72), transparent 68%), linear-gradient(0deg, rgba(0,0,0,.54), transparent 55%); }
-.chess-overlay { position: absolute; z-index: 3; right: 9vw; top: 16%; width: min(38vw, 560px); aspect-ratio: 1; display: grid; grid-template-columns: repeat(8,1fr); box-shadow: 0 30px 80px rgba(0,0,0,.28); transform-style: preserve-3d; }
-.chess-overlay i:nth-child(odd) { background: rgba(244,240,231,.52); }.chess-overlay i:nth-child(even) { background: rgba(7,83,106,.57); }
-.chess-overlay .chess-piece { position: absolute; color: white; font-family: serif; font-size: clamp(3rem, 6vw, 6rem); text-shadow: 0 12px 24px rgba(0,0,0,.3); }.piece-one { left: 14%; top: 17%; }.piece-two { right: 18%; top: 42%; }.piece-three { left: 45%; bottom: 9%; }
-.community-copy { position: absolute; z-index: 5; left: 7vw; bottom: 9%; max-width: 720px; }
-.community-copy > p:last-child { font-size: 1.05rem; }
+/* ============================ 03 · The ritual (peak) ============================ */
+/* A warm espresso-dark island in the teal film — the tonal peak. */
+.ritual-scene { height: 100svh; background: #12100c; color: var(--paper); }
+.ritual-stage { position: absolute; inset: 0; z-index: 0; }
+.ritual-frame { position: absolute; inset: 0; opacity: 0; will-change: opacity, transform; }
+.ritual-frame:first-child { opacity: 1; }
+.ritual-frame img { object-fit: cover; }
+.ritual-frame[data-pos="tamp"] img { object-position: 50% 48%; }
+.ritual-frame[data-pos="extraction"] img { object-position: 50% 56%; }
+.ritual-frame[data-pos="milk-pour"] img { object-position: 50% 50%; }
+.ritual-frame[data-pos="cortado-top"] img { object-position: 50% 50%; }
+/* Scrim only along the lower-left, under the caption. */
+.ritual-frame::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(24deg, color-mix(in srgb, #0b0906 88%, transparent), transparent 52%);
+}
+.ritual-eyebrow {
+  position: absolute; z-index: 4; left: var(--gutter); top: calc(var(--header-h) + 1.4rem);
+  margin: 0; font-size: .68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .24em; color: var(--glow-soft);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, .5);
+}
+.ritual-cap {
+  position: absolute; z-index: 4; left: var(--gutter); right: var(--gutter);
+  bottom: clamp(3rem, 11vh, 8rem);
+}
+.ritual-word {
+  margin: 0; font-family: var(--font-display); font-weight: 480;
+  font-size: clamp(4rem, 13vw, 12rem); line-height: .86; letter-spacing: -.04em;
+  color: var(--paper); text-shadow: 0 6px 40px rgba(0, 0, 0, .45);
+}
+.ritual-note {
+  margin-top: .7rem; max-width: 34ch; font-size: clamp(1rem, .95rem + .3vw, 1.25rem);
+  line-height: 1.5; color: rgba(255, 255, 255, .84);
+}
 
-.final-table { min-height: 110svh; padding: calc(var(--header-h) + 5rem) 6vw 7rem; display: grid; grid-template-columns: 1.08fr .92fr; gap: 7vw; align-items: center; background: var(--ivory); }
-.final-collage { position: relative; min-height: 720px; }
-.tile { position: absolute; overflow: hidden; background: white; box-shadow: 0 25px 60px rgba(4,56,68,.12); }
-.tile-cup { width: 72%; aspect-ratio: 1.3; left: 0; top: 12%; }.tile-cup img { object-fit: cover; }
-.tile-bake { width: 40%; aspect-ratio: .8; right: 0; top: 0; }.tile-honey { width: 38%; aspect-ratio: 1; right: 4%; bottom: 3%; }.tile-candle { width: 37%; aspect-ratio: .88; left: 7%; bottom: 0; }
-.final-copy h2 { font-size: clamp(4.2rem, 7vw, 8rem); margin-bottom: 2.2rem; }
+/* ============================ 04 · The counter ============================ */
+/* One image that opens from a small window to full bleed as you scroll. */
+.counter-scene {
+  height: 100svh; background: var(--ink-2); color: var(--paper);
+  display: grid; place-items: center;
+}
+.counter-media { position: absolute; inset: 0; z-index: 0; will-change: clip-path; }
+.counter-media img { object-fit: cover; object-position: 50% 42%; will-change: transform; }
+.counter-media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(0deg, color-mix(in srgb, var(--ink) 80%, transparent), transparent 44%),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 60%, transparent), transparent 46%);
+}
+.counter-copy { position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); bottom: clamp(3rem, 9vh, 7rem); max-width: 46rem; }
+.counter-copy .eyebrow { color: var(--aqua); }
+.counter-copy h2 { font-size: clamp(3rem, 7vw, 7.5rem); line-height: .96; margin-bottom: 1.3rem; color: var(--paper); }
+.counter-copy p:not(.eyebrow) { max-width: 44ch; color: rgba(255, 255, 255, .84); line-height: 1.6; }
 
+/* ============================ 05 · The pantry (horizontal) ============================ */
+.pantry-scene { height: 100svh; background: var(--ink); color: var(--paper); }
+.pantry-track {
+  display: flex; align-items: stretch; height: 100%; width: max-content;
+  gap: clamp(1.25rem, 2.4vw, 2.75rem); padding-inline: var(--gutter);
+  will-change: transform;
+}
+.pantry-panel {
+  flex: 0 0 auto; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+}
+
+/* Lead panel: the branded take-home boxes, copy laid over the image. */
+.pantry-lead { position: relative; width: min(88vw, 46rem); align-self: stretch; padding-block: clamp(4rem, 9vh, 7rem); }
+.pantry-lead-media { position: absolute; inset: clamp(2.5rem, 6vh, 5rem) 0; z-index: 0; border-radius: 4px; overflow: hidden; }
+.pantry-lead-media img { object-fit: cover; object-position: 50% 46%; }
+.pantry-lead-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 82%, transparent), transparent 60%);
+}
+.pantry-lead-copy { position: relative; z-index: 2; margin-top: auto; padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem); }
+.pantry-lead-copy .eyebrow { color: var(--aqua); }
+.pantry-lead-copy h2 { font-size: clamp(3rem, 5.4vw, 5.8rem); line-height: .98; margin-bottom: 1.2rem; color: var(--paper); }
+.pantry-lead-copy p:not(.eyebrow) { max-width: 40ch; color: rgba(255, 255, 255, .8); line-height: 1.6; }
+
+.pantry-item { width: clamp(300px, 40vw, 30rem); gap: 1.5rem; }
+.pantry-item-image {
+  position: relative; width: 100%; height: min(60vh, 34rem);
+  border-radius: 4px; overflow: hidden; background: var(--ink-3);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .6);
+}
+.pantry-item-image img { object-fit: cover; }
+.pantry-item-meta h3 { font-size: clamp(1.7rem, 2.2vw, 2.3rem); margin-bottom: .5rem; color: var(--paper); }
+.pantry-item-meta p { max-width: 32ch; color: rgba(255, 255, 255, .72); font-size: .95rem; line-height: 1.55; }
+
+.pantry-outro { width: min(86vw, 34rem); }
+.pantry-outro .eyebrow { color: var(--aqua); }
+.pantry-outro h2 { font-size: clamp(3rem, 5.2vw, 5.6rem); line-height: .98; margin-bottom: 1.6rem; color: var(--paper); }
+.pantry-outro .button { align-self: flex-start; }
+
+/* ============================ 06 · The space (parallax, day) ============================ */
+.space-scene {
+  min-height: 100svh; background: var(--paper); color: var(--paper-ink);
+  padding: clamp(6rem, 12vw, 12rem) var(--gutter);
+  display: grid; grid-template-columns: 1.05fr .95fr;
+  gap: clamp(3rem, 7vw, 7rem); align-items: center;
+}
+.space-copy { max-width: 44rem; }
+.space-copy .eyebrow { color: var(--brand); }
+.space-copy h2 { font-size: clamp(3rem, 6vw, 6.4rem); line-height: .98; margin-bottom: 1.6rem; }
+.space-copy > p { max-width: 42ch; line-height: 1.7; color: var(--muted); }
+.space-principles { list-style: none; margin: 2.6rem 0 0; padding: 0; border-top: 1px solid var(--rule); }
+.space-principles li { padding: 1.3rem 0; border-bottom: 1px solid var(--rule); }
+.space-principles h3 { font-size: 1.35rem; font-weight: 500; margin-bottom: .35rem; }
+.space-principles p { max-width: 46ch; font-size: .95rem; line-height: 1.55; color: var(--muted); }
+
+/* Two-layer parallax cluster: a tall portrait over a set-back landscape. */
+.space-visual { position: relative; min-height: 84svh; }
+.space-visual figure { position: absolute; margin: 0; border-radius: 4px; overflow: hidden; box-shadow: 0 40px 80px -34px rgba(6, 43, 52, .5); }
+.space-visual .space-plate-a { inset: 0 28% 22% 0; z-index: 1; }
+.space-visual .space-plate-b { width: 52%; right: 0; bottom: 0; aspect-ratio: 3 / 4; z-index: 2; }
+.space-visual img { object-fit: cover; }
+
+/* ============================ 07 · Invitation (close) ============================ */
+.invitation-scene {
+  position: relative; min-height: 100svh; overflow: hidden;
+  display: grid; place-items: center; text-align: center;
+  color: var(--paper); background: var(--ink);
+}
+.invitation-media { position: absolute; inset: 0; z-index: 0; }
+.invitation-media img { object-fit: cover; object-position: 50% 50%; }
+.invitation-media::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(120% 90% at 50% 50%, color-mix(in srgb, var(--ink) 42%, transparent), color-mix(in srgb, var(--ink) 86%, transparent) 100%);
+}
+.invitation-inner { position: relative; z-index: 2; padding: var(--header-h) var(--gutter) 0; max-width: 52rem; }
+.invitation-inner .eyebrow { color: var(--aqua); justify-content: center; }
+.invitation-inner h2 { font-size: clamp(3.2rem, 7.4vw, 8rem); line-height: .94; margin-bottom: 2.2rem; color: var(--paper); }
+.invitation-actions { display: flex; align-items: center; justify-content: center; gap: 1.6rem; flex-wrap: wrap; }
+
+/* ============================ Responsive ============================ */
 @media (max-width: 900px) {
-.story-hero { align-items: flex-end; padding-bottom: 7rem; }
-  .hero-art { inset: var(--header-h) -30% 34% 4%; opacity: .75; }
-  .hero-art::after { background: linear-gradient(0deg,var(--paper) 0%,transparent 75%); }
-  .hero-copy h1 { font-size: clamp(3.8rem, 15vw, 6.5rem); }
-  .story-hero > .chapter-index { display: none; }
-  .editorial-intro { grid-template-columns: 1fr; }
-  .editorial-statement { font-size: clamp(2.5rem, 10vw, 4.5rem); }
-  .story-scene { min-height: 90svh; }
-  .scene-copy { left: 1.25rem; right: 1.25rem; top: auto; bottom: 7%; transform: none; }
-  .scene-copy h2, .product-copy h2, .community-copy h2, .culture-caption h2 { font-size: clamp(3.7rem, 14vw, 6rem); }
-  .coffee-scene { min-height: max(100svh, 790px); }
-  .coffee-scene::before { display: none; }
-  .coffee-copy { left: clamp(1.25rem, 7vw, 4rem); right: clamp(1.25rem, 7vw, 4rem); bottom: 5%; max-width: 560px; }
-  .coffee-copy h2 { margin-bottom: 1.15rem; }
-  .coffee-copy > p:last-child { max-width: 330px; }
-  .coffee-stage { inset: 0 0 43%; background: var(--paper); }
-  .coffee-surface { left: 5%; right: 5%; bottom: 4%; height: 29%; }
-  .coffee-surface::after { width: min(72vw, 500px); height: min(16vw, 105px); }
-  .coffee-object { right: clamp(11%, 17vw, 25%); bottom: 5%; width: clamp(230px, 38vw, 330px); }
-  .coffee-shadow { right: clamp(13%, 19vw, 27%); bottom: 4.3%; width: clamp(176px, 30vw, 260px); height: clamp(15px, 3vw, 24px); }
-  .coffee-stage-note { top: 16%; right: 5%; }
-  .quiet-grid { grid-template-columns: 1fr; gap: 4rem; }.quiet-grid h2 { font-size: clamp(4rem, 15vw, 6.5rem); }
-  .bakery-photo img { object-position: 52% center; }.bakery-caption { left: 1.25rem; right: 1.25rem; bottom: 7%; }.bakery-notes { top: 16%; right: 1.25rem; }
-  .pantry-scene { grid-template-columns: 1fr; min-height: 115svh; }.pantry-head { position: relative; z-index: 5; color: white; padding: 6rem 1.25rem 1rem; justify-content: start; }.shelf-stage { position: absolute; inset: 0; }.shelf-stage::after { content: ""; position: absolute; z-index: 4; inset: 0; background: linear-gradient(180deg,rgba(4,56,68,.9),transparent 60%); }.pantry-photo { opacity: 1; }.shelf-object,.shelf-line { display:none; }
-  .product-shade { background: linear-gradient(0deg, rgba(17,7,4,.88), transparent 72%); }.product-copy { width: auto; right: 1.25rem; left: 1.25rem; top: auto; bottom: 6%; transform: none; }.product-photo img { object-position: 40% center; }
-  .culture-intro { text-align: left; padding-inline: 1.25rem; }.culture-photo { clip-path: none !important; }.culture-caption { left: 1.25rem; bottom: 6%; }.chandelier-overlay { transform: scale(1.4); }
-  .space-window { grid-template-columns: 1fr; padding-inline: 1.25rem; }.space-window > div { min-height: 60svh; }
-  .community-photo { clip-path: none !important; }.community-photo img { object-position: center 36%; }.chess-overlay { width: 64vw; right: -11vw; top: 11%; opacity: .72; }.community-copy { left: 1.25rem; right: 1.25rem; bottom: 6%; }
-  .final-table { grid-template-columns: 1fr; padding-inline: 1.25rem; }.final-collage { min-height: 560px; }.final-copy { order: -1; }
+  .story-scene { min-height: 92svh; }
+
+  .opening-title, .opening-text-ritual, .opening-text-resolution { font-size: clamp(3rem, 13vw, 5.5rem); }
+  .opening-lede { font-size: 1rem; max-width: 34ch; }
+  .opening-ring { top: 42%; width: 78vw; }
+
+  .manifesto-scene { height: auto; min-height: 90svh; padding-block: clamp(6rem, 18vw, 9rem); }
+  .manifesto-statement { font-size: clamp(2.3rem, 9vw, 4rem); }
+  .manifesto-halo { right: -40vw; opacity: .35; }
+
+  /* Ritual collapses from a cross-faded stack into a readable vertical gallery. */
+  .ritual-scene { height: auto; }
+  .ritual-stage { position: static; }
+  .ritual-frame { position: relative; opacity: 1; height: 72svh; }
+  .ritual-frame + .ritual-frame { margin-top: 0; }
+  .ritual-word { font-size: clamp(3.4rem, 16vw, 6rem); }
+
+  .counter-scene { height: auto; min-height: 84svh; }
+  .counter-media { position: absolute; }
+  .counter-copy { bottom: 8%; }
+
+  /* Horizontal shelf collapses to a vertical stack. */
+  .pantry-scene { height: auto; }
+  .pantry-track { flex-direction: column; width: auto; transform: none !important;
+    padding: clamp(4.5rem, 12vw, 7rem) var(--gutter); gap: clamp(2.5rem, 7vw, 4rem); }
+  .pantry-panel { width: auto !important; height: auto; }
+  .pantry-lead { min-height: 64svh; }
+  .pantry-lead-media { inset: 0; }
+  .pantry-item { gap: 1.1rem; }
+  .pantry-item-image { height: 54svh; }
+
+  .space-scene { grid-template-columns: 1fr; gap: 3rem; }
+  .space-visual { min-height: 74svh; order: -1; }
+
+  .invitation-inner h2 { font-size: clamp(2.8rem, 11vw, 5rem); }
 }
 
 @media (max-width: 560px) {
-  .coffee-scene { min-height: max(100svh, 760px); }
-  .coffee-stage { bottom: 47%; }
-  .coffee-object { right: 7%; bottom: 5%; width: min(58vw, 230px); }
-  .coffee-shadow { right: 10%; bottom: 4.2%; width: min(45vw, 180px); }
-  .coffee-steam { top: -6%; width: 34%; }
-  .coffee-stage-note { top: 13%; font-size: .52rem; }
-  .coffee-stage-note i { width: 28px; }
-  .coffee-copy h2 { font-size: clamp(3.45rem, 14vw, 4.7rem); }
-  .final-collage { min-height: 430px; }.tile-cup { width: 78%; }.tile-bake { width: 43%; }.tile-honey { width: 42%; }.tile-candle { width: 40%; }
+  .opening-copy { bottom: 3.5rem; }
+  .space-visual { min-height: 62svh; }
+  .space-visual .space-plate-a { inset: 0 20% 30% 0; }
+  .space-visual .space-plate-b { width: 60%; }
+  .invitation-actions { flex-direction: column; align-items: stretch; }
+  .invitation-actions .button { width: 100%; }
 }
 
+/* ============================ Reduced motion (engine skipped) ============================ */
 @media (prefers-reduced-motion: reduce) {
-  .coffee-object,.coffee-shadow,.coffee-surface i,.coffee-copy,.coffee-stage-note,.coffee-steam-line { transform: none !important; opacity: 1 !important; }
-  .coffee-shadow { opacity: .28 !important; }
-  .coffee-surface i { opacity: .72 !important; }
-  .coffee-stage-note { opacity: .62 !important; }
-  .coffee-steam-line { opacity: .42 !important; }
-  .pantry-photo { opacity: 1; }.shelf-object { opacity: 0; }.steam,.particles,.chess-overlay,.chandelier-overlay { display: none; }
-  .bakery-photo,.community-photo,.culture-photo { clip-path: none !important; transform: none !important; }
+  .opening-scene { height: auto; min-height: 100svh; }
+  .opening-grade { opacity: .3; }
+  /* Only the arrival statement is shown; the later scroll states are motion-only. */
+  .opening-text-ritual, .opening-text-resolution { display: none; }
+
+  .manifesto-scene { height: auto; min-height: 90svh; padding-block: clamp(6rem, 14vw, 9rem); }
+
+  /* Ritual becomes a static vertical gallery with every step legible. */
+  .ritual-scene { height: auto; }
+  .ritual-stage { position: static; }
+  .ritual-frame { position: relative; opacity: 1; height: 72svh; }
+  .ritual-eyebrow { position: absolute; }
+
+  .counter-scene { height: auto; min-height: 84svh; }
+  .counter-media { clip-path: none !important; }
+  .counter-media img { transform: none !important; }
+
+  .space-visual figure { transform: none !important; }
 }
 
-/* Phase 4B: one continuous Arrival → Coffee stage. */
-.opening-scene { position: relative; min-height: 100svh; background: var(--paper); overflow: hidden; isolation: isolate; }
-.opening-stage { position: relative; min-height: 100svh; height: 100svh; overflow: hidden; color: var(--navy-dark); }
-.opening-stage::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(90deg, rgba(250,249,245,.95), rgba(250,249,245,0) 44%), linear-gradient(0deg, rgba(250,249,245,.58), transparent 40%); }
-.opening-stone { position: absolute; z-index: 0; inset: 48% -8% -12%; opacity: 0; overflow: hidden; transform: translateY(12%); }
-.opening-stone img { object-fit: cover; object-position: center 62%; }
-.opening-grain { position: absolute; z-index: 1; inset: 0; opacity: .22; pointer-events: none; background-image: radial-gradient(rgba(7,83,106,.13) .6px, transparent .7px); background-size: 7px 7px; mix-blend-mode: multiply; }
-.opening-state { position: absolute; z-index: 5; pointer-events: none; }
-.opening-state h1, .opening-state h2 { margin: 0; color: var(--navy); letter-spacing: -.045em; line-height: .9; }
-.opening-state h1 { font-size: clamp(4rem, 8.8vw, 9.5rem); }
-.opening-state h2 { font-size: clamp(4.5rem, 8vw, 8.5rem); }
-.opening-state .eyebrow { margin-bottom: 1.5rem; }
-.opening-state-copy { max-width: 380px; line-height: 1.6; font-size: .94rem; }
-.opening-state-hero { left: clamp(1.25rem, 6vw, 7rem); bottom: clamp(3rem, 8vh, 6rem); max-width: 760px; pointer-events: auto; }
-.opening-state-hero h1 { margin-bottom: 1.7rem; }
-.opening-state-hero .hero-actions { margin-top: 1.8rem; }
-.opening-state-ritual { left: clamp(1.25rem, 10vw, 12rem); top: 22%; opacity: 0; }
-.opening-state-ritual h2 { font-size: clamp(4.2rem, 7.5vw, 8rem); }
-.opening-state-lid { right: clamp(1.25rem, 11vw, 13rem); top: 18%; opacity: 0; text-align: right; }
-.opening-state-liquid { left: clamp(1.25rem, 8vw, 9rem); top: 25%; opacity: 0; }
-.opening-state-final { left: clamp(1.25rem, 7vw, 8rem); top: 31%; opacity: 0; }
-.opening-state-final .opening-state-copy { margin-top: 1.4rem; }
-.opening-cup-wrap { position: absolute; z-index: 4; left: 50%; top: 50%; width: clamp(320px, 38vw, 620px); aspect-ratio: 1; transform: translate(-31%, -43%); will-change: transform; }
-.opening-cup { position: absolute; inset: 0; }
-.opening-cup img, .opening-lid img, .opening-coffee-surface img, .opening-liquid img, .opening-bean img, .opening-steam img { object-fit: contain; }
-.opening-cup-open { opacity: 0; }
-.opening-coffee-surface { position: absolute; z-index: 2; left: 18%; top: 6%; width: 64%; height: 28%; opacity: 0; overflow: hidden; pointer-events: none; }
-.opening-coffee-surface img { object-position: center; }
-.opening-lid { position: absolute; z-index: 4; left: 14%; top: 1%; width: 72%; height: 44%; will-change: transform; }
-.opening-cup-shadow { position: absolute; z-index: -1; left: 15%; bottom: 8%; width: 70%; height: 8%; border-radius: 50%; background: rgba(4,56,68,.6); filter: blur(18px); opacity: 0; transform-origin: center; }
-.opening-cup-shadow i { position: absolute; inset: 25% 12%; border-radius: inherit; background: rgba(4,56,68,.7); }
-.opening-liquid { position: absolute; z-index: 6; left: 51%; top: 35%; width: clamp(170px, 22vw, 360px); aspect-ratio: 1.5; overflow: hidden; opacity: 0; clip-path: inset(0 0 38% 0); will-change: transform, opacity; }
-.opening-liquid img { width: 380%; max-width: none; height: 380%; left: -10%; top: -6%; object-fit: fill; }
-.opening-bean { position: absolute; z-index: 7; width: clamp(42px, 5vw, 86px); height: clamp(42px, 5vw, 86px); overflow: hidden; opacity: 0; border-radius: 50%; will-change: transform, opacity; }
-.opening-bean img { width: 360%; max-width: none; height: 360%; object-fit: fill; }
-.opening-bean-one { left: 18%; top: 25%; }
-.opening-bean-one img { left: -2%; top: -2%; }
-.opening-bean-two { right: 17%; top: 24%; width: clamp(34px, 3.8vw, 64px); height: clamp(34px, 3.8vw, 64px); }
-.opening-bean-two img { left: -74%; top: -2%; }
-.opening-bean-three { right: 26%; bottom: 21%; }
-.opening-bean-three img { left: -33%; top: -50%; }
-.opening-steam { position: absolute; z-index: 8; left: 50%; top: 19%; width: clamp(140px, 19vw, 300px); aspect-ratio: 1; transform: translateX(-50%); opacity: 0; pointer-events: none; }
-.opening-steam img { width: 250%; max-width: none; height: 250%; left: -72%; top: -5%; }
-.opening-hook { position: absolute; z-index: 9; right: 5vw; bottom: 12%; display: flex; align-items: center; gap: .65rem; color: var(--navy); font-size: .58rem; font-weight: 700; letter-spacing: .17em; opacity: 0; }
-.opening-hook i { width: 46px; height: 1px; background: var(--aqua); }
-
-@media (max-width: 900px) {
-  .opening-stage { min-height: 100svh; height: 100svh; }
-  .opening-stage::after { background: linear-gradient(0deg, rgba(250,249,245,.96) 2%, rgba(250,249,245,0) 58%), linear-gradient(90deg, rgba(250,249,245,.38), transparent 70%); }
-  .opening-stone { inset: 58% -32% -10%; }
-  .opening-state-hero { left: 1.25rem; right: 1.25rem; bottom: 7%; }
-  .opening-state-hero h1 { font-size: clamp(3.45rem, 14vw, 6rem); }
-  .opening-state-copy { font-size: .86rem; max-width: 310px; }
-  .opening-state-ritual { left: 1.25rem; top: 12%; }
-  .opening-state-ritual h2, .opening-state-lid h2, .opening-state-liquid h2, .opening-state-final h2 { font-size: clamp(3.8rem, 15vw, 6rem); }
-  .opening-state-lid { right: 1.25rem; top: 12%; }
-  .opening-state-liquid { left: 1.25rem; top: 18%; }
-  .opening-state-final { left: 1.25rem; right: 1.25rem; top: 25%; }
-  .opening-cup-wrap { width: min(84vw, 430px); transform: translate(-50%, -38%); }
-  .opening-liquid { left: 47%; top: 34%; width: min(47vw, 220px); }
-  .opening-bean-one { left: 8%; top: 24%; }
-  .opening-bean-two { right: 8%; top: 22%; }
-  .opening-bean-three { right: 13%; bottom: 25%; }
-  .opening-steam { top: 18%; width: min(34vw, 150px); }
-  .opening-hook { right: 1.25rem; bottom: 4%; }
-  .opening-hook i { width: 28px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opening-stage { min-height: max(100svh, 760px); height: auto; }
-  .opening-stone { opacity: .72; transform: none; }
-  .opening-state-hero { opacity: 0; pointer-events: none; }
-  .opening-state-final { opacity: 1; }
-  .opening-cup-wrap { transform: translate(-50%, -38%) scale(.92); }
-  .opening-cup-closed { opacity: 0; }
-  .opening-cup-open, .opening-coffee-surface, .opening-cup-shadow, .opening-steam, .opening-hook { opacity: 1; }
-  .opening-lid, .opening-liquid, .opening-bean { display: none; }
-}
-
-/* Phase 4D: one pinned Hero → Coffee video-scrub prototype. */
-.opening-scene { min-height: 100svh; background: #171a19; }
-.opening-stage { min-height: 100svh; height: 100svh; background: #171a19; color: var(--ivory); }
-.opening-stage::after { display: none; }
-.opening-video-world, .opening-video-layer, .opening-video { position: absolute; inset: 0; width: 100%; height: 100%; }
-.opening-video-world { z-index: 0; overflow: hidden; background: #171a19; }
-.opening-video-layer { opacity: 0; will-change: opacity; }
-.opening-video-shot-01 { opacity: 1; }
-.opening-video { display: block; object-fit: cover; object-position: center; pointer-events: none; }
-.opening-luminance { position: absolute; z-index: 2; inset: 0; pointer-events: none; background: #fffdf8; opacity: 0; mix-blend-mode: screen; will-change: opacity; }
-.opening-copy { position: absolute; z-index: 5; inset: 0; pointer-events: none; }
-.opening-text-state { position: absolute; left: clamp(1.25rem, 7vw, 8rem); bottom: clamp(3rem, 10vh, 8rem); color: var(--ivory); text-shadow: 0 2px 24px rgba(0,0,0,.2); will-change: transform, opacity; }
-.opening-text-state h1, .opening-text-state h2 { margin: 0; color: inherit; font-size: clamp(4rem, 8vw, 9rem); line-height: .9; letter-spacing: -.045em; }
-.opening-text-state h1 { max-width: 800px; }
-.opening-copy-body { margin: 1.5rem 0 0; font-size: .95rem; }
-.opening-text-ritual, .opening-text-reveal, .opening-text-coffee, .opening-text-resolution { top: 22%; bottom: auto; }
-.opening-text-reveal { left: auto; right: clamp(1.25rem, 9vw, 10rem); text-align: right; }
-.opening-text-coffee { top: auto; bottom: 16%; }
-.opening-text-resolution { top: auto; bottom: clamp(3rem, 10vh, 8rem); }
-.opening-text-resolution .eyebrow, .opening-text-resolution h2 { color: var(--ivory); }
-.opening-chapter-marker { position: absolute; z-index: 6; right: 5vw; bottom: 10%; display: flex; align-items: center; gap: .65rem; color: var(--ivory); font-size: .58rem; font-weight: 700; letter-spacing: .17em; opacity: .78; }
-.opening-chapter-marker i { width: 46px; height: 1px; background: var(--aqua); }
-.opening-scroll-cue { position: absolute; z-index: 6; right: 5vw; top: 18%; margin: 0; color: var(--ivory); font-size: .6rem; text-transform: uppercase; letter-spacing: .16em; opacity: .72; writing-mode: vertical-rl; }
-@media (max-width: 900px) {
-  .opening-stage { height: 100svh; }
-  .opening-video { object-position: center; }
-  .opening-text-state { left: 1.25rem; right: 1.25rem; bottom: 8%; }
-  .opening-text-state h1, .opening-text-state h2 { font-size: clamp(3.4rem, 14vw, 6rem); }
-  .opening-text-ritual, .opening-text-reveal, .opening-text-coffee, .opening-text-resolution { top: 16%; bottom: auto; }
-  .opening-text-reveal { left: 1.25rem; right: 1.25rem; }
-  .opening-text-coffee, .opening-text-resolution { top: auto; bottom: 8%; }
-  .opening-chapter-marker { right: 1.25rem; bottom: 3%; }
-  .opening-scroll-cue { right: 1.25rem; top: 14%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .opening-stage { height: max(100svh, 760px); }
-  .opening-video-shot-01, .opening-video-shot-02 { display: none; }
-  .opening-video-shot-03 { opacity: 1; }
-  .opening-text-state { display: none; }
-  .opening-text-resolution { display: block; opacity: 1 !important; }
-  .opening-luminance, .opening-scroll-cue { display: none; }
-}
-
-/* Phase 4E: a replaceable single-master Hero → Coffee film. */
-.opening-master-video { position: absolute; z-index: 0; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; pointer-events: none; background: #171a19; }
-.opening-copy { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
-.opening-text-state { left: clamp(1.25rem, 6vw, 7rem); right: auto; bottom: clamp(2.5rem, 8vh, 6rem); max-width: min(28rem, 68vw); margin: 0; color: var(--ivory); font-size: clamp(.95rem, 1.45vw, 1.35rem); line-height: 1.25; letter-spacing: .01em; text-shadow: 0 2px 24px rgba(0,0,0,.28); will-change: transform, opacity; }
-.opening-text-arrival { max-width: min(30rem, 72vw); }
-.opening-text-ritual { top: 21%; bottom: auto; }
-.opening-text-resolution { top: auto; bottom: clamp(2.5rem, 8vh, 6rem); }
-.opening-scroll-cue { right: clamp(1.25rem, 5vw, 5rem); top: 18%; color: var(--ivory); }
-
-@media (max-width: 900px) {
-  .opening-master-video { object-position: center; }
-  .opening-text-state { left: 1.25rem; right: 1.25rem; bottom: 7%; max-width: 20rem; font-size: .95rem; }
-  .opening-text-ritual { top: 15%; bottom: auto; }
-  .opening-text-resolution { top: auto; bottom: 7%; }
-  .opening-scroll-cue { right: 1.25rem; top: 14%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .opening-stage { height: 100svh; min-height: 100svh; }
-  .opening-master-video { display: block; }
-  .opening-text-state { display: none; }
-  .opening-text-arrival { display: block; opacity: 1 !important; transform: none !important; }
-  .opening-scroll-cue { display: none; }
-}
+/* ============================ Homepage close ============================ */
+/* The InvitationScene is the film's single resolving close and carries its own
+   CTA, so the shared footer's duplicate pre-footer CTA band is suppressed on the
+   homepage only. Every other route keeps it (sibling combinator, no :has needed).
+   If the marker is ever absent the band simply shows, so this degrades safely. */
+main[data-home] ~ .site-footer .footer-top { display: none; }

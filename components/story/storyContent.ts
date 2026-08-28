@@ -1,23 +1,26 @@
 export const storyImage = (name: string, size = 1600) =>
   `/assets/irisco/optimized/${name}-${size}.webp`;
 
-export const menuHighlights = [
-  "Espresso-based coffee",
-  "Cakes & slices",
-  "Croissants & pastries",
-  "Sandwiches & savoury bites",
+/**
+ * The coffee ritual — the film's peak. Four frames drawn straight from the
+ * counter: tamp, extraction, milk, cup. Each is a real step in one process, so
+ * the motion between them is a sequence, not decoration.
+ */
+export const ritualFrames = [
+  { image: "tamp", word: "Ground", note: "Dialled in by hand, dose by dose." },
+  { image: "extraction", word: "Pulled", note: "A double shot, watched to the gram." },
+  { image: "milk-pour", word: "Poured", note: "Steamed milk, folded in slow." },
+  { image: "cortado-top", word: "Served", note: "At the counter, or carried to your table." },
 ] as const;
 
-export const bakeryNotes = ["baked", "layered", "shared"] as const;
-
-export const chandelierBulbs = [220, 310, 400, 500, 600, 690, 780] as const;
-
-export const chilliParticleCount = 13;
-export const chessCellCount = 64;
-
-export const finalTiles = [
-  { className: "tile-cup", image: "logo_with_cups", size: 900, alt: "IRISCO coffee", sizes: "40vw" },
-  { className: "tile-bake", image: "main-counter", size: 900, alt: "IRISCO bakery", sizes: "30vw" },
-  { className: "tile-honey", image: "product_honey", size: 900, alt: "Honey", sizes: "28vw" },
-  { className: "tile-candle", image: "product_fragrance_candles", size: 900, alt: "Fragrance candles", sizes: "28vw" },
+/**
+ * Horizontal pantry shelf. Notes mirror the product copy in lib/content/site.ts;
+ * the chilli-oil entry keeps its original Instagram filename as its image stem.
+ */
+export const pantryShelf = [
+  { image: "product_honey", name: "Natural honey", note: "Golden jars for breakfast tables and slow cups of tea." },
+  { image: "762018791_18118018009841859_137573672561098918_n", name: "Chilli oil", note: "Bold jars carrying heat, texture and a savoury finish." },
+  { image: "product_flour", name: "Flours & grains", note: "Everyday staples arranged for better baking." },
+  { image: "product_fragrance_candles", name: "Fragrance candles", note: "Quiet fragrance and warm light for another room." },
+  { image: "table_rak", name: "Granola & oats", note: "Breakfast discoveries for slower mornings." },
 ] as const;

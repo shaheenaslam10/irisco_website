@@ -4,7 +4,6 @@ import { join, parse } from "node:path";
 
 const source = join(process.cwd(), "public/assets/irisco/reference");
 const output = join(process.cwd(), "public/assets/irisco/optimized");
-const generatedCoffee = join(process.cwd(), "public/assets/irisco/generated/coffee");
 await mkdir(output, { recursive: true });
 
 for (const file of await readdir(source)) {
@@ -21,13 +20,5 @@ await sharp(join(source, "logo.jpg"))
   .resize({ width: 520, withoutEnlargement: true })
   .webp({ quality: 92 })
   .toFile(join(output, "logo-wordmark.webp"));
-
-await sharp(join(generatedCoffee, "irisco-navy-cup.png"))
-  .webp({ quality: 92, alphaQuality: 100, effort: 6 })
-  .toFile(join(generatedCoffee, "irisco-navy-cup-1024.webp"));
-
-await sharp(join(generatedCoffee, "irisco-navy-cup.png"))
-  .avif({ quality: 62, effort: 7, chromaSubsampling: "4:4:4" })
-  .toFile(join(generatedCoffee, "irisco-navy-cup-1024.avif"));
 
 console.log("IRISCO image variants generated.");
